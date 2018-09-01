@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+  <label>Overview</label>
+  <fieldset autoRun="true" submitButton="false">
+    <!-- Define a simple dropdown form driven by a search -->
+    <input type="dropdown" searchWhenChanged="true" token="user">
+      <label>Select OS user</label>
+      <populatingSearch fieldForValue="os_user" fieldForLabel="os_user">
+        <![CDATA[index=browsers | top os_user]]>
+      </populatingSearch>
+      <choice value="*">All</choice>
+      <default>*</default>
+    </input>
+  </fieldset>
+  <row>
+    <chart>
+      <searchTemplate>index=browsers sourcetype="history" os_user="$user$" | stats count by browser</searchTemplate>
+      <title>Usage share of web browsers</title>
+      <option name="charting.chart">pie</option>
+      <option name="charting.chart.sliceCollapsingThreshold">0</option>
+    </chart>
+    <table>
+      <searchTemplate>index=browsers sourcetype="history" os_user="$user$" | rex field=url "//(?&lt;domain&gt;[^\/]+)" | stats count by domain | sort count desc</searchTemplate>
+      <title>Most popular domains</title>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">false</option>
+    </table>
+    <table>
+      <searchTemplate>index=browsers sourcetype="history" os_user="$user$" | rex field=url "//(?&lt;domain&gt;[^\/]+)" | eval mins_ago=floor((now()-_time) /60)  | table title, domain, mins_ago</searchTemplate>
+      <title>Recently opened pages</title>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">false</option>
+    </table>
+  </row>
+  <row>
+    <chart>
+      <searchTemplate>index=browsers sourcetype="history" os_user="$user$" | eval local_date_hour=strftime(_time,"%H") | chart count by local_date_hour</searchTemplate>
+      <title>Opened pages by hour</title>
+      <option name="charting.axisTitleX.text">hour</option>
+      <option name="charting.chart">column</option>
+      <option name="charting.primaryAxisTitle.text"/>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">true</option>
+    </chart>
+    <chart>
+      <searchTemplate>index=browsers sourcetype="history" os_user="$user$" | bucket _time span=1d
+  | eval DayOfWeekC=strftime(_time, "%a")
+  | eval DayOfWeekN=strftime(_time, "%u")
+  | stats count by DayOfWeekN, DayOfWeekC | fields - DayOfWeekN</searchTemplate>
+      <title>Opened pages by days of week</title>
+      <option name="charting.axisTitleX.text">day of week</option>
+      <option name="charting.chart">column</option>
+      <option name="charting.primaryAxisTitle.text"/>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">true</option>
+    </chart>
+  </row>
+  <row>
+    <chart>
+      <searchTemplate>index=browsers sourcetype="history" os_user="$user$" | timechart count by browser</searchTemplate>
+      <title>Web access over time</title>
+      <option name="charting.chart">line</option>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">true</option>
+    </chart>
+  </row>
+  <row>
+    <html src="browsersOverview.html"></html>
+  </row>
+</form>

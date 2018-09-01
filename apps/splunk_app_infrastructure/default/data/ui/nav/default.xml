@@ -1,0 +1,6 @@
+<nav color="#444444">
+    <view name="investigate" default="true" />
+    <view name="alerts"/>
+    <a href="configure">Add Data</a>
+   	<view name="settings"/>
+</nav>

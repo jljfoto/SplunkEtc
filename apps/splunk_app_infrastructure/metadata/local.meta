@@ -1,0 +1,11 @@
+[inputs/http%3A%2F%2Fsplunk_app_infrastructure]
+access = read : [ admin ], write : [ admin ]
+export = system
+owner = nobody
+version = 7.0.3
+modtime = 1525544310.905759000
+
+[indexes/collectd]
+owner = admin
+version = 7.1.0
+modtime = 1526215468.090176000

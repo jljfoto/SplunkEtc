@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<form>
+  <label>Bookmarks</label>
+	<fieldset autoRun="true" submitButton="false">
+        <html>
+            User's bookmarks
+        </html>
+    	<input type="dropdown" searchWhenChanged="true" token="user">
+        	<label>Select OS user</label>
+           	<populatingSavedSearch  fieldForValue="os_user" fieldForLabel="os_user">top users</populatingSavedSearch >
+           	<choice value="*">All</choice>
+            <default>*</default>
+    	</input>
+        
+        <input type="dropdown" searchWhenChanged="true" token="browser">
+        	<label>Select browser</label>
+           	<populatingSavedSearch fieldForValue="browser" fieldForLabel="browser">top browsers</populatingSavedSearch>
+           	<choice value="*">All</choice>
+            <default>*</default>
+    	</input>
+        
+        <input type="time" searchWhenChanged="true" />
+    </fieldset>
+
+    
+  <row>
+    <table>
+      <title>Latest bookmarks</title>        
+      <searchTemplate>index=browsers sourcetype="bookmarks" os_user="$user$" browser=$browser$ | table title, _time</searchTemplate>
+      <option name="count">20</option>  
+      <option name="displayRowNumbers">false</option>
+    </table>
+      
+    <table>
+      <title>Most popular domains</title>        
+      <searchTemplate>index=browsers sourcetype="bookmarks" os_user="$user$" browser=$browser$ | rex field=url "//(?&lt;domain&gt;[^\/]+)" | stats count by domain | sort count desc</searchTemplate>
+      <option name="count">20</option>  
+      <option name="displayRowNumbers">false</option>
+    </table>
+  </row>    
+    
+  
+</form>

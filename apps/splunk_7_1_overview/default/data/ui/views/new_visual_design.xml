@@ -1,0 +1,81 @@
+<dashboard>
+  <label>New Look and Feel</label>
+  <description>Modern look and feel to the Splunk Enterprise user interface.</description>
+  <row>
+    <panel> 
+      <html>
+      	<h3>Overview</h3>
+      	<p>Splunk Enterprise 7.1 introduces a brand-new look and feel across the entire product, bringing a fresh and modern style to the interface.</p>
+
+       <p>Key Features:</p>
+        <ul>
+          <li><b><i>Modern Look and Feel</i></b> - Flattened the design of several UI elements, providing a much cleaner style.</li>
+          <li><b><i>Style Consistency Across Products</i></b> - Standardized several style properties across Splunk products and splunk.com.</li>
+          <li><b><i>Improved Usability</i></b> - Updated the search page, events viewer, listing pages, and tables for better legibility.</li>
+        </ul>
+
+      </html>
+    </panel>
+  </row>
+
+  <row>
+  	<panel>
+  		<html>
+  			<h3>Search (after)</h3>
+  			<div style="margin-left:30px">
+          <img src="/static/app/splunk_7_1_overview/images/visual_refresh_search.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+    <panel>
+      <html>
+        <h3>Search (before)</h3>
+        <div style="margin-left:30px">
+              <img src="/static/app/splunk_7_1_overview/images/visual_refresh_search_before.png" width="800px"/>
+          </div>
+        	<br/>
+      </html>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <html>
+        <h3>Dashboard (after)</h3>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_7_1_overview/images/visual_refresh_dashboard.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+    <panel>
+      <html>
+        <h3>Dashboard (before)</h3>
+        <div style="margin-left:30px">
+              <img src="/static/app/splunk_7_1_overview/images/visual_refresh_dashboard_before.png" width="800px"/>
+          </div>
+          <br/>
+      </html>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <html>
+        <h3>Error (after)</h3>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_7_1_overview/images/visual_refresh_error.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+    <panel>
+      <html>
+        <h3>Error (before)</h3>
+        <div style="margin-left:30px">
+              <img src="/static/app/splunk_7_1_overview/images/visual_refresh_error_before.png" width="800px"/>
+          </div>
+          <br/>
+      </html>
+    </panel>
+  </row>
+
+</dashboard>

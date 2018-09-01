@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<license>
+  <signature>kUnZP0g7alP4aI/pnK1HlHiqYbbBX5g5kNfKSwMcDYd+t/b+10zFCukDK32v4NMgslDM+AWjpA0roy8nowhCVbOEA6oQgkvSN24uMfB7cu7/z1j0wDhMYXpt7f5JfaDXZYPthCVqpUlWoszJ6hFx2VuA+mq47GhyqUFwSho2Oe4nEk1GZ7ryCWTPzi1HiosZAXvYm4ZZj2jdpUf44JYJTMDmAbrgj8cxydBl2hNbyFYOO2tColzEcYm8A+pCmDvchdWWu/pPoz0gv4TNcVo3MmA9Ty+rb8UcEamZICWXWhgMXZG4bgncBkHNzRkjMMs1MD2q0vKwv1ORj1PsOPLvng==</signature>
+  <payload>
+    <type>download-trial</type>
+    <group_id>Trial</group_id>
+    <quota>524288000</quota>
+    <max_violations>5</max_violations>
+    <window_period>30</window_period>
+    <creation_time>1493743548</creation_time>
+    <label>Splunk Enterprise Download Trial</label>
+    <relative_expiration_interval>5184000</relative_expiration_interval>
+    <absolute_expiration_time>1556815548</absolute_expiration_time>
+    <features>
+      <feature>Auth</feature>
+      <feature>FwdData</feature>
+      <feature>RcvData</feature>
+      <feature>LocalSearch</feature>
+      <feature>DistSearch</feature>
+      <feature>RcvSearch</feature>
+      <feature>ScheduledSearch</feature>
+      <feature>Alerting</feature>
+      <feature>DeployClient</feature>
+      <feature>DeployServer</feature>
+      <feature>SplunkWeb</feature>
+      <feature>SigningProcessor</feature>
+      <feature>SyslogOutputProcessor</feature>
+      <feature>AllowDuplicateKeys</feature>
+    </features>
+    <sourcetypes/>
+    <guid>2A76BCEC-A482-4809-83F2-4BD4F8396CE3</guid>
+  </payload>
+</license>

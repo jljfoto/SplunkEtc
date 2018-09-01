@@ -1,0 +1,100 @@
+[props/parse_chat]
+owner = admin
+version = 7.0.0
+modtime = 1517201146.662596000
+
+[views/parse_chat]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = admin
+version = 7.0.0
+modtime = 1517201389.336154000
+
+[indexes/parse_chat2]
+owner = admin
+version = 7.0.0
+modtime = 1517201167.076918000
+
+[props/itunes]
+owner = admin
+version = 7.0.0
+modtime = 1519360791.037567000
+
+[inputs/monitor%3A%2F%2F%2FUsers%2Fjonathon%2FMusic%2FiTunes%2FiTunes%20Music%20Library.xml]
+owner = admin
+version = 7.0.0
+modtime = 1519360817.220728000
+
+[props/snow]
+owner = admin
+version = 7.0.2
+modtime = 1520769215.816942000
+
+[indexes/test]
+owner = admin
+version = 7.0.2
+modtime = 1520769232.439293000
+
+[indexes/snow_test]
+owner = admin
+version = 7.0.2
+modtime = 1520769494.934947000
+
+[inputs/tcp%3A%2F%2F9997]
+owner = admin
+version = 7.0.2
+modtime = 1523636794.362947000
+
+[indexes/iot]
+owner = admin
+version = 7.0.2
+modtime = 1523763617.565884000
+
+[inputs/monitor%3A%2F%2F%2Fopt%2Flogs%2Fparsem.log]
+owner = admin
+version = 7.1.0
+modtime = 1525969882.357580000
+
+[workflow_actions/open%20video]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = admin
+version = 7.1.0
+modtime = 1525999621.539304000
+
+[indexes/os]
+owner = admin
+version = 7.1.0
+modtime = 1526199789.162969000
+
+[inputs/http%3A%2F%2Fcollectd]
+access = read : [ admin ], write : [ admin ]
+export = none
+owner = admin
+version = 7.1.0
+modtime = 1526215502.480150000
+
+[inputs/monitor%3A%2F%2F%2FUsers%2Fjonathon%2FDownloads%2Ftransactions-2.csv]
+owner = admin
+version = 7.1.1
+modtime = 1530395335.342510000
+
+[views/mint_finance_dashboard]
+owner = admin
+version = 7.1.1
+modtime = 1530450946.058518000
+
+[indexes/parsem_test]
+owner = admin
+version = 7.1.1
+modtime = 1534600153.301049000
+
+[views/blood_glucose]
+owner = admin
+version = 7.1.2
+modtime = 1535548943.111143000
+
+[indexes/blood_sugar]
+owner = admin
+version = 7.1.2
+modtime = 1534909498.901615000

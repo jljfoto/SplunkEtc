@@ -1,0 +1,14 @@
+[indexes/parse_chat]
+owner = admin
+version = 7.0.0
+modtime = 1517197241.571897000
+
+[indexes/itunes_test]
+owner = admin
+version = 7.0.2
+modtime = 1523762271.762426000
+
+[indexes/mint]
+owner = admin
+version = 7.1.1
+modtime = 1530395319.185761000

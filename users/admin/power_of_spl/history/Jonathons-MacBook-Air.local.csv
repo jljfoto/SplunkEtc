@@ -1,0 +1,245 @@
+sid,search,"splunk_server","_time","is_realtime",provenance,"api_lt","event_count","exec_time","result_count","scan_count","search_lt",status,"total_run_time","savedsearch_name","api_et","search_et","__mv_sid","__mv_search","__mv_splunk_server","__mv__time","__mv_is_realtime","__mv_provenance","__mv_api_lt","__mv_event_count","__mv_exec_time","__mv_result_count","__mv_scan_count","__mv_search_lt","__mv_status","__mv_total_run_time","__mv_savedsearch_name","__mv_api_et","__mv_search_et"
+"1510074231.3","search index=power_of_spl | eval KB=bytes/1024","Jonathons-MacBook-Air.local","1510074231.780083",0,"UI:Search","1510074231.000000000",18076,1510074231,1000,18076,"1510074231.000000000",completed,"1.859986529",,,,,,,,,,,,,,,,,,,,
+"1510074272.4","search index=power_of_spl | eval KB=bytes/1024 | stats count by clientIp","Jonathons-MacBook-Air.local","1510074272.650412",0,"UI:Search","1510074272.000000000",18076,1510074272,0,18076,"1510074272.000000000",completed,"0.411013264",,,,,,,,,,,,,,,,,,,,
+"1510074298.5","search index=power_of_spl | eval KB=bytes/1024 | stats count by clientip","Jonathons-MacBook-Air.local","1510074298.103588",0,"UI:Search","1510074298.000000000",18076,1510074298,1009,18076,"1510074298.000000000",completed,"0.519411180",,,,,,,,,,,,,,,,,,,,
+"1510074443.6","search index=power_of_spl http spl_host=webserver-02 (503 OR 504)","Jonathons-MacBook-Air.local","1510074443.312240",0,"UI:Search","1510074443.000000000",2810,1510074443,1000,3850,"1510074443.000000000",completed,"0.487055881",,,,,,,,,,,,,,,,,,,,
+"rt_md_1510074779.9","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1510074779.732408",1,"UI:Search",,0,1510074779,0,0,,canceled,"46.183006736",,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510074799.10","search index=power_of_spl | stats avg(bytes) AS ""Avg Bytes""","Jonathons-MacBook-Air.local","1510074799.912443",0,"UI:Dashboard:stats_examples",,18076,1510074800,1,18076,,completed,"1.135020187",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510074799.11","search index=power_of_spl
+| stats avg(bytes) AS bytes sparkline(avg(bytes)) AS Bytes_Trend min(bytes) as Min max(bytes) as Max","Jonathons-MacBook-Air.local","1510074799.917447",0,"UI:Dashboard:stats_examples",,18076,1510074800,1,18076,,completed,"1.163905492",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510074799.12","search index=power_of_spl 
+| stats avg(bytes) AS avg_bytes sparkline(avg(bytes)) AS Bytes_Trend min(bytes) as Min max(bytes) as Max by clientip | sort - avg_bytes","Jonathons-MacBook-Air.local","1510074799.926368",0,"UI:Dashboard:stats_examples",,18076,1510074800,1009,18076,,completed,"1.539503856",search3,,,,,,,,,,,,,,,,,,,
+"rt_md_1510074826.13","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1510074826.860620",1,"UI:Search",,0,1510074826,0,0,,canceled,"5.055924550",,,,,,,,,,,,,,,,,,,,
+"1510074831.14","search index=power_of_spl
+| stats avg(bytes) AS ""Avg Bytes""","Jonathons-MacBook-Air.local","1510074831.835507",0,"UI:Search","1510074831.000000000",0,1510074831,0,0,"1510074831.000000000",completed,"0.186172821",,"1509987600.000000000","1509987600.000000000",,,,,,,,,,,,,,,,,
+"1510074845.15","search index=power_of_spl  | stats avg(bytes) AS ""Avg Bytes""","Jonathons-MacBook-Air.local","1510074845.793991",0,"UI:Search","1510074845.000000000",0,1510074845,0,0,"1510074845.000000000",completed,"0.188254000",,"1509987600.000000000","1509987600.000000000",,,,,,,,,,,,,,,,,
+"1510074848.16","search index=power_of_spl  | stats avg(bytes) AS ""Avg Bytes""","Jonathons-MacBook-Air.local","1510074848.986797",0,"UI:Search",,18076,1510074848,1,18076,,completed,"0.566072634",,,,,,,,,,,,,,,,,,,,
+"1510074856.17","search index=power_of_spl  | stats avg(bytes) AS ""Avg Bytes""","Jonathons-MacBook-Air.local","1510074856.830101",0,"UI:Search",,18076,1510074856,1,18076,,completed,"2.023725085",,,,,,,,,,,,,,,,,,,,
+"1510074945.18","search index=power_of_spl  | timechart avg(bytes) AS ""Avg Bytes""","Jonathons-MacBook-Air.local","1510074945.267098",0,"UI:Search",,18076,1510074945,23,18076,,completed,"2.849357078",,,,,,,,,,,,,,,,,,,,
+"1510074996.19","search index=power_of_spl","Jonathons-MacBook-Air.local","1510074996.792794",0,"UI:Search",,18076,1510074996,18076,18076,,completed,"3.156927194",,,,,,,,,,,,,,,,,,,,
+"rt_md_1510075258.21","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1510075258.930540",1,"UI:Search",,0,1510075259,0,0,,canceled,"31.126419079",,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510075268.22","search index=power_of_spl | timechart avg(bytes)","Jonathons-MacBook-Air.local","1510075268.011721",0,"UI:Dashboard:timechart_examples",,18076,1510075268,23,18076,,completed,"1.535927250",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510075268.23","search index=power_of_spl | timechart avg(bytes)","Jonathons-MacBook-Air.local","1510075268.017260",0,"UI:Dashboard:timechart_examples",,18076,1510075268,23,18076,,completed,"1.513073015",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510075268.24","search index=power_of_spl 
+| timechart avg(bytes) as bytes 
+| trendline sma5(bytes)","Jonathons-MacBook-Air.local","1510075268.036596",0,"UI:Dashboard:timechart_examples",,18076,1510075268,23,18076,,completed,"1.961025755",search3,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510075268.25","search index=power_of_spl
+| timechart avg(bytes) as bytes 
+| predict future_timespan=5 bytes","Jonathons-MacBook-Air.local","1510075268.046223",0,"UI:Dashboard:timechart_examples",,18076,1510075268,28,18076,,completed,"1.966236181",search4,,,,,,,,,,,,,,,,,,,
+"1510075282.26","search index=power_of_spl | eval http_response = if(status != 200, ""Error"", ""OK"")","Jonathons-MacBook-Air.local","1510075282.740821",0,"UI:Search","1510075282.000000000",18076,1510075282,1000,18076,"1510075282.000000000",completed,"1.784467525",,,,,,,,,,,,,,,,,,,,
+"1510075301.27","search index=power_of_spl | eval http_response = if(status != 200, ""Error"", ""OK"") | stats count by status","Jonathons-MacBook-Air.local","1510075301.281280",0,"UI:Search","1510075301.000000000",18076,1510075301,40,18076,"1510075301.000000000",completed,"0.530945701",,,,,,,,,,,,,,,,,,,,
+"1510075356.28","search index=power_of_spl | eval http_response = if(status != 200, ""Error"", ""OK"") | stats count by http_response","Jonathons-MacBook-Air.local","1510075356.877472",0,"UI:Search","1510075356.000000000",18076,1510075356,2,18076,"1510075356.000000000",completed,"0.554862755",,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510075368.29","search index=power_of_spl | reverse | streamstats sum(bytes) AS sum_bytes | timechart latest(sum_bytes) as ""Total Bytes""","Jonathons-MacBook-Air.local","1510075368.996285",0,"UI:Dashboard:streamstats_examples",,186,1510075369,23,18076,,completed,"5.354928553",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510075369.30","search index=power_of_spl | reverse | streamstats sum(bytes) AS sum_bytes | timechart latest(sum_bytes) as ""Total Bytes""","Jonathons-MacBook-Air.local","1510075369.007472",0,"UI:Dashboard:streamstats_examples",,186,1510075369,23,18076,,completed,"5.045556465",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510075369.31","search index=power_of_spl 
+| eventstats avg(bytes) AS overall_avg_bytes 
+| stats avg(bytes) as clientip_avg_bytes by clientip overall_avg_bytes","Jonathons-MacBook-Air.local","1510075369.016808",0,"UI:Dashboard:streamstats_examples",,0,1510075369,1009,18076,,completed,"4.435045284",search3,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510075369.32","search index=power_of_spl 
+| eventstats avg(bytes) AS overall_avg_bytes 
+| stats avg(bytes) as clientip_avg_bytes by clientip overall_avg_bytes","Jonathons-MacBook-Air.local","1510075369.074919",0,"UI:Dashboard:streamstats_examples",,0,1510075369,1009,18076,,completed,"4.369764515",search4,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510076227.33","search index=power_of_spl | iplocation clientip | geostats count","Jonathons-MacBook-Air.local","1510076227.995715",0,"UI:Dashboard:41_geographic",,18076,1510076228,2424,18076,,canceled,"5.172690951",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510076228.34","search index=power_of_spl | iplocation clientip | geostats count by action","Jonathons-MacBook-Air.local","1510076228.004069",0,"UI:Dashboard:41_geographic",,18076,1510076228,2395,18076,,canceled,"5.251729284",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510076228.35","search index=power_of_spl 
+| iplocation clientip 
+| stats sum(bytes) by Country | search Country!=""*Korea"" AND Country!=""United States""
+| geom geo_countries featureIdField=Country","Jonathons-MacBook-Air.local","1510076228.012163",0,"UI:Dashboard:41_geographic",,12500,1510076228,0,12500,,canceled,"9.270570053",search3,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510076228.36","search index=power_of_spl | iplocation clientip | geostats count","Jonathons-MacBook-Air.local","1510076228.060481",0,"UI:Dashboard:41_geographic",,18076,1510076228,2424,18076,,canceled,"5.035199943",search4,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search5_1510076228.37","search index=power_of_spl | iplocation clientip | table lat lon bytes","Jonathons-MacBook-Air.local","1510076228.070616",0,"UI:Dashboard:41_geographic",,18076,1510076228,18076,18076,,completed,"3.545079023",search5,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search6_1510076228.38","search index=power_of_spl | iplocation clientip | rename lat as latitude lon as longitude | stats count by clientip latitude longitude | eval description=clientip","Jonathons-MacBook-Air.local","1510076228.074533",0,"UI:Dashboard:41_geographic",,18076,1510076228,890,18076,,completed,"2.117646228",search6,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510076235.39","search index=power_of_spl
+    [ search index=power_of_spl
+    | stats sum(bytes) as total_bytes by clientip
+    | sort - total_bytes 
+    | head 1 
+    | return clientip ] 
+| stats count by clientip status uri
+| sort - count","Jonathons-MacBook-Air.local","1510076235.011731",0,"UI:Dashboard:converging_data_sources",,154,1510076235,55,163,,completed,"3.176247134",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510076235.40","search index=power_of_spl status!=200  | lookup customer_info uid  | stats count by customer_value","Jonathons-MacBook-Air.local","1510076235.023850",0,"UI:Dashboard:converging_data_sources",,4387,1510076235,3,18076,,completed,"1.744478933",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510076235.41","| inputlookup customer_info | fields uid city state customer_value customer_segment email username first_name last_name gender mac phone src_ip","Jonathons-MacBook-Air.local","1510076235.027640",0,"UI:Dashboard:converging_data_sources","1510076235.000000000",0,1510076235,1000,0,"1510076235.000000000",completed,"0.044920903",search3,"1510072620.000000000","1510072620.000000000",,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510076235.42","search index=power_of_spl uid status!=200 | highlight uid","Jonathons-MacBook-Air.local","1510076235.081871",0,"UI:Dashboard:converging_data_sources",,2834,1510076235,0,5500,,canceled,"2.138106500",search4,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search5_1510076235.43","search index=power_of_spl 
+| timechart span=5s avg(bytes) as avg_bytes 
+| appendcols 
+    [ search index=power_of_spl 
+    | stats stdev(bytes) as stdev_bytes] 
+| eval 2stdv_upper = avg_bytes + stdev_bytes*2 | filldown 2stdv_upper 
+| eval 2stdv_lower = avg_bytes - stdev_bytes*2 | filldown 2stdv_lower 
+| eval 2stdv_lower=if('2stdv_lower'<0,0,'2stdv_lower') 
+| fields - stdev_bytes","Jonathons-MacBook-Air.local","1510076235.115526",0,"UI:Dashboard:converging_data_sources",,18076,1510076235,1319,18076,,completed,"2.939713565",search5,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510076236.44","search index=power_of_spl uid status!=200 | highlight uid","Jonathons-MacBook-Air.local","1510076236.813242",0,"UI:Dashboard:converging_data_sources",,2880,1510076236,2880,5602,,completed,"2.007004728",search4,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510076552.48","search index=power_of_spl status!=200  | lookup customer_info uid  | stats count by customer_value","Jonathons-MacBook-Air.local","1510076552.858052",0,"UI:Dashboard:converging_data_sources",,4387,1510076553,3,18076,,completed,"1.711980494",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510076552.50","search index=power_of_spl
+    [ search index=power_of_spl
+    | stats sum(bytes) as total_bytes by clientip
+    | sort - total_bytes 
+    | head 1 
+    | return clientip ] 
+| stats count by clientip status uri
+| sort - count","Jonathons-MacBook-Air.local","1510076552.864664",0,"UI:Dashboard:converging_data_sources",,154,1510076553,55,163,,completed,"2.095134682",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510076552.51","search index=power_of_spl uid status!=200 | highlight uid","Jonathons-MacBook-Air.local","1510076552.879641",0,"UI:Dashboard:converging_data_sources",,2834,1510076553,0,5500,,canceled,"1.901989071",search4,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search5_1510076552.52","search index=power_of_spl 
+| timechart span=5s avg(bytes) as avg_bytes 
+| appendcols 
+    [ search index=power_of_spl 
+    | stats stdev(bytes) as stdev_bytes] 
+| eval 2stdv_upper = avg_bytes + stdev_bytes*2 | filldown 2stdv_upper 
+| eval 2stdv_lower = avg_bytes - stdev_bytes*2 | filldown 2stdv_lower 
+| eval 2stdv_lower=if('2stdv_lower'<0,0,'2stdv_lower') 
+| fields - stdev_bytes","Jonathons-MacBook-Air.local","1510076552.904013",0,"UI:Dashboard:converging_data_sources",,18076,1510076553,1319,18076,,completed,"2.378653110",search5,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510076554.53","search index=power_of_spl uid status!=200 | highlight uid","Jonathons-MacBook-Air.local","1510076554.428049",0,"UI:Dashboard:converging_data_sources",,2880,1510076554,2880,5602,,completed,"1.575556001",search4,,,,,,,,,,,,,,,,,,,
+"rt_md_1510076581.54","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1510076581.018150",1,"UI:Search",,0,1510076581,0,0,,canceled,"9.062554487",,,,,,,,,,,,,,,,,,,,
+"1510076589.58","search index=wineventlog","Jonathons-MacBook-Air.local","1510076589.138295",0,"UI:Search","1510076589.000000000",0,1510076589,0,0,"1510076589.000000000",completed,"0.153541242",,"1509987600.000000000","1509987600.000000000",,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510077552.59","search index=power_of_spl | iplocation clientip | geostats count","Jonathons-MacBook-Air.local","1510077552.661995",0,"UI:Dashboard:41_geographic",,18076,1510077552,2424,18076,,completed,"4.593491285",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510077552.60","search index=power_of_spl | iplocation clientip | geostats count by action","Jonathons-MacBook-Air.local","1510077552.667832",0,"UI:Dashboard:41_geographic",,18076,1510077552,2395,18076,,completed,"4.654357924",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510077552.61","search index=power_of_spl 
+| iplocation clientip 
+| stats sum(bytes) by Country | search Country!=""*Korea"" AND Country!=""United States""
+| geom geo_countries featureIdField=Country","Jonathons-MacBook-Air.local","1510077552.710706",0,"UI:Dashboard:41_geographic",,18076,1510077553,70,18076,,completed,"4.367397532",search3,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510077552.62","search index=power_of_spl | iplocation clientip | geostats count","Jonathons-MacBook-Air.local","1510077552.719070",0,"UI:Dashboard:41_geographic",,18076,1510077553,2424,18076,,completed,"4.602001089",search4,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search5_1510077552.63","search index=power_of_spl | iplocation clientip | table lat lon bytes","Jonathons-MacBook-Air.local","1510077552.721089",0,"UI:Dashboard:41_geographic",,18076,1510077553,18076,18076,,completed,"3.232802606",search5,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search6_1510077552.64","search index=power_of_spl | iplocation clientip | rename lat as latitude lon as longitude | stats count by clientip latitude longitude | eval description=clientip","Jonathons-MacBook-Air.local","1510077552.729887",0,"UI:Dashboard:41_geographic",,18076,1510077553,890,18076,,completed,"1.945848796",search6,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510077604.66","search index=power_of_spl | iplocation clientip | geostats count by action","Jonathons-MacBook-Air.local","1510077604.094776",0,"UI:Dashboard:41_geographic",,18076,1510077604,2395,18076,,completed,"4.495432428",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510077604.67","search index=power_of_spl 
+| iplocation clientip 
+| stats sum(bytes) by Country | search Country!=""*Korea"" AND Country!=""United States""
+| geom geo_countries featureIdField=Country","Jonathons-MacBook-Air.local","1510077604.104691",0,"UI:Dashboard:41_geographic",,18076,1510077604,70,18076,,completed,"4.152435921",search3,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510077604.68","search index=power_of_spl | iplocation clientip | geostats count","Jonathons-MacBook-Air.local","1510077604.113780",0,"UI:Dashboard:41_geographic",,18076,1510077604,2424,18076,,completed,"4.573588546",search4,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search5_1510077604.69","search index=power_of_spl | iplocation clientip | table lat lon bytes","Jonathons-MacBook-Air.local","1510077604.125064",0,"UI:Dashboard:41_geographic",,18076,1510077604,18076,18076,,completed,"3.459626773",search5,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search6_1510077604.70","search index=power_of_spl | iplocation clientip | rename lat as latitude lon as longitude | stats count by clientip latitude longitude | eval description=clientip","Jonathons-MacBook-Air.local","1510077604.133583",0,"UI:Dashboard:41_geographic",,18076,1510077604,890,18076,,completed,"1.977008510",search6,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510077787.71","search index=power_of_spl | iplocation clientip | geostats count","Jonathons-MacBook-Air.local","1510077787.198236",0,"UI:Dashboard:41_geographic",,18076,1510077787,2424,18076,,completed,"4.615144914",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510077787.72","search index=power_of_spl | iplocation clientip | geostats count by action","Jonathons-MacBook-Air.local","1510077787.201909",0,"UI:Dashboard:41_geographic",,,,,,,failed,,search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510077787.73","search index=power_of_spl 
+| iplocation clientip 
+| stats sum(bytes) by Country | search Country!=""*Korea"" AND Country!=""United States""
+| geom geo_countries featureIdField=Country","Jonathons-MacBook-Air.local","1510077787.209957",0,"UI:Dashboard:41_geographic",,,,,,,failed,,search3,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510077787.74","search index=power_of_spl | iplocation clientip | geostats count","Jonathons-MacBook-Air.local","1510077787.226298",0,"UI:Dashboard:41_geographic",,,,,,,failed,,search4,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search5_1510077787.75","search index=power_of_spl | iplocation clientip | table lat lon bytes","Jonathons-MacBook-Air.local","1510077787.244771",0,"UI:Dashboard:41_geographic",,,,,,,failed,,search5,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search6_1510077787.76","search index=power_of_spl | iplocation clientip | rename lat as latitude lon as longitude | stats count by clientip latitude longitude | eval description=clientip","Jonathons-MacBook-Air.local","1510077787.272094",0,"UI:Dashboard:41_geographic",,,,,,,failed,,search6,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510077949.2","search index=power_of_spl | iplocation clientip | geostats count","Jonathons-MacBook-Air.local","1510077949.507770",0,"UI:Dashboard:41_geographic",,18076,1510077949,2424,18076,,completed,"4.626792562",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510077949.3","search index=power_of_spl | iplocation clientip | geostats count by action","Jonathons-MacBook-Air.local","1510077949.511893",0,"UI:Dashboard:41_geographic",,18076,1510077949,2395,18076,,completed,"4.710907449",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510077949.4","search index=power_of_spl 
+| iplocation clientip 
+| stats sum(bytes) by Country | search Country!=""*Korea"" AND Country!=""United States""
+| geom geo_countries featureIdField=Country","Jonathons-MacBook-Air.local","1510077949.518343",0,"UI:Dashboard:41_geographic",,18076,1510077949,70,18076,,completed,"4.185550766",search3,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510077949.5","search index=power_of_spl | iplocation clientip | geostats count","Jonathons-MacBook-Air.local","1510077949.527249",0,"UI:Dashboard:41_geographic",,18076,1510077949,2424,18076,,completed,"4.640670963",search4,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search5_1510077949.6","search index=power_of_spl | iplocation clientip | table lat lon bytes","Jonathons-MacBook-Air.local","1510077949.529817",0,"UI:Dashboard:41_geographic",,18076,1510077949,18076,18076,,completed,"3.323518201",search5,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search6_1510077949.7","search index=power_of_spl | iplocation clientip | rename lat as latitude lon as longitude | stats count by clientip latitude longitude | eval description=clientip","Jonathons-MacBook-Air.local","1510077949.565564",0,"UI:Dashboard:41_geographic",,18076,1510077949,890,18076,,completed,"2.065325560",search6,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510078113.9","search index=power_of_spl | reverse | streamstats sum(bytes) AS sum_bytes | timechart latest(sum_bytes) as ""Total Bytes""","Jonathons-MacBook-Air.local","1510078113.765225",0,"UI:Dashboard:streamstats_examples",,186,1510078114,23,18076,,completed,"4.343550418",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510078113.10","search index=power_of_spl | reverse | streamstats sum(bytes) AS sum_bytes | timechart latest(sum_bytes) as ""Total Bytes""","Jonathons-MacBook-Air.local","1510078113.771451",0,"UI:Dashboard:streamstats_examples",,186,1510078113,23,18076,,completed,"4.328168153",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510078113.11","search index=power_of_spl 
+| eventstats avg(bytes) AS overall_avg_bytes 
+| stats avg(bytes) as clientip_avg_bytes by clientip overall_avg_bytes","Jonathons-MacBook-Air.local","1510078113.797839",0,"UI:Dashboard:streamstats_examples",,0,1510078113,1009,18076,,completed,"3.716688657",search3,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510078113.12","search index=power_of_spl 
+| eventstats avg(bytes) AS overall_avg_bytes 
+| stats avg(bytes) as clientip_avg_bytes by clientip overall_avg_bytes","Jonathons-MacBook-Air.local","1510078113.802338",0,"UI:Dashboard:streamstats_examples",,0,1510078113,1009,18076,,completed,"3.695011510",search4,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510078297.13","search index=power_of_spl | iplocation clientip | geostats count","Jonathons-MacBook-Air.local","1510078297.284318",0,"UI:Dashboard:41_geographic",,18076,1510078297,2424,18076,,completed,"4.455224700",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510078297.14","search index=power_of_spl | iplocation clientip | geostats count by action","Jonathons-MacBook-Air.local","1510078297.311102",0,"UI:Dashboard:41_geographic",,18076,1510078297,2395,18076,,completed,"4.416380087",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510078297.15","search index=power_of_spl 
+| iplocation clientip 
+| stats sum(bytes) by Country | search Country!=""*Korea"" AND Country!=""United States""
+| geom geo_countries featureIdField=Country","Jonathons-MacBook-Air.local","1510078297.315344",0,"UI:Dashboard:41_geographic",,18076,1510078297,70,18076,,completed,"3.889288802",search3,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510078297.16","search index=power_of_spl | iplocation clientip | geostats count","Jonathons-MacBook-Air.local","1510078297.322601",0,"UI:Dashboard:41_geographic",,18076,1510078297,2424,18076,,completed,"4.336117879",search4,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search5_1510078297.17","search index=power_of_spl | iplocation clientip | table lat lon bytes","Jonathons-MacBook-Air.local","1510078297.384686",0,"UI:Dashboard:41_geographic",,18076,1510078297,18076,18076,,completed,"3.329232524",search5,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search6_1510078297.18","search index=power_of_spl | iplocation clientip | rename lat as latitude lon as longitude | stats count by clientip latitude longitude | eval description=clientip","Jonathons-MacBook-Air.local","1510078297.434499",0,"UI:Dashboard:41_geographic",,18076,1510078297,890,18076,,completed,"1.901546423",search6,,,,,,,,,,,,,,,,,,,
+"rt_md_1510078380.19","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1510078380.310856",1,"UI:Search",,0,1510078380,0,0,,canceled,"8.055842802",,,,,,,,,,,,,,,,,,,,
+"1510078387.24","search index=_internal","Jonathons-MacBook-Air.local","1510078387.604161",0,"UI:Search","1510078387.000000000",32709,1510078387,1000,32709,"1510078387.000000000",completed,"2.349699781",,"1509991200.000000000","1509991200.000000000",,,,,,,,,,,,,,,,,
+"1510078403.25","search index=_internal | timechart count by host","Jonathons-MacBook-Air.local","1510078403.237138",0,"UI:Search","1510078403.000000000",32834,1510078403,49,32834,"1510078403.000000000",completed,"2.205610304",,"1509991200.000000000","1509991200.000000000",,,,,,,,,,,,,,,,,
+"1510078478.29","search index=power_of_spl | iplocation clientip | geostats count","Jonathons-MacBook-Air.local","1510078478.383252",0,"UI:Search","1510078478.000000000",0,1510078478,0,0,"1510078478.000000000",completed,"0.209618892",,"1509991200.000000000","1509991200.000000000",,,,,,,,,,,,,,,,,
+"1510078482.30","search index=power_of_spl | iplocation clientip | geostats count","Jonathons-MacBook-Air.local","1510078482.474200",0,"UI:Search",,18076,1510078482,2424,18076,,completed,"3.993786432",,,,,,,,,,,,,,,,,,,,
+"1510078498.31","search index=power_of_spl | iplocation clientip","Jonathons-MacBook-Air.local","1510078498.929767",0,"UI:Search",,18076,1510078498,18076,18076,,completed,"3.319543723",,,,,,,,,,,,,,,,,,,,
+"1510078521.32","search index=power_of_spl | iplocation clientip | geostats count by action","Jonathons-MacBook-Air.local","1510078521.342125",0,"UI:Search",,18076,1510078521,2395,18076,,completed,"3.725484569",,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510079250.34","search index=power_of_spl | iplocation clientip | geostats count","Jonathons-MacBook-Air.local","1510079250.741105",0,"UI:Dashboard:41_geographic",,18076,1510079251,2424,18076,,completed,"4.613281831",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510079250.35","search index=power_of_spl | iplocation clientip | geostats count by action","Jonathons-MacBook-Air.local","1510079250.746389",0,"UI:Dashboard:41_geographic",,18076,1510079250,2395,18076,,completed,"4.660693319",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510079250.36","search index=power_of_spl 
+| iplocation clientip 
+| stats sum(bytes) by Country | search Country!=""*Korea"" AND Country!=""United States""
+| geom geo_countries featureIdField=Country","Jonathons-MacBook-Air.local","1510079250.760602",0,"UI:Dashboard:41_geographic",,18076,1510079250,70,18076,,completed,"4.102026601",search3,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510079250.37","search index=power_of_spl | iplocation clientip | geostats count","Jonathons-MacBook-Air.local","1510079250.774857",0,"UI:Dashboard:41_geographic",,18076,1510079251,2424,18076,,completed,"4.516678520",search4,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search5_1510079250.38","search index=power_of_spl | iplocation clientip | table lat lon bytes","Jonathons-MacBook-Air.local","1510079250.798705",0,"UI:Dashboard:41_geographic",,18076,1510079251,18076,18076,,completed,"3.488287978",search5,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search6_1510079250.39","search index=power_of_spl | iplocation clientip | rename lat as latitude lon as longitude | stats count by clientip latitude longitude | eval description=clientip","Jonathons-MacBook-Air.local","1510079250.852706",0,"UI:Dashboard:41_geographic",,18076,1510079251,890,18076,,completed,"1.960320981",search6,,,,,,,,,,,,,,,,,,,
+"rt_md_1510079287.40","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1510079287.191835",1,"UI:Search",,0,1510079287,0,0,,canceled,"8.066689241",,,,,,,,,,,,,,,,,,,,
+"1510079294.41","search index=power_of_spl
+| iplocation clientip
+| geostats count by action","Jonathons-MacBook-Air.local","1510079294.936687",0,"UI:Search",,18076,1510079294,2395,18076,,completed,"3.723660680",,,,,,,,,,,,,,,,,,,,
+"1510079378.42","search index=power_of_spl
+| iplocation clientip
+| geostats count","Jonathons-MacBook-Air.local","1510079378.365675",0,"UI:Search",,18076,1510079378,2424,18076,,completed,"3.351473097",,,,,,,,,,,,,,,,,,,,
+"1510079419.43","search index=power_of_spl
+| iplocation clientip
+| geostats count by action","Jonathons-MacBook-Air.local","1510079419.563615",0,"UI:Search",,18076,1510079419,2395,18076,,completed,"3.631788313",,,,,,,,,,,,,,,,,,,,
+"1510079426.44","search index=power_of_spl  | iplocation clientip | search lat>=22.50000 lat<45.00000 lon>=90.00000 lon<135.00000","Jonathons-MacBook-Air.local","1510079426.350111",0,"UI:Search",,2144,1510079426,2144,18076,,completed,"1.921192861",,,,,,,,,,,,,,,,,,,,
+"1510079452.45","search index=power_of_spl  | iplocation clientip | search lat>=0.00000 lat<22.50000 lon>=-45.00000 lon<0.00000","Jonathons-MacBook-Air.local","1510079452.779299",0,"UI:Search",,8,1510079452,8,18076,,completed,"1.485006054",,,,,,,,,,,,,,,,,,,,
+"1510079493.46","search index=power_of_spl lat>=0.00000 lat<22.50000 lon>=-45.00000 lon<0.00000 | iplocation clientip","Jonathons-MacBook-Air.local","1510079493.783592",0,"UI:Search",,0,1510079493,0,18076,,completed,"1.120424679",,,,,,,,,,,,,,,,,,,,
+"1510079543.47","search index=power_of_spl  | iplocation clientip | search lat>=0.00000 lat<22.50000 lon>=-45.00000 lon<0.00000 | iplocation clientip","Jonathons-MacBook-Air.local","1510079543.173152",0,"UI:Search",,8,1510079543,8,18076,,completed,"1.476549253",,,,,,,,,,,,,,,,,,,,
+"1510079569.48","search index=power_of_spl","Jonathons-MacBook-Air.local","1510079569.096770",0,"UI:Search",,18076,1510079569,18076,18076,,completed,"3.294904579",,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510079900.51","| inputlookup car_data.csv | stats dc(vehicleId) as count","Jonathons-MacBook-Air.local","1510079900.119874",0,"UI:Dashboard:spl_anomaly_detection",,0,1510079900,1,0,,completed,"7.349665986",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510079900.52","| inputlookup car_data.csv | eval _time=strptime(timestamp, ""%Y-%m-%dT%H:%M:%S.%3N-%z"") | search engineSpeed>1250 AND speed>10 |  timechart avg(speed)","Jonathons-MacBook-Air.local","1510079900.127401",0,"UI:Dashboard:spl_anomaly_detection",,0,1510079900,98,0,,completed,"17.011186407",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510079900.54","| inputlookup car_data.csv | eval _time=strptime(timestamp, ""%Y-%m-%dT%H:%M:%S.%3N-%z"") | search engineSpeed>1250 AND speed>10 | timechart avg(engineCoolantTemperature) as coolant_temp","Jonathons-MacBook-Air.local","1510079900.140221",0,"UI:Dashboard:spl_anomaly_detection",,0,1510079900,98,0,,completed,"17.002988431",search4,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search5_1510079900.55","| inputlookup car_data.csv | anomalydetection method=histogram action=summary","Jonathons-MacBook-Air.local","1510079900.150920",0,"UI:Dashboard:spl_anomaly_detection",,0,1510079900,1,0,,completed,"11.512021174",search5,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search6_1510079900.56","| inputlookup car_data.csv | anomalydetection","Jonathons-MacBook-Air.local","1510079900.155019",0,"UI:Dashboard:spl_anomaly_detection",,0,1510079900,9,0,,completed,"13.505566222",search6,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search7_1510079902.57","| inputlookup car_data.csv | eval _time=strptime(timestamp, ""%Y-%m-%dT%H:%M:%S.%3N-%z"") | search engineSpeed>1250 AND speed>10 | timechart useother=f limit=0 span=30s max(engineCoolantTemperature) as coolant_temp by vehicleId","Jonathons-MacBook-Air.local","1510079902.550075",0,"UI:Dashboard:spl_anomaly_detection",,0,1510079902,970,0,,completed,"16.289637874",search7,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510080027.58","| inputlookup car_data.csv | stats dc(vehicleId) as count","Jonathons-MacBook-Air.local","1510080027.174771",0,"UI:Dashboard:spl_anomaly_detection",,0,1510080027,1,0,,completed,"6.950296680",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510080027.59","| inputlookup car_data.csv | eval _time=strptime(timestamp, ""%Y-%m-%dT%H:%M:%S.%3N-%z"") | search engineSpeed>1250 AND speed>10 |  timechart avg(speed)","Jonathons-MacBook-Air.local","1510080027.187538",0,"UI:Dashboard:spl_anomaly_detection",,0,1510080027,98,0,,completed,"16.786390851",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510080027.60","| inputlookup car_data.csv | eval _time=strptime(timestamp, ""%Y-%m-%dT%H:%M:%S.%3N-%z"") | search engineSpeed>1250 AND speed>10 | timechart avg(engineSpeed) as RPMs","Jonathons-MacBook-Air.local","1510080027.194346",0,"UI:Dashboard:spl_anomaly_detection",,0,1510080027,98,0,,completed,"16.850698081",search3,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search4_1510080027.61","| inputlookup car_data.csv | eval _time=strptime(timestamp, ""%Y-%m-%dT%H:%M:%S.%3N-%z"") | search engineSpeed>1250 AND speed>10 | timechart avg(engineCoolantTemperature) as coolant_temp","Jonathons-MacBook-Air.local","1510080027.216040",0,"UI:Dashboard:spl_anomaly_detection",,0,1510080027,98,0,,completed,"16.852084322",search4,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search5_1510080027.62","| inputlookup car_data.csv | anomalydetection method=histogram action=summary","Jonathons-MacBook-Air.local","1510080027.246092",0,"UI:Dashboard:spl_anomaly_detection",,0,1510080027,1,0,,completed,"11.237360896",search5,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search6_1510080027.63","| inputlookup car_data.csv | anomalydetection","Jonathons-MacBook-Air.local","1510080027.265673",0,"UI:Dashboard:spl_anomaly_detection",,0,1510080027,9,0,,completed,"13.241060641",search6,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search7_1510080029.64","| inputlookup car_data.csv | eval _time=strptime(timestamp, ""%Y-%m-%dT%H:%M:%S.%3N-%z"") | search engineSpeed>1250 AND speed>10 | timechart useother=f limit=0 span=30s max(engineCoolantTemperature) as coolant_temp by vehicleId","Jonathons-MacBook-Air.local","1510080029.856753",0,"UI:Dashboard:spl_anomaly_detection",,0,1510080030,970,0,,completed,"15.897314979",search7,,,,,,,,,,,,,,,,,,,
+"1510080456.65","search index=power_of_spl 
+| transaction JSESSIONID","Jonathons-MacBook-Air.local","1510080456.898241",0,"UI:Search","1510080456.000000000",1007,1510080457,1000,18076,"1510080456.000000000",completed,"4.279279325",,,,,,,,,,,,,,,,,,,,
+"1510080465.66","search index=power_of_spl 
+| transaction JSESSIONID | table action","Jonathons-MacBook-Air.local","1510080465.663893",0,"UI:Search","1510080465.000000000",1007,1510080465,1006,18076,"1510080465.000000000",completed,"2.016799960",,,,,,,,,,,,,,,,,,,,
+"1510080482.67","search index=power_of_spl 
+| transaction JSESSIONID | table _time action","Jonathons-MacBook-Air.local","1510080482.830205",0,"UI:Search","1510080482.000000000",1007,1510080482,1007,18076,"1510080482.000000000",completed,"1.870117468",,,,,,,,,,,,,,,,,,,,
+"1510080492.68","search index=power_of_spl 
+| transaction JSESSIONID | table _time user action","Jonathons-MacBook-Air.local","1510080492.945544",0,"UI:Search","1510080492.000000000",1007,1510080492,1007,18076,"1510080492.000000000",completed,"1.981369080",,,,,,,,,,,,,,,,,,,,
+"1510080506.69","search index=power_of_spl 
+| transaction JSESSIONID","Jonathons-MacBook-Air.local","1510080506.128680",0,"UI:Search","1510080506.000000000",1007,1510080506,1000,18076,"1510080506.000000000",completed,"3.981503213",,,,,,,,,,,,,,,,,,,,
+"1510080590.70","search index=power_of_spl 
+| transaction JSESSIONID | table _time duration uid action","Jonathons-MacBook-Air.local","1510080590.793547",0,"UI:Search","1510080590.000000000",1007,1510080590,1007,18076,"1510080590.000000000",completed,"1.984686955",,,,,,,,,,,,,,,,,,,,
+"1510080638.71","search index=power_of_spl 
+| transaction JSESSIONID | table _time duration uid action | reverse","Jonathons-MacBook-Air.local","1510080638.374050",0,"UI:Search","1510080638.000000000",1007,1510080638,1007,18076,"1510080638.000000000",completed,"1.932425890",,,,,,,,,,,,,,,,,,,,
+"1510080645.72","search index=power_of_spl 
+| transaction JSESSIONID | table _time duration uid action | sort _time","Jonathons-MacBook-Air.local","1510080645.572923",0,"UI:Search","1510080645.000000000",1007,1510080645,1007,18076,"1510080645.000000000",completed,"2.031203390",,,,,,,,,,,,,,,,,,,,
+"1510080665.73","search index=power_of_spl 
+| transaction JSESSIONID | table _time duration uid action | reverse","Jonathons-MacBook-Air.local","1510080665.121269",0,"UI:Search","1510080665.000000000",1007,1510080665,1007,18076,"1510080665.000000000",completed,"2.081570873",,,,,,,,,,,,,,,,,,,,
+"1510080841.74","search index=power_of_spl | cluster showcount=t t=.1
+| table _raw cluster_count","Jonathons-MacBook-Air.local","1510080841.332490",0,"UI:Search","1510080841.000000000",8,1510080841,8,18076,"1510080841.000000000",completed,"1.845207045",,,,,,,,,,,,,,,,,,,,
+"1510081116.77","search index=power_of_spl webserver-03 | stats count","Jonathons-MacBook-Air.local","1510081116.529634",0,"UI:Search","1510081116.000000000",2801,1510081116,1,2926,"1510081116.000000000",completed,"0.214253955",,,,,,,,,,,,,,,,,,,,
+"1510081591.80","search index=power_of_spl 
+| fields - date* source* time* 
+| correlate","Jonathons-MacBook-Air.local","1510081591.071734",0,"UI:Search","1510081591.000000000",18076,1510081591,34,18076,"1510081591.000000000",completed,"4.620918371",,,,,,,,,,,,,,,,,,,,
+"1510081612.81","search index=power_of_spl 
+| contingency uri status","Jonathons-MacBook-Air.local","1510081612.925291",0,"UI:Search","1510081612.000000000",18076,1510081612,1001,18076,"1510081612.000000000",completed,"1.587475290",,,,,,,,,,,,,,,,,,,,
+"1510081724.82","search index=power_of_spl 
+| analyzefields classfield=status
+| sort - acc","Jonathons-MacBook-Air.local","1510081724.384604",0,"UI:Search","1510081724.000000000",18076,1510081724,19,18076,"1510081724.000000000",completed,"3.916952341",,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510082041.106","search index=power_of_spl | iplocation clientip | search City=A* | haversine origin=""37.76,-122.51"" units=mi outputField=dist lat lon  | table clientip, City, dist, lat, lon | dedup City","Jonathons-MacBook-Air.local","1510082041.631454",0,"UI:Dashboard:custom_commands",,232,1510082041,19,18076,,completed,"2.516848397",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510082041.107","search index=power_of_spl
+| head 1000 | lookup customer_info uid | dedup first_name last_name 
+| levenshtein all first_name last_name 
+| table first_name last_name ratio distance 
+| sort - ratio","Jonathons-MacBook-Air.local","1510082041.635432",0,"UI:Dashboard:custom_commands",,105,1510082041,0,2999,,completed,"0.831859906",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510082041.108","search index=power_of_spl | timechart span=1m avg(bytes) | timewrap 30min","Jonathons-MacBook-Air.local","1510082041.639619",0,"UI:Dashboard:custom_commands",,18076,1510082041,30,18076,,completed,"1.046410826",search3,,,,,,,,,,,,,,,,,,,
+"1510082071.109","search index=power_of_spl 
+| transaction JSESSIONID | timechart duration","Jonathons-MacBook-Air.local","1510082071.630618",0,"UI:Search","1510082071.000000000",0,1510082071,0,0,"1510082071.000000000",failed,"0.079327719",,,,,,,,,,,,,,,,,,,,
+"1510082095.110","search index=power_of_spl 
+| transaction JSESSIONID | timechart max(duration) as duration","Jonathons-MacBook-Air.local","1510082095.646307",0,"UI:Search","1510082095.000000000",1007,1510082095,14,18076,"1510082095.000000000",completed,"1.921424845",,,,,,,,,,,,,,,,,,,,
+"1510082123.111","search index=power_of_spl 
+| transaction JSESSIONID | timechart max(duration) as duration","Jonathons-MacBook-Air.local","1510082123.065992",0,"UI:Search","1510128000.000000000",0,1510082123,0,0,"1510128000.000000000",completed,"0.184245179",,"1510041600.000000000","1510041600.000000000",,,,,,,,,,,,,,,,,
+"1510082137.112","search index=power_of_spl 
+| transaction JSESSIONID | timechart max(duration) as duration","Jonathons-MacBook-Air.local","1510082137.886537",0,"UI:Search","1507446000.000000000",0,1510082137,0,0,"1507446000.000000000",completed,"0.183607120",,"1507359600.000000000","1507359600.000000000",,,,,,,,,,,,,,,,,
+"1510082144.113","search index=power_of_spl 
+| transaction JSESSIONID | timechart max(duration) as duration","Jonathons-MacBook-Air.local","1510082144.994595",0,"UI:Search","1507532400.000000000",0,1510082145,0,0,"1507532400.000000000",completed,"0.164568169",,"1507359600.000000000","1507359600.000000000",,,,,,,,,,,,,,,,,
+"1510082168.114","search index=power_of_spl 
+| transaction JSESSIONID | timechart max(duration) as duration","Jonathons-MacBook-Air.local","1510082168.795958",0,"UI:Search","1475910000.000000000",1007,1510082168,48,18076,"1475910000.000000000",completed,"1.836033948",,"1475823600.000000000","1475823600.000000000",,,,,,,,,,,,,,,,,
+"1510082204.115","search index=power_of_spl 
+| transaction JSESSIONID | timechart span=1m max(duration) as duration","Jonathons-MacBook-Air.local","1510082204.879137",0,"UI:Search","1475910000.000000000",1007,1510082204,1440,18076,"1475910000.000000000",completed,"1.822581820",,"1475823600.000000000","1475823600.000000000",,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510082403.4","search index=power_of_spl | timechart span=1m avg(bytes) | timewrap 30min","Jonathons-MacBook-Air.local","1510082403.920822",0,"UI:Dashboard:custom_commands",,18076,1510082404,30,18076,,completed,"1.005535608",search3,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search1_1510082418.6","search index=power_of_spl | iplocation clientip | search City=A* | haversine origin=""37.76,-122.51"" units=mi outputField=dist lat lon  | table clientip, City, dist, lat, lon | dedup City","Jonathons-MacBook-Air.local","1510082418.904199",0,"UI:Dashboard:custom_commands",,232,1510082418,19,18076,,completed,"2.501499552",search1,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search2_1510082418.7","search index=power_of_spl
+| head 1000 | lookup customer_info uid | dedup first_name last_name 
+| levenshtein all first_name last_name 
+| table first_name last_name ratio distance 
+| sort - ratio","Jonathons-MacBook-Air.local","1510082418.907890",0,"UI:Dashboard:custom_commands",,105,1510082419,0,2999,,completed,"0.817793261",search2,,,,,,,,,,,,,,,,,,,
+"admin__admin_cG93ZXJfb2Zfc3Bs__search3_1510082418.8","search index=power_of_spl | timechart span=1m avg(bytes) | timewrap 30min","Jonathons-MacBook-Air.local","1510082418.913658",0,"UI:Dashboard:custom_commands",,18076,1510082419,30,18076,,completed,"1.092405130",search3,,,,,,,,,,,,,,,,,,,

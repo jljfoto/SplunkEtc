@@ -1,0 +1,158 @@
+/* styles are inlined into the JS bundle */
+.heatmap-legend-container {
+    z-index:1050;
+    position:absolute;
+    right:15px;
+    top:10px;
+    text-align:center;
+    width:30px;
+    background: rgba(255,255,255,.9);
+    box-shadow:0 1px 5px rgba(0,0,0,.65);
+    border-radius:4px;
+}
+
+.heatmap-legend-container .heatmap-min, .heatmap-legend-container .heatmap-max {
+
+    text-align:center;
+}
+.heatmap-legend-container img {
+    transform: rotate(180deg);
+}
+
+.heatmap-timeline-wrapper {
+    position:absolute;
+    top: 10px;
+    left:180px;
+    right:60px;
+    height:30px;
+    background:white;
+    transform:translateY(-100px);
+    z-index:100000000;
+    transition:1s ease all;
+    border-radius:4px;
+    box-shadow:0 1px 5px rgba(0,0,0,.65)
+}
+.heatmap-timeline-current {
+    position:absolute;
+    z-index:1050;
+    top:10px;
+    left:50px;
+    width:120px;
+    height:30px;
+    background:black;
+    color:white;
+    border-radius:4px;
+    box-shadow:0 1px 5px rgba(0,0,0,.65);
+    line-height: 250%;
+    vertical-align: middle;
+    text-align: center;
+    transform:translateY(-100px);
+    transition:1s ease all;
+}
+
+.heatmap-timeline-wrapper.show, .heatmap-timeline-current.show {
+    z-index:1050;
+    transform:translateY(0px);
+}
+
+.heatmap-timeline {
+    z-index:1050;
+    position:absolute;
+    top:0;
+    right:15px;
+    left:80px;
+    height:100%;
+}
+
+.heatmap-timeline .line {
+    position:absolute;
+    left:0;
+    right:0;
+    top:15px;
+    height:2px;
+    background:#d7d7d7;
+}
+
+.heatmap-timeline .time-point {
+    position:absolute;
+    background:white;
+    border:2px solid #272727;
+    width:8px;
+    height:8px;
+    border-radius:100%;
+    cursor:pointer;
+    top:15px;
+    transform:translateX(-50%) translateY(-50%);
+}
+.heatmap-timeline .time-point:hover {
+    box-shadow:0 0 5px black;
+}
+
+.heatmap-timeline.dragging {
+    cursor:col-resize !important;
+}
+.heatmap-timeline .draggable {
+    position:absolute;
+    top:15px;
+    left:0;
+    width:10px;
+    height:10px;
+    border:2px solid red;
+    border-radius:100%;
+    display:none;
+    background:transparent;
+    transform:translateX(-50%) translateY(-50%);
+}
+
+.time-point .tt {
+    transform:translateY(30px) translateX(-50%);
+    width:100px;
+    border-radius:4px;
+    padding:7px;
+    background:black;
+    color:white;
+    display:none;
+    transition:.1s ease all;
+}
+.tt:before {
+    content: "";
+    display: block;
+    width: 0; 
+    height: 0; 
+    border-left: 5px solid transparent;
+    border-bottom: 20px solid black;
+    border-right: 5px solid transparent;
+    position: absolute;
+    top: -20px;
+    left: 56px;
+}
+.time-point:hover .tt {
+    display:block;
+}
+
+
+.heatmap-timeline .time-point.active {
+    background:black;
+}
+.heatmap-timeline-wrapper button {
+    outline:none;
+    color: black;
+    background: #f2f2f2;
+    width: 65px;
+    height: 100%;
+    cursor: pointer;
+    border: none;
+    text-transform:uppercase;
+    border-top-left-radius:3px;
+    border-bottom-left-radius:3px;
+}
+.markerlabeldiv {
+    margin-top:-40px !important;
+    width: auto !important;
+    height: auto !important;
+    background:rgba(0,0,0,.8);
+    border-radius:2px;
+    color:white;
+    padding-left:3px;
+    padding-right:3px;
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?><form>
+  <label>Downloads</label>
+  <fieldset autoRun="true" submitButton="false">
+    <html>
+            Download activity
+        </html>
+    <input type="dropdown" searchWhenChanged="true" token="user">
+      <label>Select OS user</label>
+      <populatingSavedSearch fieldForValue="os_user" fieldForLabel="os_user">top users</populatingSavedSearch>
+      <choice value="*">All</choice>
+      <default>*</default>
+    </input>
+    <input type="dropdown" searchWhenChanged="true" token="browser">
+      <label>Select browser</label>
+      <populatingSavedSearch fieldForValue="browser" fieldForLabel="browser">top browsers</populatingSavedSearch>
+      <choice value="*">All</choice>
+      <default>*</default>
+    </input>
+    <input type="time" searchWhenChanged="true"></input>
+  </fieldset>
+  <row>
+    <panel>
+      <single>
+        <search>
+          <query>index=browsers sourcetype="downloads" os_user="$user$" browser=$browser$ | stats sum(maxBytes) as total | eval total=total/1024/1024/1024 | eval total=round(total, 3)</query>
+        </search>
+        <option name="classField">range</option>
+        <option name="afterLabel">GBytes</option>
+        <option name="beforeLabel">Total downloaded size:</option>
+      </single>
+    </panel>
+    <panel>
+      <table>
+        <title>Latest downloads</title>
+        <search>
+          <query>index=browsers sourcetype="downloads" os_user="$user$" browser=$browser$ | table _time, target | sort - _time</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>File types</title>
+        <search>
+          <query>index=browsers sourcetype="downloads" os_user="$user$" browser=$browser$ | rex field=target "(?i)[^\.]*\.(?P&lt;ext&gt;.{0,4})$" | timechart count by ext</query>
+        </search>
+        <option name="charting.axisY.scale">log</option>
+        <option name="charting.chart">column</option>
+      </chart>
+    </panel>
+  </row>
+</form>

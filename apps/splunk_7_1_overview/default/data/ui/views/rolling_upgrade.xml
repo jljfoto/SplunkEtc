@@ -1,0 +1,163 @@
+<dashboard>
+  <label>Rolling Upgrade</label>
+  <description>Summary of Rolling Upgrade</description>
+  <row>
+    <panel>
+      <html>
+        <p><strong>Description</strong></p>
+        <p>
+          Rolling upgrades enables clustered deployments to perform software upgrades with minimal search interruption and high service availability. This gives the ability to run Splunk software deployments with high levels of business continuity. Rolling upgrades can be used to upgrade to major/minor versions and patch releases. Rolling upgrades is available for both indexer clustering and search head clustering. Requires cluster master, cluster peers, stand-alone search heads and search head cluster members on 7.1.0 or higher.
+
+          It is not recommended to run the cluster in mixed mode with multiple versions beyond the duration of the upgrade. During rolling upgrade, search operations can continue to operate. However, administrative operations (like bundle push, node addition/deletion, rolling restart) should not be executed during the upgrade duration. In-case of h/w or network failures that prevent node shutdown or restart, manual intervention may be required.
+        <ul>
+          <li> <a href="#ICupgrade"> Indexer Cluster Rolling Upgrade </a></li>
+          <li> <a href="#SHCupgrade"> Search Head Cluster Rolling Upgrade</a></li>
+        </ul>
+        </p>
+         <h2 id="ICupgrade"> Indexer Cluster Rolling Upgrade  </h2>
+         <p><strong>Description </strong></p>
+         <ul>
+            <li> Rolling upgrade in an indexer cluster enables upgrade of cluster master and clusters peers with minimal search impact </li> 
+            <li> Sequentially decommission each cluster peer allowing for completion of in-progress searches and then upgrade the cluster peer </li>
+            <li> In-progress searches are allowed to complete within a configurable timeout </li>
+            <li> All scheduled and ad-hoc searches that can complete within configurable timeout run to completion</li>
+            <li> Historical scheduled searches that cannot complete within configurable timeout are retried, timed-out or optionally deferred </li>
+            <li> Real time and indexed real time scheduled searches continue to run with available cluster peers </li>
+            <li> In-progress ad-hoc searches that cannot complete within the configurable timeout are retried and in some cases, they may need to be explicitly retried by user </li> 
+            <li> New ad-hoc searches can continue to be issued </li> 
+         </ul>
+         <p><strong>Use Cases</strong></p>
+          <ul>
+            <li> Perform Splunk software upgrades in indexer clustered deployments without impacting search availability </li>
+            <li> Perform maintenance operations likes OS upgrades on an indexer cluster without impacting end-user search experience </li>
+          </ul>
+          <br/>
+         <p><strong>How to use</strong></p>
+          <h3> Perform indexer cluster rolling upgrade using CLI/REST </h3>
+          <ol>
+              <li> Perform pre-flight indexer cluster health checks </li>
+                <ul>
+                 <li> splunk show cluster-status --verbose </li>
+                 <li> curl -k -u admin:changed https://localhost:8089/services/cluster/master/status </li>
+                </ul>
+              <li> Set search_retry=true (search stanza in limits.conf) on SHs/SHC members configured to this indexer cluster </li>
+              <li> Upgrade the cluster master. Stop CM, upgrade and start CM  </li>
+              <li> Perform pre-flight health checks again to confirm cluster health post CM upgrade </li>
+                <ul>
+                 <li> splunk show cluster-status --verbose </li>
+                 <li> curl -k -u admin:changed https://localhost:8089/services/cluster/master/status </li>
+                </ul>
+              <li> Initialize rolling upgrade on the indexer cluster  </li>
+                <ul>
+                 <li> splunk upgrade-init cluster-peers </li>
+                 <li> curl -k -u admin:changed -X POST https://localhost:8089/services/cluster/master/control/control/rolling_upgrade_init </li>
+                 <div style="margin-left:30px">
+                   <img src="/static/app/splunk_7_1_overview/images/ic_upgrade1.png" style="margin: 20px 0" width="700px"/>
+                   <br/>
+                 </div>
+                </ul>
+              <li> Select a cluster peer and gracefully shutdown the cluster-peer </li>
+                <ul>
+                 <li> splunk offline </li>
+                 <li> curl -k -u admin:changed -X POST https://localhost:8089/services/cluster/master/control/control/decommission </li>
+                 <div style="margin-left:30px">
+                   <img src="/static/app/splunk_7_1_overview/images/ic_upgrade2.png" style="margin: 20px 0" width="700px"/>
+                   <br/>
+                 </div>
+                </ul>
+              <li> Upgrade the cluster-peer and restart </li>
+              <li> Repeat steps 6 and 7 for all cluster peers  </li>
+              <li> Finalize rolling upgrade on the indexer cluster  </li>
+                <ul>
+                 <li> splunk upgrade-finalize cluster-peers </li>
+                 <li> curl -k -u admin:changed https://localhost:8089/services/cluster/master/control/control/rolling_upgrade_finalize </li>
+                 <div style="margin-left:30px">
+                   <img src="/static/app/splunk_7_1_overview/images/ic_upgrade3.png" style="margin: 20px 0" width="700px"/>
+                   <br/>
+                 </div>
+                </ul>
+              <li> View indexer cluster status </li>
+                <ul>
+                <li> splunk show cluster-status --verbose | grep version </li>
+                </ul>
+         </ol>
+         <br/>
+         <br/>
+         <br/>
+         <br/>
+         <br/>
+         <h2 id="SHCupgrade"> Search Head Cluster Rolling Upgrade </h2>
+         <p><strong>Description </strong></p>
+         <ul>
+            <li> Rolling upgrade in a search head cluster enables upgrade of search head cluster members with minimal search impact </li> 
+            <li> Sequentially decommission each cluster member using manual detention to complete in-progress searches and upgrade the cluster member </li>
+            <li> In-progress searches are allowed to complete within a configurable timeout </li>
+            <li> All scheduled and ad-hoc searches that can complete within configurable timeout run to completion</li>
+            <li> Historical scheduled searches that cannot complete within configurable timeout are retried on SHC members not in manual detention</li>
+            <li> Real time and indexed real time scheduled searches continue to run on SHC members not in manual detention</li>
+            <li> In-progress ad-hoc searches that cannot complete within the configurable timeout are impacted and need to be explicitly retried by user </li> 
+            <li> New ad-hoc searches can be run on SHC members not in manual detention </li> 
+         </ul>
+         <p><strong>Use Cases</strong></p>
+          <ul>
+            <li> Perform Splunk software upgrades in search head cluster deployments without impacting search availability </li>
+            <li> Perform maintenance operations likes OS upgrades on a search head cluster without impacting end-user search experience </li>
+          </ul>
+          <br/>
+         <p><strong>How to use</strong></p>
+          <h3> Perform search head cluster rolling upgrade using CLI/REST </h3>
+          <ol>
+              <li> Perform pre-flight search head cluster health checks </li>
+                <ul>
+                 <li> splunk show shcluster-status --verbose </li>
+                 <li> curl -k -u admin:changed https://localhost:8089/services/shcluster/status?advanced=1 </li>
+                </ul>
+              <li> Initialize rolling upgrade on the search head cluster  </li>
+                <ul>
+                 <li> splunk upgrade-init shcluster-members </li>
+                 <li> curl -k -u admin:changed -X POST https://localhost:8089/services/shcluster/captain/control/default/upgrade-init </li>
+                 <div style="margin-left:30px">
+                   <img src="/static/app/splunk_7_1_overview/images/shc_upgrade1.png" style="margin: 20px 0" width="700px"/>
+                   <br/>
+                 </div>
+                </ul>
+              <li> Select a cluster member and put the cluster-member in manual detention </li>
+                <ul>
+                 <li> splunk edit shcluster-config -manual_detention on </li>
+                 <li> curl -k -u admin:changed https://localhost:8089/services/shcluster/config/set_manual_detention -d manual_detention=on </li>
+                 <div style="margin-left:30px">
+                   <img src="/static/app/splunk_7_1_overview/images/shc_upgrade4.png" style="margin: 20px 0" width="700px"/>
+                   <br/>
+                 </div>
+                </ul>
+              <li> Poll search head custer member for completion of in-progress or "active" searches. Wait until it goes down to zero  </li>
+                <ul>
+                 <li> splunk list shcluster-member-info | grep "active" </li>
+                 <li> curl -k -u admin:changed https://localhost:8089/services/shcluster/member/info </li>
+                 <div style="margin-left:30px">
+                   <img src="/static/app/splunk_7_1_overview/images/shc_upgrade5.png" style="margin: 20px 0" width="700px"/>
+                   <br/>
+                 </div>
+                </ul>
+              <li> Shutdown the cluster-member in detention, upgrade and restart </li>
+              <li> Repeat steps 3-5 for each of the search head cluster members  </li>
+              <li> Finalize rolling upgrade on the search head cluster  </li>
+                <ul>
+                 <li> splunk upgrade-finalize shcluster-members </li>
+                 <li> curl -k -u admin:changed -X POST https://localhost:8089/services/shcluster/captain/control/default/upgrade-finalize </li>
+                 <div style="margin-left:30px">
+                   <img src="/static/app/splunk_7_1_overview/images/shc_upgrade2.png" style="margin: 20px 0" width="700px"/>
+                   <br/>
+                 </div>
+                </ul>
+              <li> Upgrade SHC deployer </li>
+              <li> View search head cluster version info using CLI </li>
+                <ul>
+                <li> splunk show shcluster-status --verbose | egrep "version|label" </li>
+                </ul>
+         </ol>
+         <br/>
+        </html>
+    </panel>
+  </row>
+</dashboard>

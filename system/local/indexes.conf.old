@@ -1,0 +1,40 @@
+[default]
+[_audit]
+rtRouterQueueSize = 
+bucketRebuildMemoryHint = 0
+minHotIdleSecsBeforeForceRoll = 0
+enableDataIntegrityControl = 0
+syncMeta = 1
+rtRouterThreads = 
+suspendHotRollByDeleteQuery = 0
+maxTotalDataSizeMB = 1
+enableTsidxReduction = 0
+compressRawdata = 1
+enableOnlineBucketRepair = 1
+
+[_internal]
+rtRouterQueueSize = 
+bucketRebuildMemoryHint = 0
+minHotIdleSecsBeforeForceRoll = 0
+enableDataIntegrityControl = 0
+syncMeta = 1
+rtRouterThreads = 
+suspendHotRollByDeleteQuery = 0
+maxTotalDataSizeMB = 1000
+enableTsidxReduction = 0
+compressRawdata = 1
+enableOnlineBucketRepair = 1
+
+[_introspection]
+rtRouterQueueSize = 
+bucketRebuildMemoryHint = 0
+minHotIdleSecsBeforeForceRoll = 0
+enableDataIntegrityControl = 0
+syncMeta = 1
+rtRouterThreads = 
+suspendHotRollByDeleteQuery = 0
+maxTotalDataSizeMB = 1024
+enableTsidxReduction = 0
+compressRawdata = 1
+enableOnlineBucketRepair = 1
+

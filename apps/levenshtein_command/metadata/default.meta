@@ -1,0 +1,3 @@
+[commands/levenshtein]
+access = read : [ * ], write : [ admin ]
+export = system

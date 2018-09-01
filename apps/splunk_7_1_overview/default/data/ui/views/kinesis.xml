@@ -1,0 +1,36 @@
+<dashboard>
+  <label>AWS Kinesis Firehose integration</label>
+  <row>
+    <panel>
+      <html>
+        <p>
+            The AWS Kinesis Firehose integration enables you to stream data from various AWS services directly into Splunk software reliably and at scale—all from the AWS console. This integration complements the existing data ingestion capabilities of Splunk Add-on for Amazon Web Services and Lambda Blueprints for Splunk, and brings a wide range of additional advantages that include:
+            <ul>
+                <li> <strong>Fully managed service with serverless architecture:</strong> don't worry about managing and scaling your data collection nodes - this is all managed for you. </li>
+                <li> <strong>Greater reliability and scalability</strong> by leveraging HTTP event collector indexer acknowledgement and natively handling back pressure by allowing you to persists undelivered data to an S3 bucket. </li>
+                <li> <strong>Well integrated with various AWS data</strong> sources such as VPC Flow Logs, CloudWatch logs, CloudWatch Events and AWS IoT. </li>
+                <li> <strong>Easy to use</strong> with no programming requirement. </li>
+                <li> <strong>Ability to transform raw data</strong> prior to sending it to Splunk software: use lambda as needed to normalize the data prior to indexing it in Splunk software. </li>
+                <li> <strong>Simplified architecture:</strong> bypass the need for setting up and managing forwarders by streaming your data directly to Splunk indexers. </li>
+            </ul>
+        </p>
+        <div>
+            <img src="/static/app/splunk_7_1_overview/images/kinesis_overview.png" width="1000px"/>
+        </div>
+        <br/>
+        <br/>
+        <p>This is a direct integration with AWS, so you will be able to select Splunk as the destination for Kinesis Firehose delivery from your AWS Management Console.
+          <br/>
+          <br/>
+          <img src="/static/app/splunk_7_1_overview/images/kinesis_setup.png" width="750px"/>
+        </p>
+        <p>For a complete guide to setting this up, please follow the instructions linked in the Resources section.</p>
+        <h1>Resources</h1>
+            <ul>
+                <li><a target="_blank" href="https://aws.amazon.com/blogs/big-data/power-data-ingestion-into-splunk-using-amazon-kinesis-data-firehose/">Introduction and how-to guide for setting up Kinesis Firehose to Splunk (AWS Big Data Blog)</a></li>
+                <li><a target="_blank" href="http://docs.splunk.com/Documentation/AddOns/released/Firehose/ConfigureFirehose">Splunk Documentation on Kinesis Firehose integration</a></li>
+            </ul>
+        </html>
+    </panel>
+  </row>
+</dashboard>

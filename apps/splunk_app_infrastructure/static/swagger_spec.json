@@ -1,0 +1,1317 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Splunk App for Infrastructure API Guide",
+    "description": "This is Splunk App for Infrastructure API documentation page.",
+    "version": "1.0.0",
+    "termsOfService": "https://www.splunk.com/en_us/legal/terms/terms-of-use.html"
+  },
+  "basePath": "/en-US/splunkd/__raw/servicesNS/nobody/splunk_app_infrastructure/entity_monitoring",
+  "consumes": [
+    "application/json",
+    "application/x-www-form-urlencoded"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "tags": [
+    {
+      "name": "Group",
+      "description": "Group of entities"
+    },
+    {
+      "name": "Entity",
+      "description": "A single entity"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/group": {
+      "get": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "List all saved groups",
+        "description": "Return a list of all saved groups",
+        "operationId": "getGroup",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "query",
+            "required": false,
+            "description": "query parameters",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "output_mode",
+            "required": true,
+            "description": "output format",
+            "type": "string",
+            "enum": [
+              "json",
+              "xml"
+            ],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Group"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "Create a new group",
+        "description": "Create a new group.",
+        "operationId": "addGroup",
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "name",
+            "description": "Key of the new group",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "title",
+            "description": "Name of the new group",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "filter",
+            "description": "filter of the new group",
+            "required": true,
+            "example": "os=ubuntu"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation.",
+            "schema": {
+              "type": "object",
+              "example": {
+                "name": "sea-group",
+                "title": "Sea Production",
+                "filter": "string",
+                "workspace_url_path": "/app/splunk_app_infrastructure/metrics_analysis",
+                "log_search": "{'filters': [{'type': 'include', 'field': 'sourcetype', 'values': ['*']}, {'type': 'include', 'field': 'host', 'values': ['mars.planets.com', 'jupiter.planets.com', 'alabama.usa.com']}], 'type': 'and'}"
+              }
+            }
+          },
+          "400": {
+            "description": "Cannot perform action \"POST\" without a target name to act on."
+          },
+          "409": {
+            "description": "Cannot create a group that already exists!"
+          }
+        }
+      }
+    },
+    "/group/bulk_delete": {
+      "delete": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "Bulk delete groups",
+        "description": "Bulk delete groups",
+        "operationId": "bulkDeleteGroup",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "query parameters",
+            "required": true,
+            "type": "string",
+            "example": "{\"$or\": [{\"title\": \"test\"}]}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Group"
+              }
+            }
+          },
+          "404": {
+            "description": "Cannot find the group with id {groupID}!"
+          }
+        }
+      }
+    },
+    "/group/metadata": {
+      "get": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "List group metadata",
+        "description": "Returns an entry with all unique titles of groups",
+        "operationId": "getGroupMetadata",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "output_mode",
+            "required": true,
+            "description": "output format",
+            "type": "string",
+            "enum": [
+              "json",
+              "xml"
+            ],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of groups titles in metadata",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Group"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/group/{groupID}": {
+      "get": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "Get a group by ID",
+        "description": "Return a single group",
+        "operationId": "getGroupByID",
+        "parameters": [
+          {
+            "name": "groupID",
+            "in": "path",
+            "description": "ID of group to return",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "required": false,
+            "description": "query parameters",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "output_mode",
+            "required": true,
+            "description": "output format",
+            "type": "string",
+            "enum": [
+              "json",
+              "xml"
+            ],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "example": {
+                "name": "sea-group",
+                "title": "Sea Production",
+                "filter": "string",
+                "workspace_url_path": "/app/splunk_app_infrastructure/metrics_analysis",
+                "log_search": "{'filters': [{'type': 'include', 'field': 'sourcetype', 'values': ['*']}, {'type': 'include', 'field': 'host', 'values': ['mars.planets.com', 'jupiter.planets.com', 'alabama.usa.com']}], 'type': 'and'}"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Group not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "Update a group by ID",
+        "description": "Update an existing group by ID",
+        "operationId": "updateGroup",
+        "parameters": [
+          {
+            "name": "groupID",
+            "in": "path",
+            "description": "ID of Group that needs to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "title",
+            "description": "Title of the new group",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "filter",
+            "description": "Filter of the new group",
+            "required": true,
+            "example": "os=ubuntu"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation.",
+            "schema": {
+              "type": "object",
+              "example": {
+                "name": "sea-group",
+                "title": "Sea Production",
+                "filter": "string",
+                "workspace_url_path": "/app/splunk_app_infrastructure/metrics_analysis",
+                "log_search": "{'filters': [{'type': 'include', 'field': 'sourcetype', 'values': ['*']}, {'type': 'include', 'field': 'host', 'values': ['mars.planets.com', 'jupiter.planets.com', 'alabama.usa.com']}], 'type': 'and'}"
+              }
+            }
+          },
+          "400": {
+            "description": "The following required arguments are missing: filter, title"
+          },
+          "500": {
+            "description": "Failed to update the group {groupID}"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Group"
+        ],
+        "summary": "Delete a group by ID",
+        "description": "Delete a group by ID",
+        "operationId": "deleteGroup",
+        "parameters": [
+          {
+            "name": "groupID",
+            "in": "path",
+            "description": "Group id to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Group"
+              }
+            }
+          },
+          "404": {
+            "description": "Cannot find the group with id {groupID}!"
+          }
+        }
+      }
+    },
+    "/entity": {
+      "get": {
+        "tags": [
+          "Entity"
+        ],
+        "summary": "List all saved entities",
+        "description": "Return a list of all saved entities",
+        "operationId": "getEntity",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "query",
+            "required": false,
+            "description": "query parameters",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "output_mode",
+            "required": true,
+            "description": "output format",
+            "type": "string",
+            "enum": [
+              "json",
+              "xml"
+            ],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Entity"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Entity"
+        ],
+        "summary": "Create a new entity",
+        "description": "Create a new entity.",
+        "operationId": "addEntity",
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "name",
+            "description": "ID of the new entity",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "title",
+            "description": "Title of the new entity",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "state",
+            "description": "State of the new entity. Value can only be either active or inactive",
+            "required": true,
+            "example": "active"
+          },
+          {
+            "in": "formData",
+            "name": "informational_dimensions",
+            "type": "string",
+            "description": "Informational dimensions of the new entity",
+            "required": true,
+            "example": "[\"os\",\"env\"]"
+          },
+          {
+            "in": "formData",
+            "name": "identifier_dimensions",
+            "type": "string",
+            "description": "Identifier dimensions of the new entity",
+            "required": true,
+            "example": "[\"host\"]"
+          },
+          {
+            "in": "formData",
+            "name": "dimensions",
+            "type": "string",
+            "description": "All dimensions of the new entity",
+            "required": true,
+            "example": "{\"host\": \"waitomo_api.sv.splunk.com\", \"os\": \"ubuntu\", \"env\": \"production\"}"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Cannot create an entity without a name!"
+          },
+          "409": {
+            "description": "Cannot create an entity that already exists!"
+          }
+        }
+      }
+    },
+    "/entity/metadata": {
+      "get": {
+        "tags": [
+          "Entity"
+        ],
+        "summary": "List entity metadata",
+        "description": "Returns an entry with all the dimensions and values",
+        "operationId": "getEntityMetadata",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "output_mode",
+            "required": true,
+            "description": "output format",
+            "type": "string",
+            "enum": [
+              "json",
+              "xml"
+            ],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Map of dimensions and values in metadata",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Entity"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/entity/metric_name": {
+      "get": {
+        "tags": [
+          "Entity"
+        ],
+        "summary": "List metric names by dimensions",
+        "description": "Returns an entry with all metric names filtered by dimensions",
+        "operationId": "getEntityMetricName",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "output_mode",
+            "required": true,
+            "description": "output format",
+            "type": "string",
+            "enum": [
+              "json",
+              "xml"
+            ],
+            "default": "json"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "query parameters",
+            "required": false,
+            "type": "string",
+            "example": "{\"location\": [\"seattle\"]}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of metric names filtered by dimensions",
+            "schema": {
+              "type": "string",
+              "items": {
+                "example": {
+                  "metric_names": "[{\"Availability\": {\"max\": \"1.00\", \"min\": \"0.00\"}}, {\"cpu.idle\": {\"max\": \"100.00\", \"min\": \"0.00\"}}, {\"cpu.interrupt\": {\"max\": \"99.99\", \"min\": \"0.00\"}}, {\"cpu.nice\": {\"max\": \"100.00\", \"min\": \"0.00\"}}]"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to get metric names by dimensions"
+          }
+        }
+      }
+    },
+    "/entity/metric_data": {
+      "get": {
+        "tags": [
+          "Entity"
+        ],
+        "summary": "Return a list of a single metric average value by entity names",
+        "description": "Return a list of a single metric average value by entity names",
+        "operationId": "getEntityMetricData",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "output_mode",
+            "required": true,
+            "description": "output format",
+            "type": "string",
+            "enum": [
+              "json",
+              "xml"
+            ],
+            "default": "json"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "query parameters",
+            "required": true,
+            "type": "string",
+            "example": "{\"metric_name\": \"cpu.idle\",\"dimensions\":{\"os\":[\"ubuntu\"]}}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a list of a single metric average value by entity names",
+            "schema": {
+              "type": "string",
+              "items": {
+                "example": {
+                  "metric_data": "{\"eyJob3N0IjogIm1haW5lLnVzYS5jb20ifQ==\": \"50.62\"}"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/entity/bulk_delete": {
+      "delete": {
+        "tags": [
+          "Entity"
+        ],
+        "summary": "Bulk delete entities",
+        "description": "Bulk delete entities",
+        "operationId": "bulkDeleteEntity",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "query parameters",
+            "required": true,
+            "type": "string",
+            "example": "{\"_key\": \"test\"}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Entity"
+              }
+            }
+          },
+          "404": {
+            "description": "Cannot find the group with id {entityID}!"
+          }
+        }
+      }
+    },
+    "/entity/{entityID}": {
+      "get": {
+        "tags": [
+          "Entity"
+        ],
+        "summary": "Get a single entity by name (ID)",
+        "description": "Return a single entity",
+        "operationId": "getEntityByID",
+        "parameters": [
+          {
+            "name": "entityID",
+            "in": "path",
+            "description": "ID of entity to return",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "required": false,
+            "description": "query parameters",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "output_mode",
+            "required": true,
+            "description": "output format",
+            "type": "string",
+            "enum": [
+              "json",
+              "xml"
+            ],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Entity"
+            }
+          },
+          "404": {
+            "description": "Entity not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Entity"
+        ],
+        "summary": "Update a single entity by name (ID)",
+        "description": "Update an existing entity",
+        "operationId": "updateEntity",
+        "parameters": [
+          {
+            "name": "entityID",
+            "in": "path",
+            "description": "ID of entity that needs to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "title",
+            "description": "Title of the new entity",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "state",
+            "description": "State of the new entity. Value can only be either active or inactive",
+            "required": true,
+            "example": "active"
+          },
+          {
+            "in": "formData",
+            "name": "informational_dimensions",
+            "type": "string",
+            "description": "Informational dimensions of the new entity",
+            "required": true,
+            "example": "[\"os\",\"env\"]"
+          },
+          {
+            "in": "formData",
+            "name": "identifier_dimensions",
+            "type": "string",
+            "description": "Identifier dimensions of the new entity",
+            "required": true,
+            "example": "[\"host\"]"
+          },
+          {
+            "in": "formData",
+            "name": "dimensions",
+            "type": "string",
+            "description": "All dimensions of the new entity",
+            "required": true,
+            "example": "{\"host\": \"waitomo_api.sv.splunk.com\", \"os\": \"ubuntu\", \"env\": \"production\"}"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Cannot modify an entity that does not exist!"
+          },
+          "500": {
+            "description": "Failed to update the entity {entityID}"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Entity"
+        ],
+        "summary": "Delete a single entity by name (ID)",
+        "description": "Delete a sinlge entity by name (ID)",
+        "operationId": "deleteEntity",
+        "parameters": [
+          {
+            "name": "entityID",
+            "in": "path",
+            "description": "name (ID) of the entity to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Cannot find the entity with id {entityID}"
+          }
+        }
+      }
+    },
+    "/collector_configuration": {
+      "get": {
+        "tags": [
+          "Collector Configuration"
+        ],
+        "summary": "List all saved collector configurations",
+        "description": "Return a list of all saved collector configurations",
+        "operationId": "getCollectorConfiguration",
+        "parameters": [
+          {
+            "in": "locale",
+            "name": "locale",
+            "required": false,
+            "description": "The locale for display strings",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Collector Configuration"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collector_configuration/{configurationID}": {
+      "get": {
+        "tags": [
+          "Collector Configuration"
+        ],
+        "summary": "Get a single collector configuration by name (ID)",
+        "description": "Return a single collector configuration item",
+        "operationId": "getCollectorConfigurationByID",
+        "parameters": [
+          {
+            "name": "collectorConfigurationID",
+            "in": "path",
+            "description": "ID of collector configuration to return",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "locale",
+            "name": "locale",
+            "required": false,
+            "description": "The locale for display strings, defaults to 'en-us'",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Collector Configuration"
+            }
+          },
+          "404": {
+            "description": "Collector configuration not found"
+          }
+        }
+      }
+    },
+    "/alert": {
+      "get": {
+        "tags": [
+          "Alert"
+        ],
+        "summary": "List all alert savedsearches",
+        "description": "Return a list of all alert savedsearches",
+        "operationId": "getAlert",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "output_mode",
+            "required": true,
+            "description": "output format",
+            "type": "string",
+            "enum": [
+              "json",
+              "xml"
+            ],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Alert Savedsearch"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Alert"
+        ],
+        "summary": "Create an alert savedsearch",
+        "description": "Return the created savedsearch",
+        "operation": "createAlert",
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "name",
+            "required": true,
+            "description": "(unqiue) name of the alert savedsearch",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "metric_spl",
+            "required": true,
+            "description": "SPL used to get metric data that will be used to compare with threshold information",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "managed_by_id",
+            "required": true,
+            "description": "ID of entity or group that this alert belongs to",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "managed_by_type",
+            "required": true,
+            "description": "type of object that manages this alert",
+            "type": "string",
+            "enum": [
+              "entity",
+              "group"
+            ]
+          },
+          {
+            "in": "formData",
+            "name": "info_min",
+            "required": true,
+            "description": "Min value for info threshold",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "info_max",
+            "required": true,
+            "description": "Max value for info threshold",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "warning_min",
+            "required": true,
+            "description": "Min value for warning threshold",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "warning_max",
+            "required": true,
+            "description": "Max value for warning threshold",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "critical_min",
+            "required": true,
+            "description": "Min value for critical threshold",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "critical_max",
+            "required": true,
+            "description": "Max value for critical threshold",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "email_enabled",
+            "required": false,
+            "description": "indicate if email alert action should be enabled",
+            "type": "boolean"
+          },
+          {
+            "in": "formData",
+            "name": "email_to",
+            "required": false,
+            "description": "comma-separated list of email addresses to send to",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "email_when",
+            "required": false,
+            "description": "condition to determine if email should be sent, valid values include 'degrade', 'improve', 'degrade,improve'",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "output_mode",
+            "required": true,
+            "description": "output format",
+            "type": "string",
+            "enum": [
+              "json",
+              "xml"
+            ],
+            "default": "json"
+          }
+        ],
+        "response": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Alert Savedsearch"
+            }
+          }
+        }
+      }
+    },
+    "/alert/{alertID}": {
+      "get": {
+        "tags": [
+          "Alert"
+        ],
+        "summary": "Get information about an individual alert savedsearches",
+        "description": "Return a list of all alert savedsearches",
+        "operationId": "getAlert",
+        "parameters": [
+          {
+            "name": "alertID",
+            "in": "path",
+            "description": "ID of alert to return",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "output_mode",
+            "required": true,
+            "description": "output format",
+            "type": "string",
+            "enum": [
+              "json",
+              "xml"
+            ],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Alert Savedsearch"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Alert"
+        ],
+        "summary": "Update individual alert savedsearches",
+        "description": "Return updated alert savedsearches",
+        "operationId": "updateAlert",
+        "parameters": [
+          {
+            "name": "alertID",
+            "in": "path",
+            "description": "ID of alert to return",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "metric_spl",
+            "required": true,
+            "description": "SPL used to get metric data that will be used to compare with threshold information",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "managed_by_id",
+            "required": true,
+            "description": "ID of entity or group that this alert belongs to",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "managed_by_type",
+            "required": true,
+            "description": "type of object that manages this alert",
+            "type": "string",
+            "enum": [
+              "entity",
+              "group"
+            ]
+          },
+          {
+            "in": "formData",
+            "name": "info_min",
+            "required": true,
+            "description": "Min value for info threshold",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "info_max",
+            "required": true,
+            "description": "Max value for info threshold",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "warning_min",
+            "required": true,
+            "description": "Min value for warning threshold",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "warning_max",
+            "required": true,
+            "description": "Max value for warning threshold",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "critical_min",
+            "required": true,
+            "description": "Min value for critical threshold",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "critical_max",
+            "required": true,
+            "description": "Max value for critical threshold",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "email_enabled",
+            "required": false,
+            "description": "indicate if email alert action should be enabled",
+            "type": "boolean"
+          },
+          {
+            "in": "formData",
+            "name": "email_to",
+            "required": false,
+            "description": "comma-separated list of email addresses to send to",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "email_when",
+            "required": false,
+            "description": "condition to determine if email should be sent, valid values include 'degrade', 'improve', 'degrade,improve'",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "output_mode",
+            "required": true,
+            "description": "output format",
+            "type": "string",
+            "enum": [
+              "json",
+              "xml"
+            ],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Alert Savedsearch"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Alert"
+        ],
+        "summary": "Delete an individual alert savedsearches",
+        "description": "Return a list of remaining alert savedsearches",
+        "operationId": "deleteAlert",
+        "parameters": [
+          {
+            "name": "alertID",
+            "in": "path",
+            "description": "ID of alert to return",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "output_mode",
+            "required": true,
+            "description": "output format",
+            "type": "string",
+            "enum": [
+              "json",
+              "xml"
+            ],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Alert Savedsearch"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Group": {
+      "type": "object",
+      "required": [
+        "name",
+        "title",
+        "filter"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "sea-group"
+        },
+        "title": {
+          "type": "string",
+          "example": "Seattle Production"
+        },
+        "filter": {
+          "type": "string"
+        }
+      }
+    },
+    "Entity": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "test_entity"
+        },
+        "title": {
+          "type": "string",
+          "example": "Test Entity"
+        },
+        "state": {
+          "type": "string",
+          "example": "active"
+        },
+        "updated_date": {
+          "type": "number",
+          "example": 1504152652.55
+        },
+        "imported_date": {
+          "type": "number",
+          "example": 1502230274.05
+        },
+        "informational_dimensions": {
+          "type": "string",
+          "example": "{\"type\": [\"swagger_api\"]}"
+        },
+        "identifier_dimensions": {
+          "type": "string",
+          "example": "{\"id\": [\"swagger_api\"]}"
+        },
+        "vital_metrics": {
+          "type": "string",
+          "example": "['cpu.system', 'cpu.user']"
+        },
+        "log_search": {
+          "type": "string",
+          "example": "{'type': 'and', 'filters': [{'type': 'include', 'field': 'sourcetype', 'values': ['*']}, {'type': 'include', 'field': 'host', 'values': ['mars.planets.com']}]}"
+        }
+      }
+    },
+    "Collector Configuration": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "test_configuration"
+        },
+        "title": {
+          "type": "string",
+          "example": "Test Configuration"
+        },
+        "source_predicate": {
+          "type": "string",
+          "example": "cpu.percent.*"
+        },
+        "title_dimension": {
+          "type": "string",
+          "example": "host"
+        },
+        "identifier_dimensions": {
+          "type": "string",
+          "example": "'*' or ['host', 'ip']"
+        },
+        "informational_dimensions": {
+          "type": "string",
+          "example": "'*' or ['cpu_count', 'total_memory']"
+        },
+        "blacklisted_dimensions": {
+          "type": "string",
+          "example": "['_punct', 'metric_type']"
+        },
+        "monitoring_lag": {
+          "type": "number",
+          "example": 10
+        },
+        "monitoring_calculation_window": {
+          "type": "number",
+          "example": 60
+        },
+        "dimension_display_names": {
+          "type": "string",
+          "example": "{\"en-us\": {\"os\": \"Operating System\"}, \"en-gb\": {\"os\": \"Operating system, good sir\"}]}"
+        },
+        "disabled": {
+          "type": "number",
+          "example": 0
+        },
+        "vital_metrics": {
+          "type": "string",
+          "example": "['cpu.system', 'cpu.user']"
+        }
+      }
+    },
+    "Alert Savedsearch": {
+      "type": "object",
+      "required": [
+        "name",
+        "metric_spl",
+        "managed_by_id",
+        "info_min",
+        "info_max",
+        "warning_min",
+        "warning_max",
+        "critical_min",
+        "critical_max"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "alert-1"
+        },
+        "<savedsearach paraemters>": {
+          "type": "string",
+          "example": "Savedsearch parameters specified at http://docs.splunk.com/Documentation/Splunk/7.0.2/RESTREF/RESTsearch#saved.2Fsearches"
+        }
+      }
+    },
+  },
+  "externalDocs": {
+    "description": "Find out more about Splunk App for Infrastructure",
+    "url": "https://docs.splunk.com/Documentation"
+  }
+}

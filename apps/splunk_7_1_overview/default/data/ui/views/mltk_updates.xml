@@ -1,0 +1,87 @@
+<dashboard>
+  <label>Machine Learning Toolkit 3.1 and 3.2</label>
+  <description>Summary of Machine Learning Toolkit Updates</description>
+  <row>
+    <panel>
+      <html>
+         <ul>
+          <li>Model Management Framework - </li>
+          <ul>
+            <li>The Models listing page shows the models that you have access to in your Splunk Machine Learning Toolkit. You can see what types of models you have, who owns them, how they are shared and some other model details.
+            </li>
+            <br/>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_7_1_overview/images/mltk_experiment.png" style="margin: 20px 0" width="700px"/>
+          <br/>
+        </div>
+        </ul>
+        </ul>
+        <br/>
+
+        <ul>
+          <li>New Pre-processing Options - </li>
+          <ul>
+
+            <li>FieldSelector: Helps in selecting the best fields from your list of the fields for your target metric’s prediction. Useful when you have less or no prior knowledge about the relation between the metrics in your data.</li>
+           <br/>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_7_1_overview/images/mltk_fs.png" style="margin: 20px 0" width="700px"/>
+          <br/>
+        </div>                
+          </ul>     
+        </ul>
+
+<ul>
+          <li>New Algorithm(s) - </li>
+          <ul>
+            <li>X-Means: The X-means clustering algorithm helps in clustering (grouping) metrics based on their similarity. It is different from clustering algorithm, K-means, as it automatically determines the optimal no. of clusters required for clustering of metrics. 
+<br/>X-means algorithm is used when you have unlabeled data and no prior knowledge of the total number of labels into which the data could be divided into.
+            </li>
+            <br/>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_7_1_overview/images/mltk_xmeans.png" style="margin: 20px 0" width="700px"/>
+          <br/>
+        </div>
+        </ul>
+        </ul>
+
+<ul>
+          <li>Experiment Management Framework - </li>
+          <ul>
+            <li>A unified UI that provide the ability to: <ul><li>Set roles based access control on experiments</li><li>Browsing and filtering pre-built models</li><li>Monitoring and scheduling alerts and searches</li><li>Getting history statistics about experiment’s previous runs and alerts</li>
+ </ul>
+            </li>
+            <br/>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_7_1_overview/images/mltk_experiment.png" style="margin: 20px 0" width="700px"/>
+          <br/>
+        </div>
+        </ul>
+        </ul>
+
+<ul>
+          <li>Configuration option for the default categorical encoding limit - </li>
+          <ul>
+            <li>Now we have provided the ability to override the default (100) number of unique categorical values for classification. Let’s try to understand the benefit of this configuration option using an example. <br/>
+Previously, if we had a categorical field “type of bone” (adult human body has 206 distinct bones), then it would not have been possible to set this field as categorical field but now due to the configuration option we can change the default of 100 to 206.
+            </li>
+            <br/>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_7_1_overview/images/mltk_categorical.png" style="margin: 20px 0" width="700px"/>
+          <br/>
+        </div>
+        </ul>
+        </ul>
+ 
+
+         <ul>
+          <li>For bug fixes, see <a href="http://docs.splunk.com/Documentation/MLApp/3.1.0/User/Fixedissues">Fixed issues.</a>
+          </li>  
+
+        </ul>
+        
+
+        </html>
+    </panel>
+  </row>
+</dashboard>

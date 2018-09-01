@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+  <label>Local drive</label>
+  <fieldset autoRun="true" submitButton="false">
+    <input type="dropdown" searchWhenChanged="true" token="user">
+      <label>Select OS user</label>
+      <populatingSavedSearch fieldForValue="os_user" fieldForLabel="os_user">top users</populatingSavedSearch>
+      <choice value="*">All</choice>
+      <default>*</default>
+    </input>
+    <input type="time" searchWhenChanged="true">
+      <default/>
+    </input>
+  </fieldset>
+  <row>
+    <html>If this page looks blank, chances are you're not running this app on Windows. Information about local files can only be collected on Windows platform.</html>
+  </row>
+  <row>
+    <chart>
+      <searchTemplate>index=browsers sourcetype="local" os_user="$user$" | rex field=url "(?i)file:///(?P&lt;drive&gt;[^:]+)" | timechart count by drive</searchTemplate>
+      <title>Most accessed drives</title>
+      <option name="charting.chart">area</option>
+      <option name="charting.chart.sliceCollapsingThreshold">0</option>
+    </chart>
+    <table>
+      <searchTemplate>index=browsers sourcetype="local" os_user="$user$" | top url | table url,count</searchTemplate>
+      <title>Most often accessed files</title>
+      <option name="displayRowNumbers">false</option>
+      <option name="count">10</option>
+    </table>
+  </row>
+  <row>
+    <table>
+      <searchTemplate>index=browsers sourcetype="local" os_user="$user$" | where like(url, "%.jpg") OR like(url, "%.png") | eval url=replace(url,"file:///","") | eval url=urldecode(url) | table url, _time</searchTemplate>
+      <title>Recently opened images</title>
+      <option name="displayRowNumbers">false</option>
+      <option name="count">10</option>
+    </table>
+    <table>
+      <searchTemplate>index=browsers sourcetype="local" os_user="$user$" | where like(url, "%.doc") OR like(url, "%.docx") OR like(url, "%.xsl") OR like(url, "%.xslx") OR like(url, "%.ppt") OR like(url, "%.pptx") OR like(url, "%.pdf") | eval url=replace(url,"file:///","") | eval url=urldecode(url) | table url, _time</searchTemplate>
+      <title>Recently opened documents</title>
+      <option name="displayRowNumbers">false</option>
+      <option name="count">10</option>
+    </table>
+  </row>
+</form>

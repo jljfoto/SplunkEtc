@@ -1,0 +1,2 @@
+sid,search,"splunk_server","_time","is_realtime",provenance,"event_count","exec_time","result_count","scan_count",status,"total_run_time","__mv_sid","__mv_search","__mv_splunk_server","__mv__time","__mv_is_realtime","__mv_provenance","__mv_event_count","__mv_exec_time","__mv_result_count","__mv_scan_count","__mv_status","__mv_total_run_time"
+"rt_md_1525957027.70","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1525957027.227876",1,"UI:Search",0,1525957027,0,0,failed,"40.193",,,,,,,,,,,,

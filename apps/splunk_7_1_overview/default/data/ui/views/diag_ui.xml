@@ -1,0 +1,43 @@
+<dashboard>
+  <label>Diag UI</label>
+  <row>
+    <panel>
+      <html>
+        <p>
+            Diag UI provides an easy to use interface for generating diags from Splunkweb, across nodes in a distributed deployment. This allows for simpler sharing of diagnostics information with Splunk Support, providing features to:
+            <ul>
+                <li>Generate diag files from Splunkweb for multiple Splunk instances at a time</li>
+                <li>Select multiple instances by role or host name</li>
+                <li>Configure diag parameters (near CLI parity)</li>
+                <li>Recreate diag based on previous settings</li>
+                <li>Download/Delete diag files</li>
+            </ul>
+        </p>
+        <h1>Diagnostic Log</h1>
+        Start by accessing <strong>Settings &gt; Instrumentation</strong> from a search head, or DMC node. Your DMC node will have visibility into all nodes since they are search peers of the DMC node, while a search head will only have visibility into nodes it is directly connected to (search peers, cluster master/slaves, search head cluster members).
+        <div>
+            <img src="/static/app/splunk_7_1_overview/images/diag_overview.png" width="1000px" style="border:1px solid gray"/>
+        </div>
+        <h1>Create Diag</h1>
+        Click New Diag, and select the Splunk instances to create diags for, which will be identified by host name. You can filter by role, or search by host name to quickly identify the nodes of interest. Click Next and then choose the diag parameters to use. All existing CLI diag parameters are available except for app components. The same parameters will be used for all diags across all nodes selected.
+        <p/>
+        <div>
+          <span style="text-align: center; display: inline-block;width: 500px"><img src="/static/app/splunk_7_1_overview/images/diag_nodes.png" width="400px" style="border:1px solid gray"/><figcaption>Select Splunk instances to create diags for</figcaption></span>
+          <span style="text-align: center; display: inline-block;width: 500px"><img src="/static/app/splunk_7_1_overview/images/diag_config.png" width="400px" style="border:1px solid gray"/><figcaption>Configure diag settings</figcaption></span>
+        </div>
+        <h1>Download, Delete, Recreate</h1>
+          Diag files are streamed from other nodes and stored on the search head. Once a diag is created, it can be downloaded (individual only), deleted (bulk or individual), or recreated (bulk or individual). Diags created here expire after 30 days, after which they will not show up in the listing.
+        <div>
+            <img src="/static/app/splunk_7_1_overview/images/diag_status.png" width="1000px" style="border:1px solid gray"/>
+        </div>
+        <p/>
+        Actions:
+        <ul>
+          <li><strong>Recreate</strong> opens a New Diag dialog with the previously selected nodes and parameters. This can be used for to recreate the same diag bundle to track changes over time during a support case</li>
+          <li><strong>Delete</strong> removes the diag file or files (when applied at group level) from the search head. A manifest describing the diag creation will remain to allow recreating the same diag</li>
+          <li><strong>Download</strong> allows you to download individual diag files</li>
+        </ul>
+      </html>
+    </panel>
+  </row>
+</dashboard>

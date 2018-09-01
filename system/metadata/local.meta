@@ -1,0 +1,51 @@
+[server/sslConfig]
+version = 6.6.1
+modtime = 1497035067.448607000
+
+[server/general]
+version = 7.1.1
+modtime = 1531106460.179977000
+
+[server/lmpool%3Aauto_generated_pool_download-trial]
+version = 6.6.1
+modtime = 1497035070.631533000
+
+[server/lmpool%3Aauto_generated_pool_forwarder]
+version = 6.6.1
+modtime = 1497035070.637722000
+
+[server/lmpool%3Aauto_generated_pool_free]
+version = 6.6.1
+modtime = 1497035070.644987000
+
+[server/lmpool%3Aauto_generated_pool_enterprise]
+version = 6.6.1
+modtime = 1497035898.440534000
+
+[server/license]
+version = 6.6.1
+modtime = 1497035898.452305000
+
+[indexes/_audit]
+version = 7.0.2
+modtime = 1523762331.849760000
+
+[indexes/_introspection]
+version = 7.0.2
+modtime = 1523763331.535391000
+
+[indexes/_internal]
+version = 7.0.2
+modtime = 1523763309.508738000
+
+[authorize/role_admin]
+version = 7.1.0
+modtime = 1525970446.585788000
+
+[props/mint_export]
+version = 7.1.1
+modtime = 1530395274.818746000
+
+[web/settings]
+version = 7.1.1
+modtime = 1531106460.177944000

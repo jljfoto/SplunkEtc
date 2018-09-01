@@ -1,0 +1,120 @@
+<form class="splunk-formatter-section" section-label="Map">
+    <label class="control-label">Map Tiles</label>
+    <div class="controls controls-fill control-group">
+        <splunk-select name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.tiles">
+            <option value="light_tiles" selected>Light</option>
+                <option value="dark_tiles">Dark</option>
+                <option value="satellite_tiles">Satellite</option>
+                <option value="openstreetmap_tiles">Open Street Map</option>
+                <option value="custom">Custom Tiles</option>
+        </splunk-select>
+    </div>
+    <label class="control-label">Initial Center</label>
+    <div class="controls controls-fill control-group">
+        <input type="text" name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.lat" placeholder="Latitude" style="width: 49%" />
+        <input type="text" name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.lng" placeholder="Longitude" style="width: 49%" />
+    </div>
+    <label class="control-label">Initial Zoom</label>
+    <div class="controls controls-fill control-group">
+        <input type="text" name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.zoom" placeholder="Zoom" style="width: 49%" />
+    </div>
+    <label class="control-label">Custom Tile URL</label>
+    <div class="controls controls-fill control-group">
+        <input type="text" style="width: 100%"
+               name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.customTileURL"
+               placeholder="http://your-custom-tile-url.com" />
+    </div>
+    <label class="control-label">Custom Attribution</label>
+    <div class="controls controls-fill control-group">
+        <input type="text" style="width: 100%"
+               name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.customAttribution"
+               placeholder="(c) by Custom Tile URL creator " />
+    </div>
+</form>
+<form class="splunk-formatter-section" section-label="Data">
+
+    <label class="control-label">Scale Radius</label>
+    <div class="controls controls-fill  control-group">
+            <splunk-radio-input name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.scaleRadius" value="0">
+                <option value="1">Yes</option>
+                <option value="0" selected>No</option>
+            </splunk-radio-input> 
+    </div>
+    If scale radius is set to "No" the radi are measured in pixel and will stay that size on each zoom level<br /><br />
+    <label class="control-label">Default Radius (px)</label>
+    <div class="controls controls-fill  control-group">
+            <input type="text" name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.radius" value="20" />
+    </div>
+    <label class="control-label">Use Local Extrema</label>
+    <div class="controls controls-fill  control-group">
+            <splunk-radio-input name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.useLocalExtrema" value="0">
+                <option value="1">Yes</option>
+                <option value="0" selected>No</option>
+            </splunk-radio-input> 
+        </div>
+</form>
+<form class="splunk-formatter-section" section-label="Colors">
+
+  <label class="control-label">Color Gradient</label>
+  <div class="controls controls-fill ">
+        <splunk-select name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.gradientCfg">
+                <option value="standard" selected>Standard</option>
+                <option value="magma">Magma (Color-Blind-Friendly)</option>
+                <option value="viridis">Viridis (Color-Blind-Friendly)</option>
+        </splunk-select>
+        </div>
+    <label class="control-label">Layer Maximum Opacity</label>
+    <div class="controls controls-fill control-group">
+        <input type="range" style="width: 100%"
+               name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.maxOpacity"
+               id="viz_clustermap-clustermap-radius"
+               min="0" max="100" value="70" />
+    </div>
+    <label class="control-label">Layer Minimum Opacity</label>
+    <div class="controls controls-fill control-group">
+        <input type="range" style="width: 100%"
+               name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.minOpacity"
+               id="viz_clustermap-clustermap-radius"
+               min="0" max="100" value="0" />
+    </div>
+</form>
+<form class="splunk-formatter-section" section-label="Animation">
+    <label class="control-label">Use data over time</label>
+    <div class="controls controls-fill  control-group">
+            <splunk-radio-input name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.useTimeSlider" value="0">
+                <option value="1">Yes</option>
+                <option value="0" selected>No</option>
+            </splunk-radio-input> 
+        </div>
+        <label class="control-label">Use global extremas</label>
+        <div class="controls controls-fill  control-group">
+            <splunk-radio-input name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.useGlobalExtremas" value="0">
+                <option value="1">Yes</option>
+                <option value="0" selected>No</option>
+            </splunk-radio-input> 
+        </div>
+        <label class="control-label">Animation Speed</label>
+        <div class="controls controls-fill control-group">
+        <splunk-select name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.animationSpeed">
+            <option value="slow" selected>Slow</option>
+                <option value="normal">Normal</option>
+                <option value="fast">Fast</option>
+                <option value="faster">Faster</option>
+        </splunk-select>
+    </div>
+    <label class="control-label">Show Current Time</label>
+        <div class="controls controls-fill control-group">
+        <splunk-radio-input name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.showCurrentTime" value="1">
+                <option value="1">Yes</option>
+                <option value="0" selected>No</option>
+        </splunk-radio-input>
+    </div>
+    <label class="control-label">Show Labels</label>
+        <div class="controls controls-fill control-group">
+        <splunk-select name="display.visualizations.custom.geo_heatmap_app.geo_heatmap.showDataLabels">
+            <option value="always" selected>Always</option>
+            <option value="whenStopped">When Stopped</option>
+            <option value="fast">Never</option>
+        </splunk-select>
+    </div>
+</form>

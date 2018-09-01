@@ -1,0 +1,26 @@
+<dashboard>
+  <label>Password Policy Management</label>
+  <description>New controls for local passwords.</description>
+  <row>
+    <panel> 
+      <html>
+      	<p><strong>Splunk Enterprise's local passwords now have policies!</strong></p>
+      	<p>A policy for local login accounts for Internal Splunk Authentication can now be configured, providing greater security and compliance with regulations.</p>
+      	<p>
+      	<h3>Password Configurations</h3>
+		<p>The following is a list of the characteristics of passwords that can be configured.</p>
+		<ul>
+			<li>Minimum number of characters in a password</li>
+			<li>Complexity requirements - use of numerals, special characters, upper and lower case letters</li>
+			<li>Users with weak passwords can be forced to change them</li>
+			<li>User lockout after repeated failed login attempts</li>
+			<li>Expiration of passwords and preventing reuse of old passwords</li>
+			<li>Splunk Enterprise no longer ships with a default password - the administrator must set one</li> 			
+			<li>All these changes apply to new installation and do not impact software upgrades</li>
+		</ul>
+      	</p>
+      </html>
+    </panel>
+  </row>
+
+</dashboard>

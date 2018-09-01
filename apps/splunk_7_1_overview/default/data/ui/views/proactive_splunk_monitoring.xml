@@ -1,0 +1,58 @@
+<dashboard>
+	<label>Splunk Component Monitoring via REST Endpoints </label>
+	<row>
+		<panel>
+			<html>
+				<p>
+					<strong>Description </strong>
+				</p>
+				<p> The Splunk Enterprise 7.1 release delivers two new capabilities:</p>
+				<ul>
+					<li> A framework that enables a Splunk software feature to publish its state directly to a collection object accessible via REST API</li>
+					<li> Splunk indexer clustering, Data Forwarding, and File monitor Input components health status reporting</li>
+				</ul>
+				<p>
+					<strong>Overview </strong>
+				</p>
+				<p> Current Splunk on premise customers rely on introspection and internal logs to gain visibility into the health of their Splunk Enterprise deployments. Health status is available via historical searches that need to be frequently updated. </p>
+				<p> A new monitoring framework will enable a Splunk software feature to publish its state to a collection object accessible via a REST API. A feature using this framework can provide a reason, context, and tips to resolve to its unhealthy state </p>
+				<p>
+					<strong>High Level Capabilities </strong>
+				</p>
+				<ul>
+					<li> The health is reported as a tree with splunkd as the highest node, the leaf nodes represent specific features that are bucketed into different categories</li>
+					<li> A feature can have three possible states – Green -> representing a healthy state, Yellow -> something is brewing below the surface, Red -> an unhealthy state that deserves attention</li>
+					<li> Ability to set thresholds for various states of a feature</li>
+					<li> Ability to selectively enable / disable status monitoring </li>
+					<li> Ability to throttle the switching of feature states </li>
+				</ul>
+				<p>
+					<strong>REST API Requests:</strong>
+				</p>
+				<ul>
+					<li> GET /services/server/health - shows top level color, via HealthReporter </li>
+					<li> GET /services/server/health/splunkd/details - shows the above, as well as every node and respective color in the tree, and additionally for unhealthy nodes, reasons/tips/thresholds/etc </li>
+					<li> POST /services/server/health-config/ - a component can be disabled/enabled using the following API: curl -k -u admin:changeme https://127.0.0.1:8089/services/server/health-config/ component-name -d disabled=1|0 </li>
+				</ul>
+				<br/>
+				<div style="margin-left:30px">
+					<h4> Health status alert in Splunk menu bar</h4>
+					<img src="/static/app/splunk_7_1_overview/images/proactive_splunk_monitoring_1.png " style="margin: 20px 0" width="700px"/>
+					<br/>
+				</div>
+				<div style="margin-left:30px">
+					<h4> Splunk health status pop up </h4>
+					<img src="/static/app/splunk_7_1_overview/images/proactive_splunk_monitoring_2.png" style="margin: 20px 0" width="700px"/>
+					<br/>
+				</div>
+				<br/>
+				<div style="margin-left:30px">
+					<h4> Forwarding alert with root cause and related messages </h4>
+					<img src="/static/app/splunk_7_1_overview/images/proactive_splunk_monitoring_3.png" style="margin: 20px 0" width="700px"/>
+					<br/>
+					<br/>
+				</div>
+			</html>
+		</panel>
+	</row>
+</dashboard>

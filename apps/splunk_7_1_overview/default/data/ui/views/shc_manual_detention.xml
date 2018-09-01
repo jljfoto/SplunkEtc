@@ -1,0 +1,67 @@
+<dashboard>
+  <label>SHC Manual Detention</label>
+  <row>
+    <panel>
+      <html>
+        <p>
+          Manual detention allows SHC members to be decommissioned gracefully by completing in-progress searches and preventing any new searches from running on it. It is one of the core foundations of SHC searchable rolling restarts and rolling upgrade. Any new scheduled searches are directed to other search head cluster members. Once all in-progress searches are completed, the search head cluster member can be decommissioned for diagnostics and maintenance operations.
+        </p>
+        <p><strong>Description</strong></p>
+         <p> Search head cluster member in manual detention state,  </p>
+         <ul>
+            <li> Runs in-progress searches to completion </li> 
+            <li> New ad-hoc searches return error messages and requires manual retry on other SHC members </li>
+            <li> New scheduled searches get directed to remaining members in the cluster </li>
+            <li> Does not participate in artifact replication </li> 
+            <li> Continues to participate in cluster operations like captain election, bundle replication and conf replication </li>
+         </ul>
+         <p><strong>Use Cases</strong></p>
+          <ul>
+            <li> Enables graceful shutdown of SHC member with minimal impact on end-user search experience </li>
+            <li> Perform diagnostics or maintenance operations on SHC member </li>
+            <li> Facilitates hardware/instance replacement </li>
+          </ul>
+          <br/>
+         <p><strong>How to use</strong></p>
+          <h3> Enable Manual Detention using CLI/REST </h3>
+          <ul>
+            <li> splunk edit shcluster-config -manual_detention on </li>
+            <li> curl -k -u admin:changed https://localhost:8089/services/shcluster/config/set_manual_detention -d manual_detention=on </li>
+         </ul>
+         <br/>
+         <h3> View member state using CLI/REST/UI </h3>
+          <ul>
+            <li> splunk list shcluster-member-info </li>
+            <li> splunk show shcluster-status </li>
+            <li> curl -k -u admin:changed https://localhost:8089/services/shcluster/member/info </li>
+         </ul>
+         <br/>
+             <div style="margin-left:30px">
+               <h4> SHC UI with member 'mkt-centos7x64-002' in manual detention state </h4>
+               <img src="/static/app/splunk_7_1_overview/images/shc_manual_detention1.png" style="margin: 20px 0" width="700px"/>
+               <br/>
+             </div>
+         <br/>
+             <div style="margin-left:30px">
+               <h4> Ad-hoc searches are not proccessed on member in manual detention state </h4>
+               <img src="/static/app/splunk_7_1_overview/images/shc_manual_detention2.png" style="margin: 20px 0" width="700px"/>
+               <br/>
+             </div>
+          <br/>
+          <h3> Disable Manual Detention using CLI/REST </h3>
+          <ul>
+            <li> splunk edit shcluster-config -manual_detention off </li>
+            <li> curl -k -u admin:changed https://localhost:8089/services/shcluster/config/set_manual_detention -d manual_detention=off </li>
+         </ul>
+         <br/>
+             <div style="margin-left:30px">
+               <h4> SHC UI with member 'mkt-centos7x64-002' out of manual detention state </h4>
+               <img src="/static/app/splunk_7_1_overview/images/shc_manual_detention3.png" style="margin: 20px 0" width="700px"/>
+               <br/>
+               <br/>
+             </div>
+
+        </html>
+    </panel>
+  </row>
+</dashboard>

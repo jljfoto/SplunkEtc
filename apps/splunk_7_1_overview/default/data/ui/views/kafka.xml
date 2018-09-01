@@ -1,0 +1,113 @@
+<dashboard>
+  <label>Splunk Connect for Kafka</label>
+  <row>
+    <panel>
+      <html>
+        <p>
+            Splunk Connect for Kafka is a sink connector that allows a Splunk software administrator to subscribe to a Kafka topic and stream the data to the Splunk HTTP event collector. After the Splunk platform indexes the events, you can then directly analyze the data or use it as a contextual data feed to correlate with other Kafka-related data in the Splunk platform. Built on top of the Kafka Connect library, this connector provides:
+            <ul>
+                <li> <strong>High scalability</strong>, allowing linear scaling, limited only by the hardware supplied to the Kafka Connect environment. </li>
+                <li> <strong>High reliability</strong>, by ensuring at-least-once delivery of data. </li>
+                <li> <strong>Ease of data onboarding and simple configuration</strong> with Kafka Connect framework and Splunk's HTTP event collector. </li>
+            </ul>
+        </p>
+        <div>
+            <img src="/static/app/splunk_7_1_overview/images/kafka_overview.png" width="1000px"/>
+        </div>
+        <h1>System Requirements</h1>
+          <ul>
+            <li> A Kafka Connect environment running Kafka version 0.10.0 or above </li>
+            <li> Java 8 and above </li>
+            <li> Splunk platform environment of version 6.5 and above </li>
+            <li> Configured and valid HTTP Event Collector (HEC) tokens. See HEC requirements below </li>
+          </ul>
+        <br/>
+        <h1>Getting started</h1>
+        <h2>Configure your Splunk deployment</h2>        
+          <ul>
+            <li> Create HEC token and settings, with the same on all Splunk platform data injection nodes in your environment (indexers and heavy forwarders). </li>
+            <li> (Optional) When creating a HEC token, enable indexer acknowledgement in order to prevent potential data loss. <strong>Note:</strong> If indexer acknowledgement is enabled, set ackIdleCleanup to true in inputs.conf
+
+</li>
+          </ul>        
+        <h2>Install Splunk Connect for Kafka</h2>
+          <ol>
+            <li> <a target="_blank" href="https://splunkbase.splunk.com/app/3862/"> Download Splunk Connect for Kafka from Splunkbase</a>. </li>
+            <li> Start your Apache Kafka cluster, and confirm it is running. </li>
+            <li> (Optional) Create a folder to store your Kafka Connect connectors, if you have not done so already. </li>
+            <li> Copy the downloaded Splunk Kafka Connect file onto every host in the directory that contains your Kafka Connect connectors. For example, <code>/opt/connectors/splunk-kafka-connect</code> </li>
+            <li> Navigate to your <code>/$KAFKA_CONNECT_HOME/config/</code> directory, and create a properties file called <code>connect-distributed.properties</code>, if you have not done so already. </li>
+            <li> Update the contents of the <code>connect-distributed.properties</code> file with the below information:
+                  <p>
+<pre>#These settings may already be configured if you have deployed a connector in your Kafka Connect Environment
+bootstrap.servers=&lt;BOOTSTRAP_SERVERS&gt;
+plugin.path=&lt;PLUGIN_PATH&gt;
+
+#Required configurations for Splunk Kafka Connect
+key.converter=org.apache.kafka.connect.storage.StringConverter
+value.converter=org.apache.kafka.connect.storage.StringConverter
+key.converter.schemas.enable=false
+value.converter.schemas.enable=false
+internal.key.converter=org.apache.kafka.connect.json.JsonConverter
+internal.value.converter=org.apache.kafka.connect.json.JsonConverter
+internal.key.converter.schemas.enable=false
+internal.value.converter.schemas.enable=false
+offset.flush.interval.ms=10000
+
+#Recommended configurations for Splunk Kafka Connect
+group.id=kafka-connect-splunk-hec-sink
+config.storage.topic=__kafka-connect-splunk-task-configs
+config.storage.replication.factor=3
+offset.storage.topic=__kafka-connect-splunk-offsets
+offset.storage.replication.factor=3
+offset.storage.partitions=25
+status.storage.topic=__kafka-connect-splunk-statuses
+status.storage.replication.factor=3
+status.storage.partitions=5</pre>
+                  </p>
+            </li>
+            <li> Verify that you have made the above required configuration updates to your <code>connect-distributed.properties</code> file. </li>
+            <li> Modify <code>&lt;BOOTSTRAP_SERVERS&gt;</code> to point to one of your Kafka brokers. For example, <code>localhost:9092</code>. </li>
+            <li> Modify <code>&lt;PLUGIN_PATH&gt;</code> to point to the top level directory where you are storing your connectors. For example, <code>/opt/connectors</code>.
+                <p>
+                    <strong> Note: </strong>If you are running Kafka version 0.10.x, <code>&lt;PLUGIN_PATH&gt;</code> is not a valid configuration property. To make the connector visible to Kafka Connect, the <code>connectors</code> directory must be added to the <code>classpath</code>. For example, <code>export CLASSPATH=/opt/connectors/*</code>.
+                </p>
+            </li>
+            <li> Run <code>$KAFKA_CONNECT_HOME/bin/connect-distributed.sh $KAFKA_CONNECT_HOME/config/connect-distributed.properties</code> to start Kafka Connect or restart Kafka Connect. </li>
+            <li> Validate your connector deployment by running the following command.
+                <pre>curl http://&lt;KAFKA_CONNECT_HOST&gt;:8083/connector-plugins </pre>
+            <p>
+            Response should contain an entry named <code>com.splunk.kafka.connect.SplunkSinkConnector</code>
+            </p>
+            </li>
+          </ol>
+        <h2>Configure Splunk Connect for Kafka</h2>
+          <ol>
+            <li> Start Kafka Connect, if it is not already running with <code>$KAFKA_CONNECT_HOME/bin/connect-distributed.sh $KAFKA_CONNECT_HOME/config/connect-distributed.properties</code></li>
+            <li> Run the following command to create connector tasks. Adjust topics to set the topic, and <code>splunk.hec.token</code> to set your HEC token.
+<pre>curl &lt;KAFKA_CONNECT_HOST&gt;:8083/connectors -X POST -H "Content-Type: application/json" -d '{
+"name": "&lt;SPLUNK_KAFKA_CONNECTOR_NAME&gt;",
+"config": {
+   "connector.class": "com.splunk.kafka.connect.SplunkSinkConnector",
+   "tasks.max": "&lt;NUM_OF_TASKS&gt;",
+   "topics":"&lt;KAFKA_TOPICS&gt;",
+   "splunk.hec.uri": "&lt;SPLUNK_HEC_URIS&gt;",
+   "splunk.hec.token": "&lt;HEC_TOKEN&gt;",
+   "splunk.hec.ack.enabled": "&lt;TRUE|FALSE&gt;",
+   "splunk.hec.ssl.validate.certs": "&lt;TRUE|FALSE&gt;"
+  }
+}'
+</pre> 
+            
+            <p>Ensure your deployment's indexer acknowledgement configurations that are used in the rest call (<code>splunk.hec.ack.enabled</code>) match those defined for the target HEC token.</p></li>
+            <li>Verify that data is flowing into your Splunk platform instance by searching your indexers for Kafka events.</li>
+          </ol>
+        <h1>Resources</h1>
+          <ul>
+              <li><a target="_blank" href="https://splunkbase.splunk.com/app/3862/"> Splunk Connect for Kafka on Splunkbase</a></li>
+              <li><a target="_blank" href="http://docs.splunk.com/Documentation/KafkaConnect/0.0.1/User/About">Splunk Connect for Kafka Documentation</a></li>
+          </ul>
+        </html>
+    </panel>
+  </row>
+</dashboard>

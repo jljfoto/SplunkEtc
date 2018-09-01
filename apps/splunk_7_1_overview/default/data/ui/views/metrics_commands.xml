@@ -1,0 +1,179 @@
+<form>
+  <label>Metrics SPL Commands</label>
+  <description>New SPL commands specifically geared at working with metrics data.</description>
+  <fieldset submitButton="false" autoRun="true"></fieldset>
+ <search id="check_for_data">
+   <query>| mcatalog values(metric_name) WHERE index=car_data | mvexpand count</query>
+   <earliest>0</earliest>
+   <latest></latest>
+   <progress>
+     <condition match="'job.resultCount' > 0">
+       <set token="is_data_installed">true</set>
+     </condition>
+     <condition>
+       <unset token="is_data_installed"></unset>
+     </condition>
+   </progress>
+ </search>
+  <row>
+    <panel>
+      <html>
+        <h2>mstats</h2>
+        <p>Mstats is the main command to query the metrics store. Use this to performantly query aggregates and aggregated time series for measurements collected over time. Use <em>timechart</em> to create a chart to visualize the aggregates.</p>
+        <p>
+          <h3>Example</h3>
+          <pre>| mstats avg(_value) as "Avg" WHERE metric_name="interface.if_packets.rx" span=10s
+| timechart first("Avg") as "Avg" span=10s</pre>
+        </p>
+        <div>
+          <img src="/static/app/splunk_7_0_overview/images/mstats.png" width="100%"/>
+        </div>
+      </html>
+    </panel>
+    <panel>
+      <html>
+        <h2>mcatalog</h2>
+        <p>Mcatalog is used to query the metrics store for available metrics and dimensions. Note that mcatalog is experimental and not a fully supported command at this time.</p>
+        <p>
+          <h3>Examples</h3>
+          <strong>Get a list of all existing metrics.</strong>
+          <pre>| mcatalog values(metric_name) WHERE index=ops</pre>
+          <strong>Query all dimensions for a particular metric.</strong>
+          <pre>| mcatalog values(_dims) WHERE metric_name="interface.if_packets.rx"</pre>
+          <strong>Query all existing values for an existing dimension.</strong> (here: host)
+          <pre>| mcatalog values(host) WHERE metric_name="interface.if_packets.rx"</pre>
+        </p>
+      </html>
+    </panel>
+  </row>
+  <row rejects="$is_data_installed$">
+    <panel>
+      <html>
+        <h2>Live example</h2>
+        <p>For this example to work, you need to load metrics events into the included car_data index (*Note it must be this index for the dashboard to work - If you have a distributed environment you may need to copy the index to your indexers). Follow the steps below to load the sample data.</p>
+        <ol>
+          <li>Download <a href="https://splunk.app.box.com/v/7x-car-metrics-sample" target="_blank">metrics_data_car_race.zip</a> to a working directory.</li>
+          <li>Select "Add Data" from the Splunk settings menu.</li>
+          <li>Click on the "Upload" icon</li>
+          <li>Upload the <code>metrics_data_car_race.zip</code> zip file, click next to skip the preview</li>
+          <li>Set sourcetype and index:
+            <ol type="a">
+              <li>Click on "Select" to choose a custom sourcetype</li>
+              <li>Set sourcetype <code>metrics_csv</code></li>
+              <li>Set index to <code>car_data</code></li>
+            </ol>
+          </li>
+          <li>Click on "Review"</li>
+          <li>Click on "Submit" to upload the file</li>
+          <li>Once the data is indexed, you can click on "Start Searching". The query should show a count for <code>584232</code> metrics events</li>
+          <li>Once done, refresh the dashboard. You should see sample queries and graphs replace the image as shown below:<br/>
+          <div><img src="/static/app/splunk_7_0_overview/images/metric_example_dashboard.png" width="100%"/></div>
+          </li>
+        </ol>
+      </html>
+    </panel>
+  </row>    
+  <row depends="$is_data_installed$">
+    <panel>
+      <title>Metrics example</title>
+      <input type="dropdown" token="metric_name" searchWhenChanged="true">
+        <label>Metric</label>
+        <default>car.speed</default>
+        <initialValue>car.speed</initialValue>
+        <fieldForLabel>metric</fieldForLabel>
+        <fieldForValue>metric</fieldForValue>
+        <search>
+          <query>| mcatalog values(metric_name) AS metric WHERE index=car_data | mvexpand metric</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+      </input>
+      <input type="dropdown" token="driver_id" searchWhenChanged="true">
+        <label>Driver</label>
+        <fieldForLabel>Driver</fieldForLabel>
+        <fieldForValue>driver_id</fieldForValue>
+        <search>
+          <query>| mcatalog values(driver_id) AS driver_id WHERE index=car_data | mvexpand driver_id | lookup drivers driver_id OUTPUT Driver</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <choice value="*">All</choice>
+        <default>*</default>
+        <initialValue>*</initialValue>
+      </input>
+      <input type="dropdown" token="span">
+        <label>span</label>
+        <choice value="1s">1s</choice>
+        <choice value="5s">5s</choice>
+        <choice value="15s">15s</choice>
+        <choice value="1m">1m</choice>
+        <choice value="2m">2m</choice>
+        <choice value="5m">5m</choice>
+        <choice value="15m">15m</choice>
+        <choice value="30m">30m</choice>
+        <choice value="1h">1h</choice>
+        <default>1m</default>
+        <initialValue>1m</initialValue>
+      </input>
+      <chart>
+        <search>
+          <query>| mstats avg(_value) prestats=t WHERE metric_name="$metric_name$" AND driver_id="$driver_id$" span=$span$ BY car_ip
+| timechart avg(_value) AS speed span=$span$ BY car_ip</query>
+          <earliest>0</earliest>
+          <latest></latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.abbreviation">none</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.abbreviation">none</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.abbreviation">none</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.mode">seriesCompare</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.lineWidth">1</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Explanation of queries driving the left panel</title>
+      <html>
+        <h3>Query for Metric Input</h3>
+        <p>This query lists all metric names that are available in the <code>car_data</code> index.</p>
+        <pre>| mcatalog values(metric_name) AS metric WHERE index=car_data 
+| mvexpand metric</pre>
+        <h3>Query for Driver Input</h3>
+        <p>The driver list shows how to enrich metric (dimension) data with information from a lookup. The dimensions provide an identifier (i.e. <code>driver_id</code>), which allows to look up driver names. The list is generated by querying all dimension values for the <code>driver_id</code> dimension.</p>
+        <pre>| mcatalog values(driver_id) AS driver_id 
+  WHERE index=car_data AND metric_name=car.speed 
+| mvexpand driver_id 
+| lookup drivers driver_id OUTPUT Driver</pre>
+        <h3>Query for Line Chart</h3>
+        <pre>| mstats avg(_value) prestats=t WHERE metric_name="$metric_name$" AND driver_id="$driver_id$" span=$span$ BY car_ip
+| timechart avg(_value) AS speed span=$span$ BY car_ip</pre>
+      </html>
+    </panel>
+  </row>
+</form>

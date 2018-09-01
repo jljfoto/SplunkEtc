@@ -1,0 +1,58 @@
+<dashboard>
+  <label>Metrics Enhancements</label>
+  <description>Performance improvements and new SPL commands</description>
+  <row>
+    <panel>
+      <html>
+        <h3>Overview</h3>
+        <p>Splunk Enterprise 7.0 introduced Metrics. A Metrics Store (msidx v1) provides the ability to ingest and store metric measurements at scale, and the mstats command (tstats equivalent for Metrics) can be used for both historical and real-time searches
+
+        </p>
+
+        <p>With Splunk Enterprise 7.1, we are introducing</p>
+        <ul>
+            <li>New and improved Metrics store (msidx v2)</li>
+            <li>New SPL commands</li>
+            <ul>
+                <li>Enhanced mstats command</li>
+                <li>mcollect command</li>
+            </ul>
+        </ul>
+
+        <br/>
+
+        <h4>New and Improved Metrics Store (msidx v2):</h4>
+        <p>WWith msidx v1, we stored the measurements (Metrics events) in the order in which they arrived. With msidx v2 we co-locate time-series measurements, which offers a huge performance improvement, in the order of 5-10x faster searches.</p>
+
+        <br/>
+
+        <p>New SPL Commands:</p>
+        
+        <h3>1. Improved mstats command</h3>
+            With 7.0, we were able to perform multiple aggregations on one measure in one search.
+
+            <pre>| mstats avg(_value) AS cpu WHERE metric_name=cpu.user.value AND index=foo span=10s
+| appendcols [
+| mstats max(_value) AS latency AS avg_cpu WHERE metric_name=app.request.latency AND index=foo span=10s ]</pre>
+
+            With 7.1, we will be able to perform multiple aggregations on <u>multiple</u> measures in one search.
+
+            <pre>| mstats avg(cpu.user.value) AS cpu max(app.request.latency)  AS latency WHERE index=foo span=10s</pre>
+
+            <br/>
+            <div style="margin-left:30px">
+                <img src="/static/app/splunk_7_1_overview/images/mstats_cmd.png" style="margin: 20px 0" width="1000px"/>
+            </div>
+            <br/>
+
+            <h3>2. New mcollect command</h3>
+            One of the common usecases is to be able to extract metrics embedded in log events. The mcollect command helps achieve this at search time. The mcollect command takes the data in the log index and extracts and transforms this data into a format supported by the metrics index. Please Note: You'll need to create a new metrics index before using mcollect.
+
+            You can read more about mcollect command here.
+            <pre> http://docs.splunk.com/Documentation/Splunk/7.1.0/SearchReference/Mcollect </pre>
+        
+
+        </html>
+    </panel>
+  </row>
+</dashboard>

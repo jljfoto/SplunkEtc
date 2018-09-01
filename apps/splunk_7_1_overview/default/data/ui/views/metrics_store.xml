@@ -1,0 +1,66 @@
+<dashboard>
+  <label>Metrics Store</label>
+  <description>New data store for native support of metrics data.</description>
+  <row>
+    <panel> 
+      <html>
+      	<p><strong>Splunk now natively supports metrics!</strong></p>
+      	<p>Most parts of an IT system emit metrics, from infrastructure to application performance metrics. Likewise, sensors and other devices use metrics to provide a degree of observability. Splunk now natively supports metrics as a first class data type, with a primary focus on scalability and performance.</p>
+      	<p>
+      	<h3>Metrics Characteristics</h3>
+		<ul>
+			<li>In contrast to logs, metrics are ingested as structured data in an optimized metrics index.</li>
+			<li>Metrics can be used in monitoring, analysis, and investigation use cases.</li>
+			<li>The main way to interact with metrics in Splunk is to run aggregation queries (such as avg, sum, or percentile) in SPL. To that end, Splunk introduces <strong>a custom search command</strong>, <code>mstats</code>. Both <code>mstats</code> and the catalog SPL command <code>mcatalog</code> are described in <a href="metrics_commands">their own page</a>.
+			</li>
+			<li>Because Splunk provides a single platform for logs and metrics, it's easy to correlate between the two data types, for example using <a href="event_annotations">Event Annotations</a>, or create monitoring dashboards using both logs and metrics.
+			</li> 
+		</ul>
+      	</p>
+      </html>
+    </panel>
+    <panel> 
+      <html>
+		<h3>Anatomy of a metrics index</h3>
+		<table>
+			<thead>
+				<tr>
+					<th style="text-align:left">Field</th>
+					<th style="text-align:left">Required</th>
+					<th style="text-align:left">Description</th>
+					<th style="text-align:left">Example</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>metric_name</td>
+					<td>Yes</td>
+					<td>The metric name.</td>
+					<td>os.cpu.user</td>
+				</tr>
+				<tr>
+					<td>_time</td>
+					<td>Yes</td>
+					<td>The timestamp of the metric in UNIX time notation.</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>_value</td>
+					<td>Yes</td>
+					<td>The numeric value of the metric.</td>
+					<td>41.1234</td>
+				</tr>
+				<tr>
+					<td>&lt;dimension A&gt;...&lt;dimension Z&gt;</td>
+					<td>No</td>
+					<td>An arbitrary number of dimensions, each as a separate field.</td>
+					<td><strong>Field:</strong> ip; <strong>Value:</strong> 10.2.1.166</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>Apart from these fields, each event is also assigned host, source, sourcetype, and index, just like with Events based indexes.</p> 
+      </html>
+    </panel>
+  </row>
+
+</dashboard>

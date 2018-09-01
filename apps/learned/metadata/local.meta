@@ -1,0 +1,194 @@
+[props/first_install-too_small]
+owner = nobody
+version = 6.6.1
+modtime = 1497035071.557876000
+
+[props/splunkd_stdout-too_small]
+owner = nobody
+version = 6.6.1
+modtime = 1497035071.631004000
+
+[props/export_metrics-too_small]
+owner = nobody
+version = 6.6.1
+modtime = 1497035081.521302000
+
+[props/haversine-too_small]
+owner = nobody
+version = 7.0.0
+modtime = 1510082044.199336000
+
+[props/splunkd_stdout-3]
+owner = nobody
+version = 7.0.0
+modtime = 1510082381.616640000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Fsplunkd_stdout.log_Tue_Nov__7_11%3A19%3A41_2017_2066841095]
+owner = nobody
+version = 7.0.0
+modtime = 1510082381.881416000
+
+[props/mlspl-too_small]
+owner = nobody
+version = 7.0.0
+modtime = 1510082469.870765000
+
+[props/browsers_app-too_small]
+owner = nobody
+version = 7.0.0
+modtime = 1517342924.853323000
+
+[props/subject_list-too_small]
+owner = admin
+version = 7.0.2
+modtime = 1520769140.323723000
+
+[props/splunk_archiver-too_small]
+owner = nobody
+version = 7.0.2
+modtime = 1520770621.338546000
+
+[props/splunk_archiver-2]
+owner = nobody
+version = 7.0.2
+modtime = 1521685443.593718000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Fsplunk_archiver.log_Wed_Mar_21_19%3A24%3A03_2018_874836544]
+owner = nobody
+version = 7.0.2
+modtime = 1521685443.854357000
+
+[props/fitbit-too_small]
+owner = nobody
+version = 7.0.2
+modtime = 1523763683.256767000
+
+[props/lookup_editor_controller-too_small]
+owner = nobody
+version = 7.0.3
+modtime = 1525543972.430934000
+
+[props/waitomo-too_small]
+owner = nobody
+version = 7.0.3
+modtime = 1525544277.543680000
+
+[props/em_entity_manager-too_small]
+owner = nobody
+version = 7.0.3
+modtime = 1525544280.498122000
+
+[props/waitomo-2]
+owner = nobody
+version = 7.1.0
+modtime = 1525549913.878082000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Fwaitomo.log_Sat_May__5_12%3A51%3A53_2018_1663579665]
+owner = nobody
+version = 7.1.0
+modtime = 1525549914.259487000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Fwaitomo.log_Sat_May__5_12%3A51%3A54_2018_1256858902]
+owner = nobody
+version = 7.1.0
+modtime = 1525549914.590932000
+
+[props/em_entity_manager-2]
+owner = nobody
+version = 7.1.0
+modtime = 1525549916.957497000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Fem_entity_manager.log_Sat_May__5_12%3A51%3A57_2018_1344034444]
+owner = nobody
+version = 7.1.0
+modtime = 1525549917.359444000
+
+[props/splunk_instrumentation-too_small]
+owner = nobody
+version = 7.1.0
+modtime = 1525549937.040443000
+
+[props/alert_manager_migration-too_small]
+owner = nobody
+version = 7.1.0
+modtime = 1525956403.030802000
+
+[props/alert_manager_apimanager-too_small]
+owner = nobody
+version = 7.1.0
+modtime = 1525956403.190301000
+
+[props/alert_manager_csvlookup-too_small]
+owner = nobody
+version = 7.1.0
+modtime = 1525956403.296074000
+
+[props/alert_manager_eventhandler-too_small]
+owner = nobody
+version = 7.1.0
+modtime = 1525956403.439290000
+
+[props/alert_manager_scheduler-too_small]
+owner = nobody
+version = 7.1.0
+modtime = 1525956403.538107000
+
+[props/alert_manager_suppression_helper-too_small]
+owner = nobody
+version = 7.1.0
+modtime = 1525956403.616177000
+
+[props/alert_manager_incidentcontext-too_small]
+owner = nobody
+version = 7.1.0
+modtime = 1525956403.733450000
+
+[props/alert_manager_notifications-too_small]
+owner = nobody
+version = 7.1.0
+modtime = 1525956403.861181000
+
+[props/alert_manager_scheduler-2]
+owner = nobody
+version = 7.1.0
+modtime = 1525969883.876319000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Falert_manager_scheduler.log_Thu_May_10_09%3A31%3A23_2018_2036283648]
+owner = nobody
+version = 7.1.0
+modtime = 1525969884.124646000
+
+[props/df_out-too_small]
+owner = admin
+version = 7.1.0
+modtime = 1526200146.818347000
+
+[props/fitbit-4]
+owner = nobody
+version = 7.1.1
+modtime = 1527338515.543141000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Ffitbit.log_Sat_May_26_05%3A41%3A55_2018_1529980833]
+owner = nobody
+version = 7.1.1
+modtime = 1527338516.437241000
+
+[props/em_entity_manager.log]
+owner = nobody
+version = 7.1.1
+modtime = 1529575602.934451000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Fem_entity_manager.log.1_Thu_Jun_21_03%3A06%3A43_2018_585545786]
+owner = nobody
+version = 7.1.1
+modtime = 1529575603.203197000
+
+[props/fitbit-5]
+owner = nobody
+version = 7.1.1
+modtime = 1533889328.023191000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Ffitbit.log_Fri_Aug_10_01%3A22%3A08_2018_1643100158]
+owner = nobody
+version = 7.1.1
+modtime = 1533889328.211012000

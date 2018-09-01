@@ -1,0 +1,118 @@
+{
+    "displayName": "Search Browser History", 
+    "description": "", 
+    "objectSummary": {
+        "Event-Based": 2, 
+        "Search-Based": 0, 
+        "Transaction-Based": 0, 
+        "Interface Implementations": 0, 
+        "Interfaces": 0
+    }, 
+    "objects": [
+        {
+            "displayName": "Browser History", 
+            "objectName": "Browser_History", 
+            "constraints": [
+                {
+                    "search": "index=browsers sourcetype=history"
+                }
+            ], 
+            "comment": "", 
+            "parentName": "BaseEvent", 
+            "calculations": [], 
+            "fields": [
+                {
+                    "fieldName": "browser", 
+                    "displayName": "browser", 
+                    "comment": "", 
+                    "type": "string", 
+                    "required": false, 
+                    "hidden": false, 
+                    "multivalue": false
+                }, 
+                {
+                    "fieldName": "os_user", 
+                    "displayName": "os_user", 
+                    "comment": "", 
+                    "type": "string", 
+                    "required": false, 
+                    "hidden": false, 
+                    "multivalue": false
+                }, 
+                {
+                    "fieldName": "title", 
+                    "displayName": "title", 
+                    "comment": "", 
+                    "type": "string", 
+                    "required": false, 
+                    "hidden": false, 
+                    "multivalue": false
+                }, 
+                {
+                    "fieldName": "url", 
+                    "displayName": "url", 
+                    "comment": "", 
+                    "type": "string", 
+                    "required": false, 
+                    "hidden": false, 
+                    "multivalue": false
+                }, 
+                {
+                    "fieldName": "google_search_string", 
+                    "displayName": "Google Search String", 
+                    "comment": "", 
+                    "type": "string", 
+                    "required": false, 
+                    "hidden": false, 
+                    "multivalue": false
+                }, 
+                {
+                    "fieldName": "domain", 
+                    "displayName": "domain", 
+                    "comment": "", 
+                    "type": "string", 
+                    "required": false, 
+                    "hidden": false, 
+                    "multivalue": false
+                }
+            ]
+        }, 
+        {
+            "displayName": "Browser Bookmarks", 
+            "objectName": "Browser_Bookmarks", 
+            "constraints": [
+                {
+                    "search": "index=browsers sourcetype=bookmarks "
+                }
+            ], 
+            "comment": "", 
+            "parentName": "BaseEvent", 
+            "calculations": [], 
+            "fields": [
+                {
+                    "fieldName": "title", 
+                    "displayName": "title", 
+                    "comment": "", 
+                    "type": "string", 
+                    "required": false, 
+                    "hidden": false, 
+                    "multivalue": false
+                }, 
+                {
+                    "fieldName": "url", 
+                    "displayName": "url", 
+                    "comment": "", 
+                    "type": "string", 
+                    "required": false, 
+                    "hidden": false, 
+                    "multivalue": false
+                }
+            ]
+        }
+    ], 
+    "modelName": "Search_Browser_History", 
+    "objectNameList": [
+        "Browser_History", 
+        "Browser_Bookmarks"
+    ]
+}

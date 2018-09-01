@@ -1,0 +1,26 @@
+[app/install/install_source_checksum]
+version = 7.0.0
+modtime = 1517342923.458909000
+
+[browsers/default]
+owner = admin
+version = 7.0.0
+modtime = 1517342924.727982000
+
+[browsers/Chrome_1]
+owner = admin
+version = 7.1.1
+modtime = 1534235098.473967000
+
+[browsers/Safari_1]
+owner = admin
+version = 7.1.1
+modtime = 1534235098.507625000
+
+[views/downloads]
+version = 7.0.0
+modtime = 1517343284.021228000
+
+[indexes/browsers]
+version = 7.0.2
+modtime = 1523763357.816329000

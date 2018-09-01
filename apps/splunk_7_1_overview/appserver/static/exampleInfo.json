@@ -1,0 +1,76 @@
+[
+{
+    "id": "metrics_v2",
+    "title": "Metrics Enhancements",
+    "short-description": "Performance improvements and new SPL commands.",
+    "category": "Platform"
+},
+
+{
+    "id": "new_visual_design",
+    "title": "Updated UI Look and Feel",
+    "short-description": "Modern look and feel to the Splunk Enterprise user interface.",
+    "category": "Platform"
+},
+{
+    "id": "mltk_updates",
+    "title": "Machine Learning Toolkit 3.1 and 3.2",
+    "short-description": "Introducing new pre-processing options FieldSelector, new clustering algorithm: X-Means, revamped Model and Experiment Management Framework and few other configuration options.",
+    "category": "Platform"
+},
+{
+    "id": "PW_mgmt",
+    "title": "Password Policy Management",
+    "short-description": "New controls for local passwords.",
+    "category": "Access Control"
+},
+
+{
+		"id": "proactive_splunk_monitoring",
+		"title": "Splunk Component Monitoring via REST Endpoints",
+		"short-description": "Proactively monitor health of Splunk components via REST endpoints",
+		"category": "Admin"
+	},
+
+{
+    "id": "rolling_upgrade",
+    "title": "Rolling upgrade of indexer cluster and search head cluster",
+    "short-description": "Rolling upgrade of indexer cluster and search head cluster with minimal search disruption",
+    "category": "Admin"
+},
+
+{
+    "id": "searchable_rolling_restart",
+    "title": "Searchable rolling restart of indexer cluster and search head cluster",
+    "short-description": "Rolling restart of indexer cluster and search head cluster members sequentially with minimal search disruption.",
+    "category": "Admin"
+},
+
+{
+    "id": "shc_manual_detention",
+    "title": "Manual detention of search head cluster member",
+    "short-description": "Remove search head cluster member gracefully by putting the member in manual detention to allow completion of in-progress searches. Any new scheduled searches are redirected to other search head cluster members.",
+    "category": "Admin"
+},
+
+{
+    "id": "kafka",
+    "title": "Splunk Connect for Kafka",
+    "short-description": "Scalable ingest for events and metrics from Apache Kafka into Splunk, using a new Kafka sink connector to Splunk.",
+    "category": "Data Ingestion"
+},
+
+{
+    "id": "kinesis",
+    "title": "AWS Kinesis Firehose integration",
+    "short-description": "Scalable ingest for events and metrics from AWS Kinesis to Splunk using Firehose integration.",
+    "category": "Data Ingestion"
+},
+  {
+    "id": "diag_ui",
+    "title": "Diagnostic UI",
+    "short-description": "User interface for generating diagnostic files from Splunk instances across a distributed deployment",
+    "category": "Admin"
+}
+
+]

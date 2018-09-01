@@ -1,0 +1,109 @@
+<dashboard>
+  <label>Searchable Rolling Restart</label>
+  <row>
+    <panel>
+      <html>
+        <p><strong>Description</strong></p>
+        <p>
+          Searchable rolling restart provides the ability to run searches with minimal/no interruption when rolling restart is triggered by administrative actions. Searchable rolling restart is available for both indexer clustering and search head clustering.
+        <ul>
+          <li> <a href="#ICrestart"> Indexer Cluster Searchable Rolling Restart </a></li>
+          <li> <a href="#SHCrestart"> Search Head Cluster Searchable Rolling Restart</a></li>
+        </ul>
+        </p>
+         <h2 id="ICrestart"> Indexer Cluster Searchable Rolling Restart  </h2>
+         <p><strong>Description </strong></p>
+         <ul>
+            <li> Runs rolling restart of the indexer cluster peers in searchable mode to minimize search impact </li> 
+            <li> Sequentially decommissions each cluster peer to complete in-progress searches and restarts the cluster peer </li>
+            <li> In-progress searches continue to get executed, within a configurable timeout </li>
+            <li> All scheduled and ad-hoc searches that can complete within configurable timeout run to completion</li>
+            <li> Historical scheduled searches that cannot complete within configurable timeout are retried, timed-out or optionally deferred </li>
+            <li> Real time and indexed real time scheduled searches continue to run with available cluster peers </li>
+            <li> In-progress ad-hoc searches that cannot complete within the configurable timeout are retried and in some cases, they may need to be explicitly retried by user </li> 
+            <li> New ad-hoc searches can be issued  </li> 
+            <li> Requires cluster master, cluster peers and search heads running on Splunk Enterprise 7.1.0 or higher </li>
+         </ul>
+         <p><strong>Use Cases</strong></p>
+          <ul>
+            <li> Deploy new apps through cluster master bundle push with minimal impact on end-user search experience </li>
+            <li> Run indexer cluster rolling restart with minimal impact on end-user search experience </li>
+          </ul>
+          <br/>
+         <p><strong>How to use</strong></p>
+          <h3> Run indexer cluster searchable rolling restart using CLI/REST </h3>
+          <ul>
+            <li> Set search_retry=true (search stanza in limits.conf) on SHs/SHC members configured to this indexer cluster </li>
+            <li> splunk rolling-restart cluster-peers -searchable true -decommission_force_timeout 180 -restart_inactivity_timeout 300 </li>
+            <li> curl -k -u admin:changed https://localhost:8089/services/cluster/master/control/control/restart?searchable=true -X POST </li>
+            <li> server.conf settings </li>
+              <ul>
+              <li> Cluster master: rolling_restart=searchable|searchable_force, decommission_force_timeout=180, restart_inactivity_timeout=300 </li>
+              <li> Cluster peers: decommission_search_jobs_wait_secs=180 </li>
+              </ul>
+            <li> Run rolling restart using UI </li>
+             <div style="margin-left:30px">
+               <img src="/static/app/splunk_7_1_overview/images/ic_rolling_restart1.png" style="margin: 20px 0" width="700px"/>
+               <br/>
+             </div>
+         </ul>
+         <br/>
+         <h3> View indexer cluster rolling restart state using CLI/UI </h3>
+          <ul>
+            <li> splunk show cluster-status </li>
+            <li> View rolling restart state using UI </li>
+             <div style="margin-left:30px">
+               <img src="/static/app/splunk_7_1_overview/images/ic_rolling_restart2.png" style="margin: 20px 0" width="700px"/>
+               <br/>
+             </div>
+         </ul>
+         <br/>
+         <br/>
+         <br/>
+         <br/>
+         <h2 id="SHCrestart"> Search Head Cluster Searchable Rolling Restart  </h2>
+         <p><strong>Description </strong></p>
+         <ul>
+            <li> Runs rolling restart of the SHC members in searchable mode to minimize search impact </li> 
+            <li> Sequentially puts each SHC member in manual detention to complete in-progress existing searches and restarts the SHC member </li>
+            <li> In-progress searches continue to be executed, within a configurable timeout </li>
+            <li> All scheduled and ad-hoc searches that can complete within configurable timeout run to completion</li>
+            <li> Historical scheduled searches that cannot complete within configurable timeout are retried on SHC members not in manual detention</li>
+            <li> Real time and indexed real time scheduled searches continue to run on SHC members not in manual detention</li>
+            <li> In-progress ad-hoc searches that cannot complete within the configurable timeout are impacted and need to be explicitly retried by user </li> 
+            <li> New ad-hoc searches can be run on SHC members not in manual detention </li> 
+            <li> Requires cluster master and search head cluster members running on Splunk Enterprise 7.1.0 or higher </li>
+         </ul>
+         <p><strong>Use Cases</strong></p>
+          <ul>
+            <li> Deploy new apps through SHC deployer bundle push with minimal impact on end-user search experience </li>
+            <li> Run SHC rolling restart with minimal impact on end-user search experience </li>
+          </ul>
+          <br/>
+         <p><strong>How to use</strong></p>
+          <h3> Run searchable rolling restart using CLI/REST </h3>
+          <ul>
+            <li> splunk rolling-restart shcluster-members -searchable true -decommission_search_jobs_wait_secs 180 </li>
+            <li> curl -k -u admin:changed https://localhost:8089/services/shcluster/captain/control/control/restart?searchable=true -X POST </li>
+            <li> server.conf settings: rolling_restart=searchable, decommission_search_jobs_wait_secs=180 </li>
+            <li> Run rolling restart using UI </li>
+             <div style="margin-left:30px">
+               <img src="/static/app/splunk_7_1_overview/images/shc_rolling_restart1.png" style="margin: 20px 0" width="700px"/>
+               <br/>
+             </div>
+         </ul>
+         <br/>
+         <h3> View rolling restart state using CLI/UI </h3>
+          <ul>
+            <li> splunk rolling-restart shcluster-members -status 1 </li>
+            <li> View rolling restart state using UI </li>
+             <div style="margin-left:30px">
+               <img src="/static/app/splunk_7_1_overview/images/shc_rolling_restart2.png" style="margin: 20px 0" width="700px"/>
+               <br/>
+             </div>
+         </ul>
+         <br/>
+        </html>
+    </panel>
+  </row>
+</dashboard>

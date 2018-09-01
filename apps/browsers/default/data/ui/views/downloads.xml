@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<form>
+  <label>Downloads</label>
+	<fieldset autoRun="true" submitButton="false">
+        <html>
+            Download activity
+        </html>
+    	<input type="dropdown" searchWhenChanged="true" token="user">
+        	<label>Select OS user</label>
+           	<populatingSavedSearch  fieldForValue="os_user" fieldForLabel="os_user">top users</populatingSavedSearch >
+           	<choice value="*">All</choice>
+            <default>*</default>
+    	</input>
+        
+        <input type="dropdown" searchWhenChanged="true" token="browser">
+        	<label>Select browser</label>
+           	<populatingSavedSearch fieldForValue="browser" fieldForLabel="browser">top browsers</populatingSavedSearch>
+           	<choice value="*">All</choice>
+            <default>*</default>
+    	</input>
+        
+        <input type="time" searchWhenChanged="true" />
+    </fieldset>
+
+    
+  <row>
+    <single>
+      <searchString>
+          index=browsers sourcetype="downloads" os_user="$user$" browser=$browser$ | stats sum(maxBytes) as total | eval total=total/1024/1024/1024 | eval total=round(total, 3)
+      </searchString>
+      <option name="classField">range</option>
+      <option name="afterLabel">GBytes</option>
+      <option name="beforeLabel">Total downloaded size:</option>
+    </single>      
+      
+    <table>
+      <title>Latest downloads</title>        
+      <searchTemplate>index=browsers sourcetype="downloads" os_user="$user$" browser=$browser$ | table target, _time</searchTemplate>
+      <option name="count">10</option>  
+      <option name="displayRowNumbers">false</option>
+    </table>
+      
+    <chart>
+        <title>File types</title>
+        <searchTemplate>index=browsers sourcetype="downloads" os_user="$user$" browser=$browser$ | rex field=target "(?i)[^\.]*\.(?P&lt;ext&gt;.{0,4})$" | timechart count by ext</searchTemplate>
+        <option name="charting.chart">column</option>
+    </chart>
+  </row>    
+    
+  
+</form>

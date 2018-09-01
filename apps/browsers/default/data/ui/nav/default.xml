@@ -1,0 +1,11 @@
+<nav color="#C8DEFA"> 
+  <view name="overview" default="true" />
+  <collection label="Statistics">
+    <view name="web_searches" />
+    <view name="downloads" />
+    <view name="bookmarks" />
+    <view name="local" />   
+  </collection> 
+  <view name="dashboard" />
+  <view name="data_models" />
+</nav>

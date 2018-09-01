@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+  <label>Web resources</label>
+  <fieldset autoRun="true" submitButton="false">
+    <html>Brief statistics on some popular web resources visited recently</html>
+    <input type="dropdown" searchWhenChanged="true" token="user">
+      <label>Select OS user</label>
+      <populatingSavedSearch fieldForValue="os_user" fieldForLabel="os_user">top users</populatingSavedSearch>
+      <choice value="*">All</choice>
+      <default>*</default>
+    </input>
+    <input type="dropdown" searchWhenChanged="true" token="browser">
+      <label>Select browser</label>
+      <populatingSavedSearch fieldForValue="browser" fieldForLabel="browser">top browsers</populatingSavedSearch>
+      <choice value="*">All</choice>
+      <default>*</default>
+    </input>
+    <input type="time" searchWhenChanged="true">
+      <default/>
+    </input>
+  </fieldset>
+  <row>
+    <table>
+      <title>Latest Google searches</title>
+      <searchTemplate>index=browsers sourcetype="history" os_user="$user$" browser=$browser$ google.com/search OR google.com/#q | dedup q | rename q as query | eval query=urldecode(query) | table query, _time</searchTemplate>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">false</option>
+    </table>
+    <chart>
+      <title>Some websites visited over time</title>
+      <searchTemplate>index=browsers sourcetype="history" os_user="$user$" browser=$browser$ url="*google.com/search*" | eval series="Google Search"
+            | append [search index=browsers sourcetype="history" os_user="$user$" browser=$browser$ url="*google.com/maps*" | eval series="Google Maps"
+	        | append [search index=browsers sourcetype="history" os_user="$user$" browser=$browser$ url="*youtube.com/watch*" | eval series="Youtube"
+            | append [search index=browsers sourcetype="history" os_user="$user$" browser=$browser$ url="http://www.amazon.com/*" | eval series="Amazon"
+            | append [search index=browsers sourcetype="history" os_user="$user$" browser=$browser$ url="*wikipedia.com*" | eval series="Wikipedia"
+            | append [search index=browsers sourcetype="history" os_user="$user$" browser=$browser$ url="*linkedin.com*" | eval series="LinkedIn"]
+              ]]]]
+              | timechart count by series</searchTemplate>
+      <option name="charting.chart">line</option>
+    </chart>
+  </row>
+  <row>
+    <table>
+      <searchTemplate>index=browsers sourcetype="history"  os_user="$user$" browser=$browser$ twitter.com/search |eval "Twitter Search"=urldecode(twitter_search_string) |dedup "Twitter Search" |table "Twitter Search", _time</searchTemplate>
+      <title>Latest Twitter Searches</title>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">false</option>
+    </table>
+    <table>
+      <searchTemplate>index=browsers sourcetype="history" os_user="$user$" browser=$browser$ (https://maps.google.com/ AND browser=firefox) OR (maps.google.com/maps AND browser=ie) OR https://www.google.com/maps/preview/place | eval "Map Search"=if(isnull(title),chrome_map_title,title) |dedup "Map Search", browser |table browser, "Map Search", _time</searchTemplate>
+      <title>Google Maps places</title>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">false</option>
+    </table>
+    <table>
+      <searchTemplate>index=browsers sourcetype="history" os_user="$user$" browser=$browser$ youtube.com/watch* | eval title=replace(title, " - YouTube","") | table title, _time</searchTemplate>
+      <title>Youtube videos</title>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">false</option>
+    </table>
+  </row>
+  <row>
+    <table>
+      <searchTemplate>index=browsers sourcetype="history" os_user="$user$" browser=$browser$ url="http://www.amazon.com*"  | rex field=title "(?i)Amazon\.com: (?P&lt;item&gt;.+)\:" |dedup item | table item, _time</searchTemplate>
+      <title>Amazon items</title>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">false</option>
+    </table>
+    <table>
+      <searchTemplate>index=browsers sourcetype="history" os_user="*" browser=$browser$ wikipedia.org | rex field=url "(?i)/wiki/(?P&lt;ewiki&gt;.+)" | rex field=ewiki mode=sed "s/\_/ /g" |search ewiki=*| eval wiki=urldecode(ewiki) | table wiki, _time</searchTemplate>
+      <title>Wikipedia articles</title>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">false</option>
+    </table>
+    <table>
+      <searchTemplate>index=browsers sourcetype="history" os_user="$user$" browser=$browser$ index=browsers sourcetype="history" linkedin.com/profile/view* | eval title=replace(title, "\| LinkedIn","") |search title=* | table title, _time</searchTemplate>
+      <title>LinkedIn profiles</title>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">false</option>
+    </table>
+  </row>
+</form>
