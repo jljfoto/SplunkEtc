@@ -92,9 +92,16 @@ modtime = 1534600153.301049000
 [views/blood_glucose]
 owner = admin
 version = 7.1.2
-modtime = 1535778841.799848000
+modtime = 1535817962.198114000
 
 [indexes/blood_sugar]
 owner = admin
 version = 7.1.2
 modtime = 1534909498.901615000
+
+[props/blood_sugar/EXTRACT-id%2Cdate_time%2Ctype%2Cglucose]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = admin
+version = 7.1.2
+modtime = 1535838301.950492000

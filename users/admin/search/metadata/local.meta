@@ -16,7 +16,7 @@ modtime = 1530404809.588230000
 
 [ui-prefs/search]
 version = 7.1.2
-modtime = 1535778351.348826000
+modtime = 1535817031.207442000
 
 [ui-tour/adddata-tour%3Aenterprise]
 version = 7.0.0
@@ -37,8 +37,3 @@ modtime = 1531081366.719663000
 [views/splunk_internal_events]
 version = 7.1.1
 modtime = 1527780279.994067000
-
-[props/blood_sugar/EXTRACT-id%2Cdate_time%2Ctype%2Cglucose]
-owner = admin
-version = 7.1.1
-modtime = 1534390229.060464000
