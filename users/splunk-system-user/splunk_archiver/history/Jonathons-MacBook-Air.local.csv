@@ -1,5 +1,4 @@
 sid,search,"splunk_server","_time","is_realtime","event_count","exec_time","result_count","scan_count",status,"total_run_time","__mv_sid","__mv_search","__mv_splunk_server","__mv__time","__mv_is_realtime","__mv_event_count","__mv_exec_time","__mv_result_count","__mv_scan_count","__mv_status","__mv_total_run_time"
-"1556536679.12502","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1556536679.180052",0,1,1556536679,1,0,canceled,"0.731",,,,,,,,,,,
 "1556540266.12509","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1556540266.522551",0,1,1556540266,1,0,canceled,"1.53",,,,,,,,,,,
 "1556543821.12584","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1556543821.725565",0,1,1556543821,1,0,canceled,"0.614",,,,,,,,,,,
 "1556547421.12635","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1556547421.931008",0,0,1556547422,0,0,canceled,"0.654",,,,,,,,,,,
@@ -999,3 +998,4 @@ sid,search,"splunk_server","_time","is_realtime","event_count","exec_time","resu
 "1560781021.818","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1560781021.758793",0,1,1560781021,1,0,canceled,"0.622",,,,,,,,,,,
 "1560784621.905","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1560784621.572170",0,1,1560784621,1,0,canceled,"0.5700000000000001",,,,,,,,,,,
 "1560788221.961","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1560788221.916143",0,1,1560788222,1,0,canceled,"0.717",,,,,,,,,,,
+"1560791821.1019","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1560791821.640165",0,,,,,,,,,,,,,,,,,
