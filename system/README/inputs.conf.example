@@ -1,4 +1,4 @@
-#   Version 7.1.2
+#   Version 7.3.0
 #
 # This is an example inputs.conf. Use this file to configure data inputs.
 #
@@ -95,7 +95,7 @@ connection_host = dns
 # while saving it.
 
 [splunktcptoken://tok1]
-token = $1$ifQTPTzHD/BA8VgKvVcgO1KQAtr3N1C8S/1uK3nAKIE9dd9e9g==
+token = $7$ifQTPTzHD/BA8VgKvVcgO1KQAtr3N1C8S/1uK3nAKIE9dd9e9g==
 
 # Set up Secure Sockets Layer (SSL):
 

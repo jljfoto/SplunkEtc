@@ -86,6 +86,9 @@
 		<processor name="regexreplacement" plugin="regexextractionprocessor">
 			<config></config>
 		</processor>
+		<processor name="metricschema" plugin="metricschemaprocessor">
+			<config></config>
+		</processor>
                 <processor name="annotator" plugin="annotatorprocessor">
 		           <config>
 		           </config>

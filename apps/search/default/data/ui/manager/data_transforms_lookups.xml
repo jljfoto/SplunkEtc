@@ -24,7 +24,7 @@
       <view name="list"/>
     </element>
 
-    <element name="spl-ctrl_type" type="select" label="Type">
+    <element name="type" type="select" label="Type">
       <view name="create"/>
       <view name="edit"/>
       <view name="list"/>
@@ -86,8 +86,8 @@
           <view name="list"/>
           <key name="exampleText">Create and manage &lt;a href="../../lookup-table-files"&gt;lookup table files&lt;/a&gt;.</key>
           <key name="requiredIfVisible" />
-          <key name="submitValueEdit">value if form_data.get('spl-ctrl_type')=='file' else None</key>
-          <key name="submitValueAdd">value if form_data.get('spl-ctrl_type')=='file' else None</key>
+          <key name="submitValueEdit">value if form_data.get('type')=='file' else None</key>
+          <key name="submitValueAdd">value if form_data.get('type')=='file' else None</key>
           <key name="processValueEdit">form_defaults.get('filename')</key>
           <key name="dynamicOptions" type="dict">
             <key name="keyName">title</key>
@@ -111,8 +111,8 @@
           <view name="edit"/>
           <view name="list"/>
           <key name="requiredIfVisible" />
-          <key name="submitValueEdit">value if form_data.get('spl-ctrl_type')=='external' else None</key>
-          <key name="submitValueAdd">value if form_data.get('spl-ctrl_type')=='external' else None</key>
+          <key name="submitValueEdit">value if form_data.get('type')=='external' else None</key>
+          <key name="submitValueAdd">value if form_data.get('type')=='external' else None</key>
           <key name="exampleText">Specify the command and arguments to invoke to perform lookups. The command must be a Python script located in $SPLUNK_HOME/etc/apps/app_name/bin or $SPLUNK_HOME/etc/searchscripts.</key>
         </element>
         <element name="spl-ctrl_ex_cmd_fields_list" type="textfield" label="Supported fields">
@@ -135,8 +135,8 @@
           <view name="create"/>
           <view name="edit"/>
           <view name="list"/>
-          <key name="submitValueEdit">value if form_data.get('spl-ctrl_type')=='kvstore' else None</key>
-          <key name="submitValueAdd">value if form_data.get('spl-ctrl_type')=='kvstore' else None</key>
+          <key name="submitValueEdit">value if form_data.get('type')=='kvstore' else None</key>
+          <key name="submitValueAdd">value if form_data.get('type')=='kvstore' else None</key>
           <key name="exampleText">Specify the collection name to use (as defined in collections.conf) for this lookup. Defaults to the lookup name.</key>
         </element>
         <element name="spl-ctrl_kvstore_fields_list" type="textfield" label="Supported fields">
@@ -161,8 +161,8 @@
           <view name="list"/>
           <key name="exampleText">Create and manage &lt;a href="../../lookup-table-files"&gt;lookup table files&lt;/a&gt;.</key>
           <key name="requiredIfVisible" />
-          <key name="submitValueEdit">value if form_data.get('spl-ctrl_type')=='geo' else None</key>
-          <key name="submitValueAdd">value if form_data.get('spl-ctrl_type')=='geo' else None</key>
+          <key name="submitValueEdit">value if form_data.get('type')=='geo' else None</key>
+          <key name="submitValueAdd">value if form_data.get('type')=='geo' else None</key>
           <key name="processValueEdit">form_defaults.get('filename')</key>
           <key name="dynamicOptions" type="dict">
             <key name="keyName">title</key>
@@ -210,23 +210,23 @@
       <view name="create"/>
       <view name="edit"/>
       <view name="list"/>
-      <key name="submitValueEdit">form_data.get('spl-ctrl_ex_cmd_fields_list') if form_data.get('spl-ctrl_type')=='external' else (form_data.get('spl-ctrl_kvstore_fields_list') if form_data.get('spl-ctrl_type')=='kvstore' else None)</key>
-      <key name="submitValueAdd">form_data.get('spl-ctrl_ex_cmd_fields_list') if form_data.get('spl-ctrl_type')=='external' else (form_data.get('spl-ctrl_kvstore_fields_list') if form_data.get('spl-ctrl_type')=='kvstore' else None)</key>
+      <key name="submitValueEdit">form_data.get('spl-ctrl_ex_cmd_fields_list') if form_data.get('type')=='external' else (form_data.get('spl-ctrl_kvstore_fields_list') if form_data.get('type')=='kvstore' else None)</key>
+      <key name="submitValueAdd">form_data.get('spl-ctrl_ex_cmd_fields_list') if form_data.get('type')=='external' else (form_data.get('spl-ctrl_kvstore_fields_list') if form_data.get('type')=='kvstore' else None)</key>
     </element>
 
     <element name="filename" type="hidden" label="Lookup file">
       <view name="create"/>
       <view name="edit"/>
       <view name="list"/>
-      <key name="submitValueEdit">form_data.get('spl-ctrl_file_filename') if form_data.get('spl-ctrl_type')=='file' else (form_data.get('spl-ctrl_geo_filename') if form_data.get('spl-ctrl_type')=='geo' else None)</key>
-      <key name="submitValueAdd">form_data.get('spl-ctrl_file_filename') if form_data.get('spl-ctrl_type')=='file' else (form_data.get('spl-ctrl_geo_filename') if form_data.get('spl-ctrl_type')=='geo' else None)</key>
+      <key name="submitValueEdit">form_data.get('spl-ctrl_file_filename') if form_data.get('type')=='file' else (form_data.get('spl-ctrl_geo_filename') if form_data.get('type')=='geo' else None)</key>
+      <key name="submitValueAdd">form_data.get('spl-ctrl_file_filename') if form_data.get('type')=='file' else (form_data.get('spl-ctrl_geo_filename') if form_data.get('type')=='geo' else None)</key>
     </element>
 
     <element name="external_type" type="hidden" label="External Type">
       <view name="create"/>
       <view name="edit"/>
-      <key name="submitValueEdit">"geo" if form_data.get('spl-ctrl_type')=='geo' else ("kvstore" if form_data.get('spl-ctrl_type')=='kvstore' else None)</key>
-      <key name="submitValueAdd">"geo" if form_data.get('spl-ctrl_type')=='geo' else ("kvstore" if form_data.get('spl-ctrl_type')=='kvstore' else None)</key>
+      <key name="submitValueEdit">"geo" if form_data.get('type')=='geo' else ("kvstore" if form_data.get('type')=='kvstore' else None)</key>
+      <key name="submitValueAdd">"geo" if form_data.get('type')=='geo' else ("kvstore" if form_data.get('type')=='kvstore' else None)</key>
     </element>
 
     <element name="spl-ctrl_show_time_options" type="checkbox" label="Configure time-based lookup">
@@ -311,7 +311,7 @@
           <view name="edit"/>
           <key name="submitValueEdit">value if form_data.get('spl-ctrl_show_advanced_options')=='1' else None</key>
           <key name="submitValueAdd">value if form_data.get('spl-ctrl_show_advanced_options')=='1' else None</key>
-          <key name="exampleText">Enter a number from 1-1000 to specify the maximum number of matches for each lookup value. If time-based, default is 1; otherwise, default is 1000.</key>
+          <key name="exampleText">Enter a number from 1-1000 to specify the maximum number of matches for each lookup value. If time-based, default is 1; otherwise, default is 100.</key>
         </element>
         <element name="default_match" type="textfield" label="Default matches">
           <view name="create"/>
@@ -326,36 +326,36 @@
           <view name="create"/>
           <key name="processValueAdd">1</key>
           <key name="processValueEdit">form_defaults.get('case_sensitive_match', 1)</key>
-          <key name="submitValueEdit">value if form_data.get('spl-ctrl_type')!='kvstore' else None</key>
-          <key name="submitValueAdd">value if form_data.get('spl-ctrl_type')!='kvstore' else None</key>
+          <key name="submitValueEdit">value if form_data.get('type')!='kvstore' else None</key>
+          <key name="submitValueAdd">value if form_data.get('type')!='kvstore' else None</key>
           <key name="exampleText">Perform case sensitive matching for all lookup table fields.</key>
         </element>
         <element name="batch_index_query" type="checkbox" label="Batch index query">
           <view name="edit"/>
           <view name="create"/>
-          <key name="submitValueEdit">value if form_data.get('spl-ctrl_type')=='file' else None</key>
-          <key name="submitValueAdd">value if form_data.get('spl-ctrl_type')=='file' else None</key>
+          <key name="submitValueEdit">value if form_data.get('type')=='file' else None</key>
+          <key name="submitValueAdd">value if form_data.get('type')=='file' else None</key>
           <key name="exampleText">If you are working with a large lookup file, select this to improve search performance by grouping index queries.</key>
         </element>
         <element name="allow_caching" type="checkbox" label="Allow caching">
           <view name="edit"/>
           <view name="create"/>
           <key name="processValueAdd">1</key>
-          <key name="submitValueEdit">value if form_data.get('spl-ctrl_type')=='external' else None</key>
-          <key name="submitValueAdd">value if form_data.get('spl-ctrl_type')=='external' else None</key>
+          <key name="submitValueEdit">value if form_data.get('type')=='external' else None</key>
+          <key name="submitValueAdd">value if form_data.get('type')=='external' else None</key>
           <key name="exampleText">Allow output from lookup scripts to be cached.</key>
         </element>
         <element name="max_ext_batch" type="textfield" label="Maximum external batch">
           <view name="create"/>
           <view name="edit"/>
-          <key name="submitValueEdit">value if form_data.get('spl-ctrl_type')=='kvstore' else None</key>
-          <key name="submitValueAdd">value if form_data.get('spl-ctrl_type')=='kvstore' else None</key>
+          <key name="submitValueEdit">value if form_data.get('type')=='kvstore' else None</key>
+          <key name="submitValueAdd">value if form_data.get('type')=='kvstore' else None</key>
           <key name="exampleText">The maximum size of external batch (range 1 - 1000).</key>
         </element>
         <element name="match_type" type="textfield" label="Match type">
           <view name="create"/>
           <view name="edit"/>
-          <key name="exampleText"><![CDATA[Optionally set up non-exact matching of a comma-and-space-delimited field list. Format is &lt;match_type>(&lt;field_name1>, &lt;field_name2>,...&lt;field_nameN>). Available values for match_type are WILDCARD and CIDR.]]></key>
+          <key name="exampleText"><![CDATA[Optionally set up non-exact matching of a comma-and-space-delimited field list. Format is &lt;match_type>(&lt;field_name>). Available values for match_type are WILDCARD and CIDR.]]></key>
         </element>
         <element name="filter" type="textfield" label="Filter lookup">
           <view name="create"/>

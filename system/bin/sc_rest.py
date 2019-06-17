@@ -102,14 +102,14 @@ class BaseRestHandler(admin.MConfigHandler):
                 ent['perms.write'] = [None]
                 
                 '''                
-                if meta.has_key('perms'):
+                if 'perms' in meta:
                     perms = meta['perms']
                     
                     # SPL-67185
                     if perms and isinstance(perms, dict):
-                        if perms.has_key('write'):
+                        if 'write' in perms:
                             ent['perms.write'] = perms['write'] 
-                        if perms.has_key('read'):
+                        if 'read' in perms:
                             ent['perms.read'] = perms['read']
                 '''
                 

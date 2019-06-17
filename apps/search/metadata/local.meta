@@ -91,8 +91,8 @@ modtime = 1534600153.301049000
 
 [views/blood_glucose]
 owner = admin
-version = 7.1.2
-modtime = 1535817962.198114000
+version = 7.2.0
+modtime = 1539137504.614424000
 
 [indexes/blood_sugar]
 owner = admin

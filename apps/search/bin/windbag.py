@@ -189,7 +189,7 @@ for item in sys.argv:
 # run generator
 try:        
     results = generateData(**args)
-except Exception, e:
+except Exception as e:
     results = isp.generateErrorResults(str(e))
     
 # dump out to Intersplunk

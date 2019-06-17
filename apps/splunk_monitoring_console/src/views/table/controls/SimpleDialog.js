@@ -19,7 +19,7 @@ define(
     ) {
         var TEMPLATE_WITHOUT_CLOSE = '\
                 <div class="' + ModalView.HEADER_CLASS + '">\
-                    <h3 class="modal-title">&nbsp;</h3>\
+                    <h1 class="modal-title">&nbsp;</h1>\
                 </div>\
                 <div class="' +  ModalView.BODY_CLASS + '">\
                 </div>\

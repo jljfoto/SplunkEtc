@@ -2,7 +2,10 @@
   <view name="monitoringconsole_overview" default="true" />
   <view name="monitoringconsole_check" />
   <collection label="Indexing">
-    <view name="indexing_performance_instance" />
+    <collection label="Performance">
+      <view name="indexing_performance_instance" />
+      <view name="indexing_performance_advanced" />
+    </collection>
     <collection label="Indexes and Volumes">
       <view name="indexes_and_volumes_instance" />
       <view name="index_detail_instance" />
@@ -17,6 +20,10 @@
       <view name="license_usage_today" />
       <view name="license_usage_30days" />
     </collection>
+    <collection label="SmartStore">
+      <view name="smartstore_activity_instance" />
+      <view name="smartstore_cache_performance_instance" />
+    </collection>
   </collection>
   <collection label="Search">
     <view name="search_activity_instance" />
@@ -27,6 +34,11 @@
   <collection label="Resource Usage">
     <view name="resource_usage_instance" />
     <view name="resource_usage_machine" />
+    <collection label="Workload Management">
+      <view name="workload_management" />
+      <view name="workload_management_per_pool_instance" />
+      <view name="workload_management_per_pool_deployment" />
+    </collection>
   </collection>
   <collection label="Forwarders">
     <view name="forwarder_instance" />

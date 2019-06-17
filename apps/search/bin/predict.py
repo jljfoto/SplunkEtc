@@ -192,7 +192,7 @@ class FC:
         # All predictions are pushed forward (in the results array) by the 'beginning' amount. Without this forward push the 
         # predictions would be displayed at the wrong positions in the graphs: the predictions would appear
         # before the actual data. See SPL-80502.
-        for i in xrange(beginning + min(lag, datalen)):
+        for i in range(beginning + min(lag, datalen)):
             for field in self.fields:
                 results[i][self.UIpredictNames[field]] = self.fields[field]  
                 results[i][self.fields[field]] = None
@@ -203,7 +203,7 @@ class FC:
        
         self.setNonnegativity()
             
-        for i in xrange(lag,kk):
+        for i in range(lag,kk):
             j = i - data_start
             I = i + beginning
             for field in self.fields:
@@ -213,8 +213,8 @@ class FC:
                 state = model.state(field_idx,j)
 
                 if model.var(field_idx,j) == None:
-                    print "None at j = ", j
-                    print "state = ", state
+                    print("None at j = %s" % j)
+                    print("state = %s" % state)
                     continue
 
                 tmp = sqrt(abs(model.var(field_idx,j)))
@@ -231,7 +231,7 @@ class FC:
         lasttime = float(results[kk-1]['_time'])
         lasttime_struct = list(localtime(lasttime)) # convert to list since localtime() returns readonly objects
         (span, spandays, spanmonths) = self.getSpans(results)
-        for i in xrange(kk,ext): # if this range is non-empty, that means ext > len(results); hence we should append to results
+        for i in range(kk,ext): # if this range is non-empty, that means ext > len(results); hence we should append to results
             j = i - data_start
             (extendedtime, lasttime_struct) = self.computeExtendedTime(lasttime_struct, span, spandays, spanmonths)
             newdict = {'_time': str(extendedtime)}
@@ -476,7 +476,7 @@ def importData(csvfile, timefield='_time', timepattern=TIMEPATTERN):
                         try:
                             row[timefield] = float(row[timefield]) # value is number of seconds
                         except ValueError:
-                            print "Unable to parse time field"
+                            print("Unable to parse time field")
                             return []
             data.append(row)
         return data        
@@ -511,9 +511,9 @@ class TestPredict(unittest.TestCase):
             for j in range(len(list1[i])):
                 if list1[i][j]=='' or list2[i][j]=='':
                     if list1[i][j] != list2[i][j]:
-                        print "i=%d j=%d list1=%s list2=%s" %(i,j,list1[i][j],list2[i][j])
-                        print "list1 = ", list1
-                        print "list2 = ", list2
+                        print("i=%d j=%d list1=%s list2=%s" %(i,j,list1[i][j],list2[i][j]))
+                        print("list1 = %s" % list1)
+                        print("list2 = %s" % list2)
                     self.assertTrue(list1[i][j]==list2[i][j])
                 else:
                     self.assertAlmostEqual(float(list1[i][j]), float(list2[i][j]))
@@ -583,14 +583,14 @@ class TestPredict(unittest.TestCase):
        '''
         import pprint
         fcs = parseOps(query.split())
-        print fcs[0]
+        print(fcs[0])
         input = os.path.join(self.input_dir, input_file)
-        print "reading input ..."
+        print("reading input ...")
         data = importData(input, timefield=timefield, timepattern=timepattern)
-        print "predicting ..."
+        print("predicting ...")
         start = time.time()
         predictAll(fcs, data)
-        print "predict time = ", time.time()-start
+        print("predict time = %s" % time.time()-start)
         cols, result = self.getResults(data, fieldlist)
         pprint.pprint(result[:20])
 
@@ -768,7 +768,7 @@ class TestPredict(unittest.TestCase):
         data = importData(input_file, timepattern=timepattern)
         cols, rows = self.getResults(data, [fieldname])
         fieldvals = [None]*len(rows)
-        for i in xrange(len(rows)):
+        for i in range(len(rows)):
             try:
                 fieldvals[i] = float(rows[i][0])
             except ValueError: pass
@@ -776,8 +776,8 @@ class TestPredict(unittest.TestCase):
         period = statespace.findPeriod3(fieldvals, 0, len(fieldvals))
         self.assertEqual(period, expected_period)
 #        end = time.time()
-#        print "period = ", period
- #       print "time to compute period = ", end-start
+#        print("period = %s" % period)
+ #       print("time to compute period = %s" % (end-start))
 
     def test_findPeriod(self):
         testdata = [['ts_na_irregular_repeat_500.csv','outer',TIMEPATTERN,60],
@@ -820,10 +820,10 @@ class TestPredict(unittest.TestCase):
         input_file = 'ts_irregular_2_8m.csv'
         input = os.path.join(self.input_dir, input_file)
         data = importData(input)
-        print "len(data) = ", len(data)
+        print("len(data) = %u" % len(data))
         predictAll(fcs, data)
         cols, result = self.getResults(data, ['outer'])
-        print "len(result) = ", len(result)
+        print("len(result) = %u" % len(result))
 #        self.cleanupResult(result)
 #        import pprint
 #        pprint.pprint(result)
@@ -923,5 +923,3 @@ if __name__ == "__main__":
     predictAll(forecaster, results)
     splunk.Intersplunk.outputResults(results)
 #    unittest.main()
-
-

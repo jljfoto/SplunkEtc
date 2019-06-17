@@ -73,7 +73,7 @@ class LocalAppsHandler(admin.MConfigHandler):
         try:    
             url = appbuilder.createApp(appName, template, **kwargs)
             appbuilder.addUploadAssets(appName)
-        except splunk.RESTException, e:
+        except splunk.RESTException as e:
             raise admin.InternalException(e.msg)
             
         confInfo[appName].append('name', appName)
@@ -107,7 +107,7 @@ class LocalAppsHandler(admin.MConfigHandler):
                 confInfo['Package'].append('url', url)
                 confInfo['Package'].append('path', path)
                 
-            except splunk.RESTException, e:
+            except splunk.RESTException as e:
                 raise admin.ArgValidationException(e.msg)
         elif self.customAction == ACTION_DEPENDENCIES:
             self.getAppDependencies(self.callerArgs.id, confInfo)

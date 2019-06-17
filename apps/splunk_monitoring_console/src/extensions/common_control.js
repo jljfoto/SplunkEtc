@@ -7,6 +7,7 @@ define(
         'uri/route',
         'splunkjs/mvc/sharedmodels',
         'util/console',
+        'splunk.util',
         'splunkjs/mvc/simplexml/ready!'
     ],
     function(
@@ -15,7 +16,8 @@ define(
         mvc,
         route,
         sharedModels,
-        console
+        console,
+        SplunkUtil
     ) {
         // TODO: for some reason both defaultModel and submittedModel are needed
         var submittedModel = mvc.Components.getInstance('submitted');
@@ -112,7 +114,7 @@ define(
 
         $('.dashboard-body').on('click', '.scroll', function(e) {
             e.preventDefault();
-            var anchorId = $(e.currentTarget).attr('href');
+            var anchorId = $(SplunkUtil.escapeSelector(e.currentTarget)).attr('href');
             $('html, body').animate({scrollTop: $(anchorId).offset().top}, 'slow');
             return false;
         });

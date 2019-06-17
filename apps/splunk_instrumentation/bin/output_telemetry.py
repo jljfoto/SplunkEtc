@@ -134,6 +134,7 @@ class OutputTelemetryCommand(ReportingCommand):
         for result in results:
             found_results += 1
             error = None
+            event_str = None
             try:
                 event = json.loads(result[self.input])
 

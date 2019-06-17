@@ -1,4 +1,4 @@
-#   Version 7.1.2 
+#   Version 7.3.0 
 # CAUTION: Do not alter the settings in limits.conf unless you know what you are doing. 
 # Improperly configured limits may result in splunkd crashes and/or memory overuse.
 
@@ -140,7 +140,6 @@ maxresultrows = 50000
 maxvalues = 100000
 maxvaluesize = 1000
 
-
 [search_optimization]
 enabled = true
 
@@ -162,6 +161,17 @@ cmds_black_list = eval, rename
 [search_optimization::search_flip_normalization]
 enabled = true
 
+[search_optimization::reverse_calculated_fields]
+enabled = true
+
 [search_optimization::search_sort_normalization]
 enabled = true
+
+[search_optimization::replace_table_with_fields]
+enabled = true
+
+[search_optimization::replace_stats_cmds_with_tstats]
+enabled = false
+
+
 

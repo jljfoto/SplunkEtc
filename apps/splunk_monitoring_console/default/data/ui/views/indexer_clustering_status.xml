@@ -23,11 +23,11 @@
       | rest splunk_server_group=dmc_group_cluster_master splunk_server_group="$group$" /services/cluster/master/generation/master
       | fields pending_last_reason, search_factor_met, replication_factor_met
       | eval all_data_searchable_icon = if(isnull(pending_last_reason) or pending_last_reason=="", "icon-check", "icon-alert")
-      | eval all_data_searchable = if (isnull(pending_last_reason) or pending_last_reason=="", "All Data is Searchable", "Some Data is Not Searchable")
+      | eval all_data_searchable = if (isnull(pending_last_reason) or pending_last_reason=="", "All Data Searchable", "Some Data Not Searchable")
       | eval search_factor_met_icon = if(search_factor_met == 1 or search_factor_met == "1", "icon-check", "icon-alert")
-      | eval search_factor_met = if (search_factor_met == 1 or search_factor_met == "1", "Search Factor is Met", "Search Factor is Not Met")
+      | eval search_factor_met = if (search_factor_met == 1 or search_factor_met == "1", "Search Factor Met", "Search Factor Not Met")
       | eval replication_factor_met_icon = if(replication_factor_met == 1 or replication_factor_met == "1", "icon-check", "icon-alert")
-      | eval replication_factor_met = if (replication_factor_met == 1 or replication_factor_met == "1", "Replication Factor is Met", "Replication Factor is Not Met")
+      | eval replication_factor_met = if (replication_factor_met == 1 or replication_factor_met == "1", "Replication Factor Met", "Replication Factor Not Met")
     </query>
     <finalized>
       <set token="searchable_icon">$result.all_data_searchable_icon$</set>
@@ -36,6 +36,18 @@
       <set token="search_factor_indicator">$result.search_factor_met$</set>
       <set token="replication_factor_icon">$result.replication_factor_met_icon$</set>
       <set token="replication_factor_indicator">$result.replication_factor_met$</set>
+    </finalized>
+  </search>
+  <search id="cluster_master_base_search">
+    <query>
+      | rest splunk_server_group=dmc_group_cluster_master splunk_server_group="$group$" /services/server/info
+      | stats count
+      | eval cluster_master_icon = if(count==1, "icon-check", "icon-alert")
+      | eval cluster_master_indicator = if(count==1, "Cluster Master Reachable", "Cluster Master Not Reachable")
+    </query>
+    <finalized>
+      <set token="cluster_master_icon">$result.cluster_master_icon$</set>
+      <set token="cluster_master_indicator">$result.cluster_master_indicator$</set>
     </finalized>
   </search>
   <row>
@@ -78,9 +90,10 @@
       </search>
       <html depends="$searchable_indicator$">
         <div class="indexer-cluster-summary">
-          <div class="indexer-cluster-summary-single-value"><i class="$searchable_icon$" />$searchable_indicator$</div>
-          <div class="indexer-cluster-summary-single-value"><i class="$search_factor_icon$" />$search_factor_indicator$</div>
-          <div class="indexer-cluster-summary-single-value"><i class="$replication_factor_icon$" />$replication_factor_indicator$</div>
+          <div class="indexer-cluster-summary-single-value"><i class="$cluster_master_icon$"></i>$cluster_master_indicator$</div>
+          <div class="indexer-cluster-summary-single-value"><i class="$searchable_icon$"></i>$searchable_indicator$</div>
+          <div class="indexer-cluster-summary-single-value"><i class="$search_factor_icon$"></i>$search_factor_indicator$</div>
+          <div class="indexer-cluster-summary-single-value"><i class="$replication_factor_icon$"></i>$replication_factor_indicator$</div>
         </div>
         <div class="indexer-cluster-count clearfix">
           <div class="indexer-cluster-count-value">

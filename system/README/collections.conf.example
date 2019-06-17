@@ -1,4 +1,4 @@
-#   Version 7.1.2 
+#   Version 7.3.0 
 #
 # The following is an example collections.conf configuration.
 #
@@ -9,6 +9,8 @@
 # To learn more about configuration files (including precedence) please see
 # the documentation located at
 # http://docs.splunk.com/Documentation/Splunk/latest/Admin/Aboutconfigurationfiles
+# Note this example uses a compound acceleration. Please check collections.conf.spec
+# for restrictions on compound acceleration.
 
 [mycollection]
 

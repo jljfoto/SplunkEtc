@@ -31,10 +31,10 @@
           <query>
 `dmc_get_warnings_and_errors(dmc_group_kv_store, KVStore*)` search_group="$group$"
 | cluster showcount=t
-| table cluster_count, _time, log_level, component, message, punct
+| table cluster_count, _time, log_level, component, event_message, punct
 | sort - cluster_count
 | `dmc_time_format(_time)`
-| rename cluster_count AS Count, _time AS "Latest Time", log_level as "Log Level", component as Component, message as "Latest Message"
+| rename cluster_count AS Count, _time AS "Latest Time", log_level as "Log Level", component as Component, event_message as "Latest Message"
           </query>
           <earliest>$warningErrorTime.earliest$</earliest>
           <latest>$warningErrorTime.latest$</latest>

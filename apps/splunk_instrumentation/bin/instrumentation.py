@@ -64,6 +64,7 @@ from splunk_instrumentation.constants import SPLUNKRC, INST_PRE_EXECUTE_SLEEP, S
 from splunk_instrumentation.service_bundle import ServiceBundle  # noqa: E402
 from splunk_instrumentation.splunkd import Splunkd  # noqa: E402
 from splunk_instrumentation.input import run_input  # noqa: E402
+from splunk_instrumentation.report import report  # noqa: E402
 
 
 def normalize_date_range_params(args, report_start_date):
@@ -84,8 +85,22 @@ def normalize_date_range_params(args, report_start_date):
 
 
 def validate_date_range(args):
+    # SPL-153360 This can happen when the user has gone from no opt-in to some opt-in
+    # on the same day of the scheduled collection, before the script has run. This is
+    # due to the TelemetryHandler.cpp file, which detects the switch from no opt-in to
+    # some opt-in and sets the reportStartDate to today.
+    #
+    # When the script finally runs, it has an default stop date of yesterday, but
+    # reportStartDate sets the lower bound, which is today in that case. We do not
+    # want to generate alarming error messages, so just log the occurrence and exit
+    # gracefully.
     if args.stop_date < args.start_date:
-        raise Exception("Start date must be <= stop date")
+        report.report('collection-canceled', {
+            'reason': 'Start date is after stop date. No data to collect.',
+            'start_date': args.start_date,
+            'stop_date': args.stop_date
+        })
+        exit(0)
 
 
 def should_input_run(telemetry_conf_service):
@@ -100,10 +115,24 @@ def should_input_run(telemetry_conf_service):
     # Compare day and hour to time now
     now = datetime.datetime.now()
 
+    should_run = False
     if ((scheduled_day == '*' or scheduled_day == str(now.weekday())) and
             (scheduled_hour == str(now.hour))):
-        return True
-    return False
+        should_run = True
+
+    report.report('schedule-data', {
+        'schedule': {
+            'day': scheduled_day,
+            'hour': scheduled_hour
+        },
+        'now': {
+            'day': str(now.weekday()),
+            'hour': str(now.hour)
+        },
+        'should_run': should_run
+    })
+
+    return should_run
 
 
 def process_input_params(telemetry_conf_service, args):
@@ -114,6 +143,8 @@ def process_input_params(telemetry_conf_service, args):
     :return:
     '''
     report_start_date = telemetry_conf_service.content.get('reportStartDate')
+    report.report('reportStartDate', report_start_date)
+
     normalize_date_range_params(args, report_start_date)
     validate_date_range(args)
 
@@ -125,10 +156,10 @@ def process_input_params(telemetry_conf_service, args):
 
 # Routine to index data
 def main():
-    sleep(INST_PRE_EXECUTE_SLEEP)
     if os.environ['INST_MODE'] == "DEV":
         splunkd = Splunkd(**SPLUNKRC)
     else:
+        sleep(INST_PRE_EXECUTE_SLEEP)
         splunkd = Splunkd(token=os.environ['INST_TOKEN'], server_uri=SPLUNKD_URI)
 
     services = ServiceBundle(splunkd)

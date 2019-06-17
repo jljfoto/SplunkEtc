@@ -50,7 +50,7 @@ if __name__ == '__main__':
             result['reltime'] = reltime
         si.outputResults(results)
 
-    except Exception, e:
+    except Exception as e:
         import traceback
         stack =  traceback.format_exc()
         si.generateErrorResults("Error '%s'" % e)

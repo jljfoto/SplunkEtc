@@ -23,12 +23,11 @@ module.exports = mergeConfigs(sharedConfig, {
     ],
     entry: 'heatmap',
     resolve: {
-        root: [
-            path.join(appDir, 'src', 'visualizations', 'heatmap', 'src'),
-        ]
+        modules: [ path.join(appDir, 'src', 'visualizations', 'heatmap', 'src'), ]
     },
     output: {
-        filename: path.join(appDir, 'appserver', 'static', 'visualizations', 'heatmap', 'visualization.js'),
+        path: path.join(appDir, 'appserver', 'static', 'visualizations', 'heatmap'),
+        filename: 'visualization.js',
         libraryTarget: 'amd'
     },
     externals: [

@@ -74,7 +74,7 @@ def _addToConf(vals, authString, reqObj):
 
     # stuff the items from val into the reqObj args dictionary.
     for attr, val in vals.items():
-        if not reqObj.args.has_key(attr):
+        if attr not in reqObj.args:
             reqObj.args[attr] = []
         reqObj.args[attr].append(val)
 
@@ -97,4 +97,4 @@ def _addToConf(vals, authString, reqObj):
 if __name__ == '__main__':
     vals = {'name':'myname', 'query':'this is my query', 'example':'this is an example', 'tags':'my,tag,are,cool', 'priority':'4', 'description':'my desc'}
     result = _addToConf(vals, comm.getAuthInfo('admin','changeme'))
-    print 'result: %s' % result
+    print('result: %s' % result)

@@ -1,4 +1,4 @@
-#   Version 7.1.2
+#   Version 7.3.0
 #
 # The following are example props.conf configurations. Configure properties for
 # your data.
@@ -175,3 +175,18 @@ CHECK_METHOD = entire_md5
 [metric_sourcetype_name]
 METRICS_PROTOCOL = statsd
 STATSD-DIM-TRANSFORMS = regex_stanza1, regex_stanza2
+
+#Convert a single log event into multiple metrics using METRIC-SCHEMA-TRANSFORMS
+#and index time extraction feature.
+[logtometrics]
+METRIC-SCHEMA-TRANSFORMS = metric-schema:logtometrics
+TRANSFORMS-group = extract_group
+TRANSFORMS-name = extract_name
+TRANSFORMS-max_size_kb = extract_max_size_kb
+TRANSFORMS-current_size_kb = extract_current_size_kb
+TRANSFORMS-current_size = extract_current_size
+TRANSFORMS-largest_size = extract_largest_size
+TRANSFORMS-smallest_size = extract_smallest_size
+category = metrics
+should_linemerge = false
+

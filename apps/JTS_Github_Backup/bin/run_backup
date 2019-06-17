@@ -1,0 +1,2 @@
+#!/bin/bash
+./git_backup >> /opt/logs/git_backup.log  2>&1

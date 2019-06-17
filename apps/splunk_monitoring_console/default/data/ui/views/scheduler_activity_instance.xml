@@ -471,6 +471,7 @@
         <choice value="role">Role</choice>
         <choice value="label">Report Name</choice>
         <choice value="type">Type</choice>
+        <choice value="workload_pool">Workload Pool</choice>
       </input>
       <chart>
         <search>
@@ -518,6 +519,7 @@
         <choice value="role">Role</choice>
         <choice value="label">Report Name</choice>
         <choice value="type">Type</choice>
+        <choice value="workload_pool">Workload Pool</choice>
         <change>
           <condition value="mode">
             <set token="runtimeModeDoc">true</set>
@@ -768,8 +770,9 @@
       <search id="count_error_warning_base">
         <query>
           `dmc_set_index_internal` host=$host$ sourcetype=scheduler (log_level="ERROR" OR log_level="WARN*")
-          | cluster t=0.7 field=message showcount=t countfield=count
-          | table message, count, punct
+          | eval event_message=coalesce(event_message, message)
+          | cluster t=0.7 field=event_message showcount=t countfield=count
+          | table event_message, count, punct
         </query>
         <earliest>$time.earliest$</earliest>
         <latest>$time.latest$</latest>
@@ -791,7 +794,7 @@
             | eventstats sum(count) AS total
             | eval percent = round(count / total * 100, 2)." %"
             | fields - total
-            | rename message as Message, count as Count, percent as "Percent of Total"
+            | rename event_message as Message, count as Count, percent as "Percent of Total"
           </query>
         </search>
         <fields>Message, Count, "Percent of Total"</fields>

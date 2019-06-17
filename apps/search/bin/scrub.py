@@ -103,7 +103,7 @@ def getTimeInfoTuplet(timestampconfilename):
         timestampconfilename = os.path.abspath(timestampconfilename)
 
     if root != os.path.commonprefix([root, timestampconfilename]):
-        print '*** File is not inside proper directory ', timestampconfilename, ' should be in ', root
+        print('*** File is not inside proper directory %s should be in %s'%(timestampconfilename, root))
         raise Exception('*** File is not inside proper directory %s should be in %s'%(timestampconfilename, root))
 
     text = readText(timestampconfilename)
@@ -120,7 +120,7 @@ def getTimeInfoTuplet(timestampconfilename):
 ################################### BEGIN COPIED FROM DCUTILS.PY
 
 def addToMapList(map, key, value):
-    if map.has_key(key):
+    if key in map:
         l = map[key]
     else:
         l = list()
@@ -142,7 +142,7 @@ def fileWords(filename, lowercase):
             tokenize(line, False, terms)
             ##Is it possible to do previews from a search script?
             #if count % 100000 == 0:
-            #    print '\t', count, 'processed...'
+            #    print('\t%u processed...' % count)
             count += 1
     return terms
         
@@ -194,7 +194,7 @@ def looksLikeWord(token):
     return len(token) > 2 and (upper == 0 or lower == 0 or upper == 1)
 
 def incCount(map, val, count):
-    if map.has_key(val):
+    if val in map:
         map[val] += count
     else:
         map[val] = count
@@ -218,8 +218,8 @@ def isInt(token):
 def caseSame(caseSource, textSource):
     result = "";
     for i in range(0, len(caseSource)):
-	casech = caseSource[i]
-	textch = textSource[i]
+        casech = caseSource[i]
+        textch = textSource[i]
         if casech.isupper():
             textch = textch.upper()
         elif casech.islower():

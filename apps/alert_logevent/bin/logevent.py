@@ -6,7 +6,7 @@ import urllib2
 
 def log_event(settings, event, source, sourcetype, host, index):
     if event is None:
-        print >> sys.stderr, "ERROR No event provided"
+        sys.stderr.write("ERROR No event provided\n")
         return False
     query = [('source', source), ('sourcetype', sourcetype), ('index', index)]
     if host:
@@ -17,23 +17,23 @@ def log_event(settings, event, source, sourcetype, host, index):
         req = urllib2.Request(url, encoded_body, {'Authorization': 'Splunk %s' % settings.get('session_key')})
         res = urllib2.urlopen(req)
         if 200 <= res.code < 300:
-            print >> sys.stderr, "DEBUG receiver endpoint responded with HTTP status=%d" % res.code
+            sys.stderr.write("DEBUG receiver endpoint responded with HTTP status=%d\n" % res.code)
             return True
         else:
-            print >> sys.stderr, "ERROR receiver endpoint responded with HTTP status=%d" % res.code
+            sys.stderr.write("ERROR receiver endpoint responded with HTTP status=%d\n" % res.code)
             return False
-    except urllib2.HTTPError, e:
-        print >> sys.stderr, "ERROR Error sending receiver request: %s" % e
-    except urllib2.URLError, e:
-        print >> sys.stderr, "ERROR Error sending receiver request: %s" % e
-    except Exception, e:
-        print >> sys.stderr, "ERROR Error %s" % e
+    except urllib2.HTTPError as e:
+        sys.stderr.write("ERROR Error sending receiver request: %s\n" % e)
+    except urllib2.URLError as e:
+        sys.stderr.write("ERROR Error sending receiver request: %s\n" % e)
+    except Exception as e:
+        sys.stderr.write("ERROR Error %s\n" % e)
     return False
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 2 or sys.argv[1] != "--execute":
-        print >> sys.stderr, "FATAL Unsupported execution mode (expected --execute flag)"
+        sys.stderr.write("FATAL Unsupported execution mode (expected --execute flag)\n")
         sys.exit(1)
     try:
         settings = json.loads(sys.stdin.read())
@@ -48,6 +48,6 @@ if __name__ == "__main__":
         )
         if not success:
             sys.exit(2)
-    except Exception, e:
-        print >> sys.stderr, "ERROR Unexpected error: %s" % e
+    except Exception as e:
+        sys.stderr.write("ERROR Unexpected error: %s\n" % e)
         sys.exit(3)

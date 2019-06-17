@@ -21,7 +21,7 @@
       <populatingSearch fieldForLabel="serverName" fieldForValue="serverName">
         | `dmc_get_instance_info($dmc_group$)`
         | where search_group="dmc_group_indexer"
-      </populatingSearch> 
+      </populatingSearch>
       <selectFirstChoice>true</selectFirstChoice>
       <change>
         <condition value="*">
@@ -98,16 +98,21 @@
             | eval status = if((reason == ".") OR (reason == "") OR isnull(reason), status, status.": ".reason)
             | fields splunk_server, average_KBps, status
             | eval average_KBps = round(average_KBps, 0)
-            | join [
+            | join type=outer [
+              | rest splunk_server=$splunk_server$ /services/properties/server/general/pipelineSetSelectionPolicy
+              | fields value
+              | rename value as pipeline_set_selection_policy]
+            | join type=outer [
               | rest splunk_server=$splunk_server$ /services/properties/server/general/parallelIngestionPipelines]
-            | fields splunk_server, value, average_KBps, status
-            | rename splunk_server as Instance, value as "Pipeline Set Count", average_KBps as "Indexing Rate (KB/s)", status as Status, reason as Reason
+            | fields splunk_server, value, pipeline_set_selection_policy, average_KBps, status
+            | rename splunk_server as Instance, value as "Pipeline Set Count", pipeline_set_selection_policy as "Pipeline Set Selection Policy", average_KBps as "Indexing Rate (KB/s)", status as Status, reason as Reason
           </query>
         </search>
         <option name="drilldown">none</option>
       </table>
       <html>
         <p>Indexing rate measured over 30 seconds every 30 seconds (available with Splunk Enterprise 6.2 or later indexers).</p>
+        <p>The Pipeline Set selection policies can be set in server.conf. <a href="/help?location=learnmore.dmc.pipelinesets" target="_blank" class="external">Learn more</a></p>
       </html>
     </panel>
   </row>
@@ -159,7 +164,7 @@
         <default>*</default>
         <search>
           <query>
-            `dmc_set_index_internal` host=$host$ source="*metrics.log" sourcetype=splunkd group=pipeline 
+            `dmc_set_index_internal` host=$host$ source="*metrics.log" sourcetype=splunkd group=pipeline
             | stats count by ingest_pipe
           </query>
           <earliest>$time.earliest$</earliest>
@@ -212,7 +217,7 @@
         <showClearButton>false</showClearButton>
         <default>(name=parsingqueue OR name=aggqueue OR name=typingqueue OR name=indexqueue) | eval name=case(name=="aggqueue","2 - Aggregation Queue",name=="indexqueue","4 - Indexing Queue",name=="parsingqueue","1 - Parsing Queue",name=="typingqueue","3 - Typing Queue")</default>
         <choice value="(name=parsingqueue OR name=aggqueue OR name=typingqueue OR name=indexqueue) | eval name=case(name==&quot;aggqueue&quot;,&quot;2 - Aggregation Queue&quot;,name==&quot;indexqueue&quot;,&quot;4 - Indexing Queue&quot;,name==&quot;parsingqueue&quot;,&quot;1 - Parsing Queue&quot;,name==&quot;typingqueue&quot;,&quot;3 - Typing Queue&quot;)">Event-Processing Queues</choice>
-        <choice value="">All Queues</choice>
+        <choice value="name=*">All Queues</choice>
       </input>
       <input type="dropdown" searchWhenChanged="true" token="functionQueue">
         <label>Aggregation</label>
@@ -234,9 +239,9 @@
 `dmc_set_index_internal` host=$host$ source=*metrics.log sourcetype=splunkd group=queue $queues$
 | eval ingest_pipe = if(isnotnull(ingest_pipe), ingest_pipe, "none")
 | search ingest_pipe=$log_pipe_scope$
-| eval max=if(isnotnull(max_size_kb),max_size_kb,max_size) 
-| eval curr=if(isnotnull(current_size_kb),current_size_kb,current_size) 
-| eval fill_perc=round((curr/max)*100,2) 
+| eval max=if(isnotnull(max_size_kb),max_size_kb,max_size)
+| eval curr=if(isnotnull(current_size_kb),current_size_kb,current_size)
+| eval fill_perc=round((curr/max)*100,2)
 | `dmc_timechart_for_metrics_log` $functionQueue$(fill_perc) by name useother=false limit=15
           </query>
           <earliest>$time.earliest$</earliest>
@@ -250,211 +255,6 @@
         <option name="charting.axisY.minimumNumber">0</option>
         <option name="charting.axisY.maximumNumber">100</option>
       </chart>
-    </panel>
-  </row>
-  <row>
-    <panel rejects="$snapshot$">
-      <title>Estimated CPU Usage per Splunk Processor</title>
-      <chart>
-        <search>
-          <query>
-            `dmc_set_index_internal` host=$host$ source=*metrics.log sourcetype=splunkd group=pipeline NOT processor=sendout
-            | eval ingest_pipe = if(isnotnull(ingest_pipe), ingest_pipe, "none")
-            | search ingest_pipe=$log_pipe_scope$
-            | `dmc_timechart_for_metrics_log` per_second(eval(cpu_seconds*100)) AS pctCPU by processor useother=false limit=15
-          </query>
-          <earliest>$time.earliest$</earliest>
-          <latest>$time.latest$</latest>
-        </search>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleY.text">CPU Usage (%)</option>
-        <option name="charting.chart">column</option>
-      </chart>
-    </panel>
-  </row>
-  <row>
-    <panel rejects="$snapshot$">
-      <title>Aggregate CPU Seconds Spent per Indexer Processor Activity</title>
-      <input type="radio" token="searchStringIndexer" searchWhenChanged="true">
-        <label/>
-        <choice value="all">All</choice>
-        <choice value="subtask">Split index service by subtask</choice>
-        <default>all</default>
-        <change>
-          <condition value="all">
-            <unset token="show_cpu_by_subtask" />
-          </condition>
-          <condition value="subtask">
-            <set token="show_cpu_by_subtask">true</set>
-          </condition>
-        </change>
-      </input>
-      <chart rejects="$show_cpu_by_subtask$">
-        <search>
-          <query>
-            `dmc_set_index_internal` host=$host$ source=*metrics.log sourcetype=splunkd group=pipeline name=indexerpipe processor=indexer
-            | eval ingest_pipe = if(isnotnull(ingest_pipe), ingest_pipe, "none")
-            | search ingest_pipe=$log_pipe_scope$
-            | `dmc_timechart_for_metrics_log` sum(write_cpu_seconds) AS "raw data write" sum(service_cpu_seconds) AS "index service"
-          </query>
-          <earliest>$time.earliest$</earliest>
-          <latest>$time.latest$</latest>
-        </search>
-        <option name="charting.chart">column</option>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleY.text">CPU seconds</option>
-      </chart>
-      <chart depends="$show_cpu_by_subtask$">
-        <search>
-          <query>
-            `dmc_set_index_internal` host=$host$ source=*metrics.log sourcetype=splunkd group=subtask_seconds
-            | eval ingest_pipe = if(isnotnull(ingest_pipe), ingest_pipe, "none")
-            | search ingest_pipe=$log_pipe_scope$
-            | fields replicate_semislice, sync_hotBkt, throttle_optimize, flushBlockSig, retryMove_1hotBkt, size_hotBkt, roll_hotBkt, chillOrFreeze, update_checksums, fork_recovermetadata, rebuild_metadata, update_bktManifest, service_volumes, service_maxSizes, service_externProc
-            | `dmc_timechart_for_metrics_log` sum(*) AS *
-          </query>
-          <earliest>$time.earliest$</earliest>
-          <latest>$time.latest$</latest>
-        </search>
-        <option name="charting.chart">column</option>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleY.text">CPU seconds</option>
-      </chart>
-    </panel>
-  </row>
-  <row>
-    <panel rejects="$snapshot$">
-      <title>Regex Processor CPU Profiling per $groupTypeCpuProfLabel$</title>
-      <html>
-          <p>Index-time transformation detail available with Splunk Enterprise 6.6.0 or later indexers. <a href="/help?location=learnmore.MC.indexingperf.regex" target="_blank" title="Splunk help">Learn More</a></p>
-      </html>
-      <search id="internal_metrics_log_base">
-        <query>
-          `dmc_set_index_internal` host=$host$ source=$source$ group=per_$groupTypeCpuProfValue$_regex_cpu | fields *
-        </query>
-        <earliest>$time.earliest$</earliest>
-        <latest>$time.latest$</latest>
-      </search>
-      <input type="radio" token="show_cpu_prof">
-        <label>Show panels: </label>
-        <choice value="yes">Yes</choice>
-        <choice value="no">No</choice>
-        <default>No</default>
-        <change>
-          <condition value="yes">
-            <set token="source">*metrics.log</set>
-          </condition>
-          <condition value="no">
-            <unset token="source"></unset>
-          </condition>
-        </change>
-      </input>
-      <input type="dropdown" depends="$source$" searchWhenChanged="true" token="groupTypeCpuProf">
-        <label>Split by</label>
-        <showClearButton>false</showClearButton>
-        <default>Sourcetype</default>
-        <choice value="sourcetype">Sourcetype</choice>
-        <choice value="index">Index</choice>
-        <choice value="host">Host</choice>
-        <choice value="source">Source</choice>
-        <change>
-          <set token="groupTypeCpuProfLabel">$label$</set>
-          <set token="groupTypeCpuProfValue">$value$</set>
-        </change>
-      </input>
-      <input type="dropdown" depends="$source$" searchWhenChanged="true" token="functionQueueCpuProf">
-        <label>Aggregation</label>
-        <showClearButton>false</showClearButton>
-        <default>Median</default>
-        <choice value="Avg">Average</choice>
-        <choice value="Median">Median</choice>
-        <choice value="Min">Minimum</choice>
-        <choice value="Max">Maximum</choice>
-        <choice value="Perc90">90th Percentile</choice>
-        <choice value="First">Sampled</choice>
-        <change>
-          <set token="functionQueueCpuProfLabel">$label$</set>
-        </change>
-      </input>
-    </panel>
-  </row>
-  <row>
-    <panel rejects="$snapshot$" depends="$source$">
-      <title>Total CPU time</title>
-      <chart>
-        <search base="internal_metrics_log_base">
-          <query>
-            `dmc_timechart_for_metrics_log` $functionQueueCpuProf$(cpu) by series useother=false limit=20
-          </query>
-          <earliest>$time.earliest$</earliest>
-          <latest>$time.latest$</latest>
-        </search>
-        <option name="charting.chart">column</option>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.axisTitleY.text">CPU milliseconds</option>
-      </chart>
-      <html>
-        <p>Total time spent in milliseconds performing index-time transformations for a given $groupTypeCpuProfLabel$.</p>
-      </html>
-    </panel>
-    <panel rejects="$snapshot$" depends="$source$">
-      <title>CPU time per event</title>
-      <chart>
-        <search base="internal_metrics_log_base">
-          <query>
-            `dmc_timechart_for_metrics_log` $functionQueueCpuProf$(cpupe) by series useother=false limit=20
-          </query>
-          <earliest>$time.earliest$</earliest>
-          <latest>$time.latest$</latest>
-        </search>
-        <option name="charting.chart">column</option>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.axisTitleY.text">Milliseconds spent per event</option>
-      </chart>
-      <html>
-        <p>Average time spent in milliseconds performing index-time transformations per event for a given $groupTypeCpuProfLabel$.</p>
-      </html>
-    </panel>
-  </row>
-  <row>
-    <panel rejects="$snapshot$" depends="$source$">
-      <title>Bytes</title>
-      <chart>
-        <search base="internal_metrics_log_base">
-          <query>
-            `dmc_timechart_for_metrics_log` $functionQueueCpuProf$(bytes) by series useother=false limit=20
-          </query>
-          <earliest>$time.earliest$</earliest>
-          <latest>$time.latest$</latest>
-        </search>
-        <option name="charting.chart">column</option>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.axisTitleY.text">Total number of bytes</option>
-      </chart>
-      <html>
-        <p>Total number of bytes processed performing index-time transformations for a given $groupTypeCpuProfLabel$.</p>
-      </html>
-    </panel>
-    <panel rejects="$snapshot$" depends="$source$">
-      <title>Event count</title>
-      <chart>
-        <search base="internal_metrics_log_base">
-          <query>
-            `dmc_timechart_for_metrics_log` $functionQueueCpuProf$(ev) by series useother=false limit=20
-          </query>
-          <earliest>$time.earliest$</earliest>
-          <latest>$time.latest$</latest>
-        </search>
-        <option name="charting.chart">column</option>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.axisTitleY.text">Total number of events</option>
-      </chart>
-      <html>
-        <p>Total number of events processed performing index-time transformations for a given $groupTypeCpuProfLabel$.</p>
-      </html>
     </panel>
   </row>
 </form>

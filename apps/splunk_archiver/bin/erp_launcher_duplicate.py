@@ -21,6 +21,8 @@ import datetime
 
 messageQueue = Queue()
 END_MSG = 'THE END'
+SUDO_BASH_COMMAND = os.path.join(os.environ['SPLUNK_HOME'], 'etc', 'apps', 'splunk_archiver', 'java-bin', 'jars', 'sudobash')
+INDEXER_ARCHIVER_LOCATION_PREFIX = os.path.join(os.environ['SPLUNK_HOME'], 'var', 'run', 'searchpeers')
 
 def _putNamesInVixMap(vix):
     for name, kvs in vix.iteritems():
@@ -112,6 +114,14 @@ def _executeJavaProcesses(action, logFileName, indexFilterFunc, providers, vixes
     for providerName, providerMap in providers.iteritems():
         # Create the command string that will be run in the shell
         command = _getVixCommand(providerMap)
+
+        # SPL-157759 Ensure that the only command that
+        # can be issued is the sudobash command. The arguments to
+        # the sudobash command are validated in the script
+        if (command[0] != SUDO_BASH_COMMAND and (not(command[0].startswith(INDEXER_ARCHIVER_LOCATION_PREFIX) and (command[0].endswith('sudobash'))))):
+            sys.stderr.write("Invalid command specified: '" + command[0] + "''\n")
+            os._exit(1)
+
         commandstr = ' '.join(map(_escape, command))
 
         # Create json that'll be sent to SplunkMR's stdin
@@ -159,7 +169,7 @@ def _executeJavaProcesses(action, logFileName, indexFilterFunc, providers, vixes
             for line in stdout:
                 outputLine(line, serverName)
 
-        except Exception, e:
+        except Exception as e:
             _outputError(e, traceback.format_exc())
         finally:
             if proc is not None:
@@ -357,9 +367,9 @@ def launchSplunkMRForIndexes(sessionKey, action, logFileName, providers, vixes, 
         t_parent_checker.setDaemon(True)
         t_parent_checker.start()
         _executeJavaProcesses(action, logFileName, indexFilterFunc, providers, vixes, indexes, serverId, serverName, sessionKey)
-    except Exception, e:
+    except Exception as e:
         _outputError(e, traceback.format_exc())
-    except KeyError, e:
+    except KeyError as e:
         _outputError(e, traceback.format_exc())
     finally:
         _message(END_MSG)

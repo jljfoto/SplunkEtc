@@ -1,5 +1,11 @@
-<form hideEdit="True" script="cell_fill_gauge.js, common_control.js">
+<form hideEdit="True" script="cell_fill_gauge.js, common_control.js" stylesheet="index_type.css">
     <fieldset autoRun="true" submitButton="false">
+        <input type="radio" searchWhenChanged="true" token="datatype">
+              <label>Index Type</label>
+              <choice value="">Event Indexes Only</choice>
+              <choice value="datatype=all">All Index Types *</choice>
+              <default></default>
+        </input>
         <input type="dropdown" searchWhenChanged="true" token="group">
             <label>Group</label>
             <showClearButton>false</showClearButton>
@@ -14,12 +20,15 @@
             <choice value="*">All Indexers</choice>
             <default>*</default>
         </input>
+        <html id="index_type_disclaimer">
+            <p>The "All Index Types" option is not compatible with indexers running Splunk Enterprise 6.6 or earlier, where only event indexes exist.</p>
+        </html>
     </fieldset>
     <label>Indexes and Volumes: Deployment</label>
     <search id="indexes_base_search">
         <query>
-            | rest splunk_server_group=dmc_group_indexer splunk_server_group="$group$" /services/data/indexes datatype=all
-            | join title splunk_server type=outer [rest splunk_server_group=dmc_group_indexer splunk_server_group="$group$" /services/data/indexes-extended datatype=all]
+            | rest splunk_server_group=dmc_group_indexer splunk_server_group="$group$" /services/data/indexes $datatype$
+            | join title splunk_server type=outer [rest splunk_server_group=dmc_group_indexer splunk_server_group="$group$" /services/data/indexes-extended $datatype$]
             | `dmc_exclude_indexes`
             | eval elapsedTime = now() - strptime(minTime,"%Y-%m-%dT%H:%M:%S%z")
             | eval dataAge = ceiling(elapsedTime / 86400)

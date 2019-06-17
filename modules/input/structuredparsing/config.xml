@@ -16,6 +16,9 @@
                 <processor name="aggregator"    plugin="aggregatorprocessor">           <config/> </processor>
                 <processor name="regexreplacement" plugin="regexextractionprocessor">   <config/> </processor>
 
+                <!-- SPL-162303: Adding metricschema processor in UF -->
+                <processor name="metricschema" plugin="metricschemaprocessor"> <config/> </processor>
+
 		<processor name="sendOut" plugin="queueoutputprocessor">
                         <config>
                                 <queueName>parsingQueue</queueName>

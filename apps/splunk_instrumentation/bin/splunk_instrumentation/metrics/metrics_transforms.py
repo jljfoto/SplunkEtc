@@ -14,6 +14,30 @@ metrics_transforms['sha256'] = transform_hash
 metrics_transforms['hash'] = transform_hash
 
 
+def hash_specific_value_helper(data, each_hash_key, scheme):
+    '''
+    recursively check hash keys in data
+    '''
+    for key in data:
+        if isinstance(data[key], dict):
+            hash_specific_value_helper(data[key], each_hash_key, scheme)
+        elif key == each_hash_key:
+            data[key] = transform_hash(data[key], scheme)
+
+
+def hash_specific_value_by_key(data, hash_key, scheme):
+    '''
+    hash values corresponding to keys containing in hash_key
+    :param data:
+    :param hash_key: a list of keys got from schema
+    :param scheme: containing hash salt
+    :return:
+    '''
+    for key in hash_key:
+        hash_specific_value_helper(data, key, scheme)
+    return data
+
+
 def metrics_transform(type, value, scheme=None):
         if isinstance(value, list):
             for idx, val in enumerate(value):

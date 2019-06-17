@@ -56,6 +56,10 @@
         <key name="hideLabel">True</key>
       </element>
     </element>
+    <element name="overwrite" type="checkbox" label="Overwrite field values">
+      <view name="create"/>
+      <view name="edit"/>
+    </element>
     <element name="eai:acl.owner" label="Owner">
       <view name="list"/>
       <key name="processValueList">entity['eai:acl']['owner'] == 'nobody' and _('No owner') or entity['eai:acl']['owner']</key>

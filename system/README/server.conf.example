@@ -1,4 +1,4 @@
-#   Version 7.1.2
+#   Version 7.3.0
 #
 # This file contains an example server.conf.  Use this file to configure SSL
 # and HTTP server options.
@@ -34,6 +34,7 @@ certCreateScript = genMyServerCert.sh
 [proxyConfig]
 http_proxy = http://proxy:80
 https_proxy = http://proxy:80
+proxy_rules = *
 no_proxy = localhost, 127.0.0.1, ::1
 
 ######## SSO Example ########
@@ -99,3 +100,4 @@ master_uri=https://SplunkMaster02.example.com:8089
 ############################################################################
 [httpServerListener:127.0.0.1:8090]
 ssl = false
+

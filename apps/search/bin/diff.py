@@ -190,7 +190,7 @@ try:
        
     results = diff(results, index1,index2, attribute, header, context, maxlen, diffheader)
 
-except Exception, e:
+except Exception as e:
     import traceback
     stack =  traceback.format_exc()
     if isgetinfo:

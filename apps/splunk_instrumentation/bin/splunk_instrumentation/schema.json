@@ -20,7 +20,8 @@
       "roles": [ "lead_node" ],
       "component": "performance.indexing",
       "priority": "high",
-      "visibility": "anonymous,support"
+      "visibility": "anonymous,support",
+      "hash_key": ["host"]
     },
     {
       "dataPoints": [
@@ -48,7 +49,8 @@
       "roles": [ "lead_node" ],
       "component": "usage.search.concurrent",
       "priority": "high",
-      "visibility": "anonymous,support"
+      "visibility": "anonymous,support",
+      "hash_key": ["host"]
     },
     {
       "dataPoints": [
@@ -76,7 +78,8 @@
       "roles": [ "lead_node" ],
       "component": "deployment.node",
       "priority": "high",
-      "visibility": "anonymous,support"
+      "visibility": "anonymous,support",
+      "hash_key": ["host"]
     },
     {
       "dataPoints": [
@@ -90,7 +93,8 @@
       "roles": [ "lead_node" ],
       "component": "deployment.index",
       "priority": "high",
-      "visibility": "anonymous,support"
+      "visibility": "anonymous,support",
+      "hash_key": ["host"]
     },
     {
       "dataPoints": [
@@ -104,7 +108,8 @@
       "roles": [ "shc_captain" ],
       "component": "deployment.app",
       "priority": "high",
-      "visibility": "anonymous,support"
+      "visibility": "anonymous,support",
+      "hash_key": ["host"]
     },
     {
       "dataPoints": [
@@ -118,7 +123,8 @@
       "roles": [ "!cluster_master", "search_head", "!search_peer", "!in_cluster", "!cluster_slave", "!shc_member"],
       "component": "deployment.app",
       "priority": "high",
-      "visibility": "anonymous,support"
+      "visibility": "anonymous,support",
+      "hash_key": ["host"]
     },
     {
       "dataPoints": [
@@ -132,7 +138,8 @@
       "roles":  ["indexer", "!search_peer", "!cluster_slave", "!shc_member"],
       "component": "deployment.app",
       "priority": "high",
-      "visibility": "anonymous,support"
+      "visibility": "anonymous,support",
+      "hash_key": ["host"]
     },
     {
       "dataPoints": [
@@ -160,7 +167,8 @@
       "roles": [ "lead_node" ],
       "component": "licensing.stack",
       "priority": "high",
-      "visibility": "anonymous,support,license"
+      "visibility": "anonymous,support,license",
+      "hash_key": ["host"]
     },
     {
       "dataPoints": [
@@ -202,7 +210,8 @@
       "roles": [ "lead_node" ],
       "component": "deployment.clustering.indexer",
       "priority": "high",
-      "visibility": "anonymous,support"
+      "visibility": "anonymous,support",
+      "hash_key": ["host"]
     },
     {
       "dataPoints": [
@@ -262,7 +271,8 @@
       "roles": [ "cluster_master" ],
       "component": "deployment.clustering.member",
       "priority": "high",
-      "visibility": "anonymous,support"
+      "visibility": "anonymous,support",
+      "hash_key": ["host", "master"]
     },
     {
       "dataPoints": [
@@ -276,7 +286,8 @@
       "roles": [ "cluster_master" ],
       "component": "deployment.clustering.searchhead",
       "priority": "high",
-      "visibility": "anonymous,support"
+      "visibility": "anonymous,support",
+      "hash_key": ["host", "master"]
     },
     {
       "dataPoints": [
@@ -290,7 +301,8 @@
       "roles": [ "shc_captain" ],
       "component": "deployment.shclustering.member",
       "priority": "high",
-      "visibility": "anonymous,support"
+      "visibility": "anonymous,support",
+      "hash_key": ["host", "captain"]
     },
     {
       "dataPoints": [
@@ -304,7 +316,8 @@
       "roles": [ "shc_captain" ],
       "component": "deployment.distsearch.peer",
       "priority": "high",
-      "visibility": "anonymous,support"
+      "visibility": "anonymous,support",
+      "hash_key": ["host"]
     },
     {
       "dataPoints": [
@@ -318,7 +331,8 @@
       "roles": [ "search_head", "!shc_member"],
       "component": "deployment.distsearch.peer",
       "priority": "high",
-      "visibility": "anonymous,support"
+      "visibility": "anonymous,support",
+      "hash_key": ["host"]
     },
     {
       "dataPoints": [
@@ -332,7 +346,8 @@
       "roles": [ "license_master" ],
       "component": "deployment.licensing.slave",
       "priority": "high",
-      "visibility": "anonymous,support"
+      "visibility": "anonymous,support",
+      "hash_key": ["host", "master"]
     },
     {
       "dataPoints": [
@@ -375,6 +390,48 @@
       "component": "usage.search.report_acceleration",
       "priority": "high",
       "visibility": "anonymous,support"
-    }
+    },
+    {
+      "dataPoints": [
+        {
+          "saved_search": "instrumentation.usage.search.searchTelemetry",
+          "type": "SPLDataPoint"
+        }
+      ],
+      "phase": 1,
+      "interval": "nightly",
+      "roles": [ "lead_node" ],
+      "component": "usage.search.searchTelemetry",
+      "priority": "high",
+      "visibility": "anonymous,support"
+    },
+    {
+      "dataPoints": [
+        {
+          "saved_search": "instrumentation.usage.lookups.lookupDefinitions",
+          "type": "SPLDataPoint"
+        }
+      ],
+      "phase": 1,
+      "interval": "nightly",
+      "roles": [ "lead_node" ],
+      "component": "usage.lookups.lookupDefinitions",
+      "priority": "high",
+      "visibility": "anonymous,support"
+    },
+    {
+      "dataPoints": [
+        {
+          "saved_search": "instrumentation.performance.bundleReplication",
+          "type": "SPLDataPoint"
+        }
+      ],
+      "phase": 1,
+      "interval": "nightly",
+      "roles": [ "lead_node" ],
+      "component": "performance.bundleReplication",
+      "priority": "high",
+      "visibility": "anonymous,support"
+    }	
   ]
 }

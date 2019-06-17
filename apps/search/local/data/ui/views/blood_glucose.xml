@@ -1,5 +1,20 @@
-<form>
+<form theme="light">
   <label>Blood Glucose</label>
+  <search>
+    <query>index=blood_sugar sourcetype="blood_sugar" glucose&gt;140 OR glucose&lt;70 
+| eval severity=if(glucose&gt;155,"Very High", if(glucose&gt;140,"High",if(glucose&lt;55,"Very Low",if(glucose&lt;70,"Low","Normal"))))
+          </query>
+    <earliest>$field1.earliest$</earliest>
+    <latest>$field1.latest$</latest>
+    <finalized>
+      <condition match=" 'job.resultCount' &gt; 0">
+        <set token="tok_wimg">0</set>
+      </condition>
+      <condition>
+        <unset token="tok_wimg">1</unset>
+      </condition>
+    </finalized>
+  </search>
   <fieldset submitButton="false">
     <input type="time" token="field1">
       <label></label>
@@ -11,7 +26,32 @@
   </fieldset>
   <row>
     <panel>
-      <title>High Blood Sugar Readings</title>
+      <title>Reading Counts</title>
+      <table>
+        <search>
+          <query>index=blood_sugar sourcetype=blood_sugar glucose=*
+| eval reading= if(glucose&gt;155,"Very High",if(glucose &gt; 140, "High",if(glucose &lt; 50,"Low",if(glucose &lt; 70,"Very Low","Normal"))))
+| stats count by reading
+| sort - count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">100</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <format type="color" field="reading">
+          <colorPalette type="map">{"Normal":#53A051,"High":#F8BE34,"Very High":#DC4E41,"Very Low":#DC4E41,"Low":#F8BE34}</colorPalette>
+        </format>
+      </table>
+    </panel>
+    <panel>
+      <title>High Readings</title>
       <single>
         <search>
           <query>index=blood_sugar sourcetype="blood_sugar" glucose &gt; 140 | stats count</query>
@@ -28,7 +68,7 @@
       </single>
     </panel>
     <panel>
-      <title>Highest Glucose Reading over time range</title>
+      <title>Highest Value</title>
       <single>
         <search>
           <query>index=blood_sugar sourcetype="blood_sugar" glucose&gt;140 | stats max(glucose)</query>
@@ -41,7 +81,7 @@
       </single>
     </panel>
     <panel>
-      <title>Low Blood Sugar Readings</title>
+      <title>Low Readings</title>
       <single>
         <search>
           <query>index=blood_sugar sourcetype="blood_sugar" glucose &lt; 70 | stats count</query>
@@ -58,7 +98,7 @@
       </single>
     </panel>
     <panel>
-      <title>Lowest Glucose Reading over time period</title>
+      <title>Lowest Value</title>
       <single>
         <search>
           <query>index=blood_sugar sourcetype="blood_sugar" glucose&lt;70 | stats min(glucose)</query>
@@ -73,25 +113,67 @@
   </row>
   <row>
     <panel>
-      <title>Blood Glucose Readings over the time range</title>
-      <chart>
+      <title>High/Low Glucose Outliers Chart</title>
+      <viz type="Splunk_ML_Toolkit.OutliersViz">
         <search>
-          <query>index=blood_sugar sourcetype="blood_sugar" | eval danger=300, normal=140,low=70 | timechart  span=1m values(glucose) as glucose,  values(normal) as normal, values(low) as low, values(danger) as danger</query>
+          <query>index=blood_sugar sourcetype="blood_sugar" glucose=*
+| streamstats median(glucose) as medianGC,avg(glucose) as avgGC
+| eval low_glucose=70, high_glucose=140
+| table _time  glucose low_glucose high_glucose</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
+        <option name="Splunk_ML_Toolkit.OutliersViz.showOutlierCount">true</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Glucose With Avg and Median</title>
+      <chart>
+        <search type="annotation">
+          <query>index=blood_sugar sourcetype="blood_sugar" note=*
+            | eval note=if(note="Befoe Meal","Before Meal",note)
+            | eval annotation_label = note
+            | eval annotation_category = note</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <search>
+          <query>index=blood_sugar sourcetype="blood_sugar" glucose=*
+| streamstats median(glucose) as medianGC
+| eventstats avg(glucose) as avgGC
+| eval low_glucose=70, high_glucose=140
+| table _time  glucose medianGC avgGC low_glucose high_glucose</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <!-- Secondary search that drives the annotations -->
+        <!-- Customize the event annotation colors based on category name -->
+        <option name="charting.annotation.categoryColors">{"ERROR":"0xff3300","WARN":"0xffcc00"}</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="charting.lineWidth">1</option>
+        <option name="charting.seriesColors">[0x339933]</option>
+        <option name="height">287</option>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
-        <option name="charting.axisLabelsY.majorUnit">10</option>
         <option name="charting.axisTitleX.visibility">visible</option>
         <option name="charting.axisTitleY.visibility">visible</option>
         <option name="charting.axisTitleY2.visibility">visible</option>
         <option name="charting.axisX.abbreviation">none</option>
         <option name="charting.axisX.scale">linear</option>
         <option name="charting.axisY.abbreviation">none</option>
-        <option name="charting.axisY.maximumNumber">320</option>
-        <option name="charting.axisY.minimumNumber">50</option>
+        <option name="charting.axisY.maximumNumber">300</option>
+        <option name="charting.axisY.minimumNumber">40</option>
         <option name="charting.axisY.scale">linear</option>
         <option name="charting.axisY2.abbreviation">none</option>
         <option name="charting.axisY2.enabled">0</option>
@@ -100,19 +182,67 @@
         <option name="charting.chart.bubbleMaximumSize">50</option>
         <option name="charting.chart.bubbleMinimumSize">10</option>
         <option name="charting.chart.bubbleSizeBy">area</option>
-        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
         <option name="charting.chart.showDataLabels">none</option>
         <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
         <option name="charting.chart.stackMode">default</option>
         <option name="charting.chart.style">minimal</option>
-        <option name="charting.drilldown">all</option>
+        <option name="charting.drilldown">none</option>
         <option name="charting.layout.splitSeries">0</option>
         <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
         <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
         <option name="charting.legend.mode">standard</option>
         <option name="charting.legend.placement">bottom</option>
         <option name="charting.lineWidth">2</option>
-        <option name="height">526</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>a1c</title>
+      <chart>
+        <title>A1c = (46.7 + average_blood_glucose) / 28.7</title>
+        <search>
+          <query>index=blood_sugar sourcetype="blood_sugar"  
+| streamstats avg(glucose) as average_blood_glucose
+| eval a1c = round((46.7 + average_blood_glucose) / 28.7,1)
+| timechart  span=1d  max(a1c) as a1c</query>
+          <earliest>0</earliest>
+          <latest></latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.abbreviation">none</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.abbreviation">none</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.abbreviation">none</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.showDataLabels">all</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">minimal</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.mode">standard</option>
+        <option name="charting.legend.placement">bottom</option>
+        <option name="charting.lineWidth">2</option>
         <option name="refresh.display">progressbar</option>
         <option name="trellis.enabled">0</option>
         <option name="trellis.scales.shared">1</option>
@@ -125,7 +255,7 @@
       <title>Week Over Week</title>
       <chart>
         <search>
-          <query>index=blood_sugar sourcetype="blood_sugar" | eval danger=300, normal=140,low=70 | timechart  span=1m values(glucose) as glucose,   | timewrap 1day</query>
+          <query>index=blood_sugar sourcetype="blood_sugar" | eval danger=300, normal=140,low=70 | timechart  span=1m values(glucose) as glucose,   | timewrap 1week</query>
           <earliest>0</earliest>
           <latest></latest>
           <sampleRatio>1</sampleRatio>
@@ -167,32 +297,32 @@
     </panel>
   </row>
   <row>
-    <panel>
-      <title>Low Blood Sugar</title>
+    <panel depends="$tok_wimg$">
+      <title>Severity of Outliers</title>
       <table>
         <search>
-          <query>index=blood_sugar sourcetype="blood_sugar" glucose &lt; 70 | table _time glucose</query>
+          <query>index=blood_sugar sourcetype="blood_sugar" glucose&gt;140 OR glucose&lt;70 
+| eval severity=if(glucose&gt;155,"Very High", if(glucose&gt;140,"High",if(glucose&lt;55,"Very Low",if(glucose&lt;70,"Low","Normal"))))
+| table _time severity glucose</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
-        <option name="count">10</option>
+        <option name="count">100</option>
+        <option name="dataOverlayMode">none</option>
         <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
         <option name="refresh.display">progressbar</option>
-      </table>
-    </panel>
-    <panel>
-      <title>High Blood Sugar</title>
-      <table>
-        <search>
-          <query>index=blood_sugar sourcetype="blood_sugar" glucose&gt;140 | table _time glucose</query>
-          <earliest>$field1.earliest$</earliest>
-          <latest>$field1.latest$</latest>
-          <sampleRatio>1</sampleRatio>
-        </search>
-        <option name="count">10</option>
-        <option name="drilldown">none</option>
-        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <format type="color" field="severity">
+          <colorPalette type="map">{"Very High":#DC4E41,"Very Low":#DC4E41,"High":#F8BE34,"Low":#F8BE34,"Normal":#53A051}</colorPalette>
+        </format>
+        <format type="color" field="glucose">
+          <colorPalette type="list">[#DC4E41,#F8BE34,#53A051,#F8BE34,#DC4E41]</colorPalette>
+          <scale type="threshold">55,70,140,155</scale>
+        </format>
       </table>
     </panel>
   </row>

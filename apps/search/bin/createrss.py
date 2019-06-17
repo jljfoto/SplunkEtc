@@ -14,51 +14,51 @@ def writeRSSItem(path, rss_header, item, rss_footer):
         if len(item) == 0 and os.path.exists(path):
            return
 
-	wrote_item = False
+        wrote_item = False
         # needed to ensure no two SH are writing into the same temp file
         tmp_path   = path + ".tmp." + str(random.randint(0, 100000))   
 
-	# if file exists, start looking for existing items
-	if os.path.exists(path) and os.stat(path)[ST_SIZE] > 0:
-	    rssfile    = open(path, "r")
-	    tmprssfile = open(tmp_path, "w+")
-	    foundFirstItem = 0
-	    itemCount      = 1
-	    skipItem       = 0
+        # if file exists, start looking for existing items
+        if os.path.exists(path) and os.stat(path)[ST_SIZE] > 0:
+            rssfile    = open(path, "r")
+            tmprssfile = open(tmp_path, "w+")
+            foundFirstItem = 0
+            itemCount      = 1
+            skipItem       = 0
 
-	    for line in rssfile.readlines():
-		lineTmp = line.strip()
-		if lineTmp == '<item>':
-			# print "itemcount: %d, thresh: %d" % (itemCount, thresh)
-			if itemCount < thresh:
-				itemCount =     itemCount+1
-				if foundFirstItem == 0:
-					# found the first item, add the new one first
-					tmprssfile.write(item)
-					tmprssfile.write(line)
-					foundFirstItem = 1
-				else:
-					tmprssfile.write(line)
-			else:
-				skipItem = 1
-		elif lineTmp == '</item>':
-			if skipItem == 0:
-				tmprssfile.write(line)
-			else:
-				skipItem = 0
-		else:
-			if skipItem == 0:
-				tmprssfile.write(line)
-	    rssfile.close()
-	    tmprssfile.close()
+            for line in rssfile.readlines():
+                lineTmp = line.strip()
+                if lineTmp == '<item>':
+                        # print("itemcount: %d, thresh: %d" % (itemCount, thresh))
+                        if itemCount < thresh:
+                                itemCount =     itemCount+1
+                                if foundFirstItem == 0:
+                                        # found the first item, add the new one first
+                                        tmprssfile.write(item)
+                                        tmprssfile.write(line)
+                                        foundFirstItem = 1
+                                else:
+                                        tmprssfile.write(line)
+                        else:
+                                skipItem = 1
+                elif lineTmp == '</item>':
+                        if skipItem == 0:
+                                tmprssfile.write(line)
+                        else:
+                                skipItem = 0
+                else:
+                        if skipItem == 0:
+                                tmprssfile.write(line)
+            rssfile.close()
+            tmprssfile.close()
             wrote_item = foundFirstItem == 1
  
-	if not wrote_item:           
-	    # make parent dirs if they don't exist
-	    try:
-		os.makedirs(os.path.dirname(path))
-	    except OSError, e:
-		pass
+        if not wrote_item:
+            # make parent dirs if they don't exist
+            try:
+                os.makedirs(os.path.dirname(path))
+            except OSError as e:
+                pass
             tmprssfile = open(tmp_path, "w")
             tmprssfile.write(rss_header)
             tmprssfile.write(item)
@@ -69,11 +69,11 @@ def writeRSSItem(path, rss_header, item, rss_footer):
         logger.info("Atomically updating RSS feed: " + str(path))
         try:
             os.rename(tmp_path, path)
-        except OSError, e:
+        except OSError as e:
              try:    # remove path and retry 
                    os.unlink(path)
                    os.rename(tmp_path, path)
-             except OSError, e:
+             except OSError as e:
                    logger.error("Could not rename %s to %s. Error message: %s" % (str(tmp_path), str(path), str(e)))
                    splunk.Intersplunk.generateErrorResults("Could not rename %s to %s. Error message: %s" % (str(tmp_path), str(path), str(e)))
             
@@ -121,9 +121,9 @@ rss_header = """<?xml version="1.0" encoding="UTF-8"?>
         <title>Alert: %s</title>
         <link>%s</link>
         <description>Saved Searches Feed for saved search %s</description>
-""" % (	saxutils.escape(name),	# <title>
-		saxutils.escape(link),	# <link>
-		saxutils.escape(name))	# <description>
+""" % (        saxutils.escape(name),        # <title>
+                saxutils.escape(link),        # <link>
+                saxutils.escape(name))        # <description>
 
 rss_footer ="""    </channel>
 </rss>
@@ -135,10 +135,10 @@ item = """        <item>
             <description>%s</description>
             <pubDate>%s</pubDate>
         </item>
-""" % (	saxutils.escape(name),	# <item><title>
-		saxutils.escape(link),	# <item><link>
-		saxutils.escape(desc),	# <item><desc>
-		time.strftime("%a, %d %b %Y %H:%M:%S %z")) # <item><pubDate>
+""" % (        saxutils.escape(name),        # <item><title>
+                saxutils.escape(link),        # <item><link>
+                saxutils.escape(desc),        # <item><desc>
+                time.strftime("%a, %d %b %Y %H:%M:%S %z")) # <item><pubDate>
 
 if len(link) == 0:
    item = ''
@@ -146,5 +146,3 @@ if len(link) == 0:
 writeRSSItem(path, rss_header, item, rss_footer)
 
 splunk.Intersplunk.outputResults( results ) 
-
-

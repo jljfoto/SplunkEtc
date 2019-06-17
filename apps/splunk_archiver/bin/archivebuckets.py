@@ -104,7 +104,7 @@ def postErrors(sessionKey, dicts):
                      "value": str(err['_time'])+" "+str(err['_raw']) }
             rest.simpleRequest('messages', sessionKey, postargs=args,
                                method='POST', raiseAllErrors=True);
-    except Exception, e:
+    except Exception as e:
         import traceback
         splunkio.write([{"stack":traceback.format_exc(),"exception":str(e)}])
         
@@ -171,7 +171,7 @@ def execute():
             finally:
                 cancelSearch(search)
 
-    except Exception, e:
+    except Exception as e:
         import traceback
         splunkio.write([{"stack":traceback.format_exc(),"exception":str(e)}])
     finally:

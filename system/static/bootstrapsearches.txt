@@ -386,12 +386,6 @@ search source=xenapi VBD metrics startminutesago=60 | timechart avg(io_read_kbs)
 search source=xenapi VBD metrics startminutesago=60 | timechart avg(io_write_kbs) by vmname
 search source=xenapi vif metrics startminutesago=60 | timechart avg(io_read_kbs) by vmname
 dispatch [search sourcetype=netstat startminutesago=60 | multikv passthru=f | search LISTEN tcp | rex field=Local ".*:(?<port>.*)" | dedup port,_time,host | stats count by host, port | eventstats mode(count) as expected | where count!=expected | sort host]
-crawl
-crawl root=/home/bob
-crawl root=/home/bob | input add index=preview
-crawl root=/home/bob/txt | input add index=preview sourcetype=text owner=bob name="my nightly crawl"
-crawl | input add
-crawl | search source=*csv | input remove
 dbinspect index=_internal span=1d
 dbinspect index=main timeformat=%s.%Q
 file /var/log/messages.1

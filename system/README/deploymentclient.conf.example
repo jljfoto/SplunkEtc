@@ -1,4 +1,4 @@
-#   Version 7.1.2
+#   Version 7.3.0
 #
 # Example 1
 # Deployment client receives apps and places them into the same
@@ -65,3 +65,13 @@ appEventsResyncIntervalInSecs=86400
 
 [target-broker:deploymentServer]
 targetUri= deploymentserver.splunk.mycompany.com:8089
+
+
+# Example 6
+# Sets the deployment client connection/transaction timeouts to 1 minute.
+# Deployment clients terminate connections if deployment server does not reply.
+
+[deployment-client]
+connect_timeout=60 
+send_timeout=60
+recv_timeout=60

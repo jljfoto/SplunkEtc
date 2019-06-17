@@ -14,6 +14,7 @@ import splunk.rest.format as format
 import json
 import logging as logger
 import lxml.etree as etree, json
+import defusedxml.lxml as safe_lxml
 import os
 import platform
 import re
@@ -56,7 +57,7 @@ URLOPEN_TIMEOUT     = 15
 def isCloud(sessionKey):
     """ Returns true if running on a cloud stack i.e instanceType == 'cloud' """
     server_conf = bundle.getConf('server', sessionKey)
-    if (server_conf['general'].has_key('instanceType')  and 
+    if ('instanceType' in server_conf['general'] and
             server_conf['general']['instanceType'] == INSTANCE_TYPE_CLOUD):
         return True
     return False
@@ -108,26 +109,26 @@ class RemoteAppsSetup(splunk.rest.BaseRestHandler):
                         build = i.split("=")[1].strip()
             self._agent = "Splunkd/%s (%s; version=%s; arch=%s; build=%s; %s)" % (version, os_name, platform_info, arch, build, py_ver)
             self._platformInfo = {'version': version, 'platform': os_name}
-        except Exception, e:
+        except Exception as e:
             logger.exception(e)
         # Manual overrides in server.conf
         try:
             conf = bundle.getConf("server", self.sessionKey)
             s = conf["applicationsManagement"]
             if not s.isDisabled():
-                if s.has_key("allowInternetAccess"):
+                if "allowInternetAccess" in s:
                     self._allowRemote = bundle_paths.parse_boolean(s["allowInternetAccess"])
-                if s.has_key("loginUrl"):
+                if "loginUrl" in s:
                     self._login = s["loginUrl"]
-                if s.has_key("url"):
+                if "url" in s:
                     self._base = s["url"]
-                if s.has_key("useragent"):
+                if "useragent" in s:
                     self._agent = s["useragent"]
-                if s.has_key("caCertFile"):
+                if "caCertFile" in s:
                     self._sslpol._cafile = bundle_paths.expandvars(s["caCertFile"])
-                if s.has_key("sslCommonNameList"):
+                if "sslCommonNameList" in s:
                     self._sslpol._sslCommonNameList = bundle_paths.expandvars(s["sslCommonNameList"])
-                if s.has_key("cipherSuite"):
+                if "cipherSuite" in s:
                     self._sslpol._cipherSuite = bundle_paths.expandvars(s["cipherSuite"])
             s = conf["shclustering"]
             if not s.isDisabled():
@@ -165,7 +166,7 @@ class RemoteAppsLogin(RemoteAppsSetup):
             bundle_paths.BundleInstaller().validate_server_cert(self._login, self._sslpol)
             # Forward post arguments, including username and password.
             with closing(urllib2.urlopen(self._login, post_args, URLOPEN_TIMEOUT)) as f:
-                root = etree.parse(f).getroot()
+                root = safe_lxml.parse(f).getroot()
                 token = root.xpath("a:id", namespaces=NSMAP)[0].text
                 if self.request["output_mode"] == "json":
                     self.response.setHeader('content-type', 'application/json')
@@ -179,13 +180,13 @@ class RemoteAppsLogin(RemoteAppsSetup):
                     self.response.setHeader('content-type', 'text/xml')
                     self.response.write(etree.tostring(response, pretty_print=True))
                 logger.debug("Login successful")
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             if e.code in [401, 405]:
                 # Returning 401 logs off current session
                 # Splunkbase retuns 405 when only password is submitted
                 raise splunk.RESTException(400, e.msg)
             raise splunk.RESTException(e.code, e.msg)
-        except Exception, e:
+        except Exception as e:
             raise splunk.AuthenticationFailed
 
 
@@ -226,7 +227,7 @@ class RemoteAppsManager(RemoteAppsSetup):
                                 pretty_print=True)
             self.response.setHeader('content-type', 'text/xml')
             self.response.write(str.decode('UTF-8'))
-        except Exception, e:
+        except Exception as e:
             if len(self.pathParts) == self.BASE_DEPTH:
                 # If we're handling the base endpoint, suppress exceptions.
                 # They probably aren't caused by user error here.
@@ -251,9 +252,9 @@ class RemoteAppsManager(RemoteAppsSetup):
             default_version = False
         else:
             raise splunk.BadRequest
-        if not self.args.has_key(HTTP_AUTH_TOKEN):
+        if HTTP_AUTH_TOKEN not in self.args:
             raise splunk.BadRequest("Missing argument: %s" % HTTP_AUTH_TOKEN)
-        if not self.args.has_key(HTTP_ACTION):
+        if HTTP_ACTION not in self.args:
             raise splunk.BadRequest("Missing argument: %s" % HTTP_ACTION)
         if self.args[HTTP_ACTION] not in (HTTP_ACTION_INSTALL, HTTP_ACTION_DOWNLOAD):
             raise splunk.BadRequest("Invalid value '%s' for argument '%s'" %
@@ -308,7 +309,7 @@ class RemoteAppsManager(RemoteAppsSetup):
                     logger.debug("Configuring application contents")
                     try:
                         b.migrate()
-                    except Exception, e:
+                    except Exception as e:
                         logger.exception(e)
                         self.addMessage("WARN", "Error during configuration: %s" % e)
                     # Redirect to local application.
@@ -337,7 +338,7 @@ class RemoteAppsManager(RemoteAppsSetup):
             raise
         except splunk.InternalServerError:
             raise
-        except Exception, e:
+        except Exception as e:
             logger.exception(e)
             raise splunk.InternalServerError(e)
 
@@ -387,17 +388,17 @@ class RemoteAppsManager(RemoteAppsSetup):
             bundle_paths.BundleInstaller().validate_server_cert(target_url, self._sslpol)
             req = urllib2.Request(target_url, None, headers)
             f = urllib2.urlopen(req, None, URLOPEN_TIMEOUT)
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             raise splunk.RESTException(e.code, e.msg)
-        except urllib2.URLError, e:
+        except urllib2.URLError as e:
             raise splunk.RESTException(503, "Splunk is unable to connect to the Internet to find more apps.")   
-        except Exception, e:
+        except Exception as e:
             raise splunk.RESTException(404, "Resource not found")
         try:
-            root = etree.parse(f).getroot()
+            root = safe_lxml.parse(f).getroot()
             f.close()
             return root
-        except Exception, e:
+        except Exception as e:
             logger.exception(e)
             raise splunk.InternalServerError(e)
 
@@ -423,7 +424,7 @@ class RemoteAppsManager(RemoteAppsSetup):
             self._convert_remote_elements(xml)
             for entry in xml.xpath("//a:entry", namespaces=NSMAP):
                 self._convert_remote_elements(entry)
-        except Exception, e:
+        except Exception as e:
             logger.exception(e)
             raise splunk.InternalServerError(e)
 
@@ -455,7 +456,7 @@ class RemoteAppsManager(RemoteAppsSetup):
             entry = self._get_latest_version_entry(xml)
             href = entry.xpath("a:link/@href", namespaces=NSMAP)[0]
             return self._get_feed_root(href)
-        except Exception, e:
+        except Exception as e:
             logger.exception(e)
             msg = "Could not find latest version of application"
             raise splunk.ResourceNotFound(msg)
@@ -488,7 +489,7 @@ class RemoteAppsManager(RemoteAppsSetup):
                 except:
                     pass
             raise splunk.ResourceNotFound(msg)
-        except Exception, e:
+        except Exception as e:
             logger.exception(e)
             raise splunk.ResourceNotFound(msg)
 
@@ -507,6 +508,6 @@ class RemoteAppsManager(RemoteAppsSetup):
         """
         try:
             contents[key] = xml.xpath(location_path, namespaces=NSMAP)[0].text
-        except Exception, e:
+        except Exception as e:
             logger.exception(e)
             pass

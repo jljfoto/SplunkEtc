@@ -239,7 +239,43 @@ The package might be referenced either via a url or a local path.]]>
         </common>
     </item>
 
+    <item obj="rotate" verb="true">
+        <common>
+            <help>
+                <header><![CDATA[Generate a new splunk.secret (encryption key), and re-encrypt all configuration with the new key.]]></header>
+                <syntax><![CDATA[rotate [splunk-secret|shcluster-splunk-secret]]]></syntax>
+                <examples>
+                    <ex><![CDATA[./splunk rotate splunk-secret]]></ex>
+                </examples>
+            </help>
+        </common>
+    </item>
+
     <!-- ==== end of specific 'help' handling ==== -->
+
+    <!-- rotate splunk-secret -->
+    <item obj="splunk-secret">
+        <common>
+            <help>
+                <header><![CDATA[This is the secret key used to encrypt or decrypt sensitive configuration stored on disk.]]></header>
+                <syntax><![CDATA[[rotate] splunk-secret]]></syntax>
+            </help>
+        </common>
+        <cmd name="rotate">
+            <uri><![CDATA[/server/security/splunk-secret/rotate]]></uri>
+            <help>
+                <title><![CDATA[Generate a new splunk.secret (encryption key), and re-encrypt all configuration with the new key.]]></title>
+                <syntax><![CDATA[rotate splunk-secret]]></syntax>
+                <required/>
+                <optional/>
+                <examples>
+                    <ex><![CDATA[./splunk rotate splunk-secret]]></ex>
+                </examples>
+            </help>
+            <type>edit</type>
+            <post_only/>
+        </cmd>
+    </item>
 
     <!-- enable|disable boot-start -->
     <item obj="boot-start">
@@ -267,7 +303,6 @@ The package might be referenced either via a url or a local path.]]>
             </help>
         </cmd>
     </item>
-
 
     <!-- list config -->
     <item obj="config">
@@ -421,6 +456,45 @@ The package might be referenced either via a url or a local path.]]>
         </cmd>
     </item>
 
+    <!-- list|set dfsmaster-port -->
+    <item obj="dfsmaster-port">
+         <common>
+            <help>
+                <header><![CDATA[This object controls Splunk DFS port.]]></header>
+                <syntax><![CDATA[show|set dfsmaster-port]]></syntax>
+            </help>
+            <uri><![CDATA[/server/settings]]></uri>
+            <argsmap>
+                <arg cliname="dfsurl" eainame="dfsMasterPort" />
+            </argsmap>
+        </common>
+
+        <cmd name="list" synonym="show" />
+        <cmd name="show">
+            <offline_ok />
+            <help>
+                <title><![CDATA[displays the port that the DFS uses]]></title>
+            </help>
+            <type>list</type>
+        </cmd>
+
+       <cmd name="set">
+            <offline_ok />
+            <implied_arg_name><![CDATA[dfsurl]]></implied_arg_name>
+            <help>
+                <title><![CDATA[sets the port that the DFS uses]]></title>
+                 <required>
+                    <arg name="port"><![CDATA[port value to be set]]></arg>
+                </required>
+            </help>
+            <type>edit</type>
+            <eai_id>server-settings</eai_id>
+            <default>
+                <arg name="dfsurl" value="" />
+           </default>
+        </cmd>
+    </item>
+
     <!-- list|set default-hostname -->
     <item obj="default-hostname">
          <common>
@@ -503,6 +577,23 @@ The package might be referenced either via a url or a local path.]]>
             <offline_ok />
             <help>
                 <title><![CDATA[show the guid of the box]]></title>
+            </help>
+            <type>list</type>
+        </cmd>
+    </item>
+
+
+   <!-- list fips-mode-->
+    <item obj="fips-mode">
+         <common>
+            <help />
+            <uri><![CDATA[/server/info]]></uri>
+        </common>
+
+        <cmd name="list" synonym="show" />
+        <cmd name="show">
+            <help>
+                <title><![CDATA[show FIPS mode status]]></title>
             </help>
             <type>list</type>
         </cmd>
@@ -922,6 +1013,294 @@ The package might be referenced either via a url or a local path.]]>
 
     </item>
 
+    <!-- enable|disable Workload-Management -->
+    <item obj="workload-management">
+        <cmd name="enable">
+            <uri><![CDATA[/workloads/config/enable]]></uri>
+            <help>
+                <title><![CDATA[Enable Workload-Management on a Splunk Instance]]></title>
+                <examples>
+                    <ex><![CDATA[./splunk enable workload-management]]></ex>
+                </examples>
+            </help>
+            <type>edit</type>
+        </cmd>
+
+        <cmd name="disable">
+            <uri><![CDATA[/workloads/config/disable]]></uri>
+            <help>
+                <title><![CDATA[Disable Workload-Management on a Splunk Instance]]></title>
+                <examples>
+                    <ex><![CDATA[./splunk disable workload-management]]></ex>
+                </examples>
+            </help>
+            <type>edit</type>
+        </cmd>
+    </item>
+
+    <item obj="workload-config">
+       <cmd name="get-base-dirname">
+            <uri><![CDATA[/workloads/config/get-base-dirname]]></uri>
+            <help>
+                <title><![CDATA[get the base dir name for splunk workload pools]]></title>
+                <syntax><![CDATA[get-base-dirname workload-config]]></syntax>
+            </help>
+            <default>
+                <arg name="count" value="-1" />
+            </default>
+            <type>list</type>
+       </cmd>
+
+       <cmd name="set-base-dirname">
+           <uri><![CDATA[/workloads/config/set-base-dirname]]></uri>
+            <help>
+                <title><![CDATA[set the base dir name for splunk workload pools]]></title>
+                <syntax><![CDATA[set-base-dirname workload-config -workload_pool_base_dir_name <value>]]></syntax>
+                <required>
+                    <arg name="workload_pool_base_dir_name"><![CDATA[the name of the base directory for splunk workload pools]]></arg>
+                </required>
+            </help>
+            <type>edit</type>
+            <post_only/>
+       </cmd>
+
+        <!-- check workload-management-preflight-checks -->
+        <cmd name="check">
+            <uri><![CDATA[/workloads/config/preflight-checks]]></uri>
+            <help>
+                <title><![CDATA[Preflight checks of workload management.]]></title>
+                <syntax><![CDATA[check workload-config]]></syntax>
+                <required/>
+                <examples>
+                    <ex><![CDATA['./splunk check workload-config']]></ex>
+                </examples>
+            </help>
+            <type>list</type>
+        </cmd>
+    </item>
+
+    <!-- edit|list workload-category -->
+    <item obj="workload-category">
+        <common>
+            <help>
+                <header><![CDATA[An object used to specify and modify workload category]]></header>
+            </help>
+            <uri><![CDATA[/workloads/categories/]]></uri>
+            <argsmap>
+                <arg cliname="category" eainame="name" />
+            </argsmap>
+        </common>
+
+        <cmd name="edit">
+            <implied_arg_name><![CDATA[category]]></implied_arg_name>
+            <help>
+                <title><![CDATA[edits a workload-category]]></title>
+                <syntax><![CDATA[edit workload-category <_name> [-parameter <value>] ...]]></syntax>
+                <required>
+                    <arg name="category"><![CDATA[the workload-category to edit]]></arg>
+                </required>
+                <optional>
+                    <arg name="cpu_weight"><![CDATA[The cpu weight to be used for this category]]></arg>
+                    <arg name="mem_weight"><![CDATA[The memory weight to be used for this category]]></arg>
+                </optional>
+            </help>
+            <eai_id>{category}</eai_id>
+            <examples>
+                <ex><![CDATA[./splunk edit workload-category search -cpu_weight 40 -mem_weight 40]]></ex>
+            </examples>
+        </cmd>
+
+        <cmd name="list">
+            <help>
+                <title><![CDATA[list all workload-category]]></title>
+                <syntax><![CDATA[list workload-category]]></syntax>
+            </help>
+            <default>
+                <arg name="count" value="-1" />
+            </default>
+        </cmd>
+    </item>
+
+   <!-- add|remove|edit|list workload-pool -->
+   <item obj="workload-pool">
+       <common>
+           <help>
+               <header><![CDATA[An object used to specify and modify workload pools]]></header>
+           </help>
+           <uri><![CDATA[/workloads/pools/]]></uri>
+            <argsmap>
+                <arg cliname="pool_name" eainame="name" />
+            </argsmap>
+       </common>
+
+       <cmd name="add">
+            <implied_arg_name><![CDATA[pool_name]]></implied_arg_name>
+            <help>
+                <title><![CDATA[adds a workload-pool]]></title>
+                <syntax><![CDATA[add workload-pool <pool_name> [-parameter <value>] ...]]></syntax>
+                <required>
+                    <arg name="pool_name"><![CDATA[the name of the workload-pool to create]]></arg>
+                    <arg name="cpu_weight"><![CDATA[The cpu weight to be used for this pool]]></arg>
+                    <arg name="mem_weight"><![CDATA[The memory weight to be used for this pool]]></arg>
+                    <arg name="category"><![CDATA[The memory weight to be used for this pool]]></arg>
+                </required>
+                <optional>
+                    <arg name="default_category_pool"><![CDATA[Mark this pool as the default category pool]]></arg>
+                </optional>
+                <examples>
+                    <ex><![CDATA[./splunk add workload-pool pool_a -category search -cpu_weight 30 -mem_weight 20]]></ex>
+                </examples>
+            </help>
+       </cmd>
+
+       <cmd name="remove">
+            <implied_arg_name><![CDATA[pool_name]]></implied_arg_name>
+            <help>
+                <title><![CDATA[removes a workload-pool]]></title>
+                <syntax><![CDATA[remove workload-pool <pool_name>]]></syntax>
+                <required>
+                    <arg name="pool_name"><![CDATA[the name of the workload-pool to remove]]></arg>
+                </required>
+            </help>
+            <eai_id>{pool_name}</eai_id>
+       </cmd>
+
+       <cmd name="edit">
+            <implied_arg_name><![CDATA[pool_name]]></implied_arg_name>
+            <help>
+                <title><![CDATA[edits a workload-pool]]></title>
+                <syntax><![CDATA[edit workload-pool <pool_name> [-parameter <value>] ...]]></syntax>
+                <required>
+                    <arg name="pool_name"><![CDATA[the name of the workload-pool to edit]]></arg>
+                </required>
+                 <optional>
+                    <arg name="cpu_weight"><![CDATA[The cpu weight to be used for this pool]]></arg>
+                    <arg name="mem_weight"><![CDATA[The memory weight to be used for this pool]]></arg>
+                    <arg name="default_category_pool"><![CDATA[Mark this pool as the default category pool]]></arg>
+                </optional>
+            </help>
+            <eai_id>{pool_name}</eai_id>
+            <examples>
+                <ex><![CDATA[./splunk edit workload-pool pool_a -cpu_weight 40]]></ex>
+            </examples>
+       </cmd>
+
+       <cmd name="list">
+            <help>
+                <title><![CDATA[list all workload-pool]]></title>
+                <syntax><![CDATA[list workload-pool]]></syntax>
+            </help>
+            <default>
+                <arg name="count" value="-1" />
+            </default>
+       </cmd>
+   </item>
+
+    <!-- add|remove|edit|list workload-rule -->
+    <item obj="workload-rule">
+        <common>
+            <help>
+                <header><![CDATA[An object used to specify and modify workload rules]]></header>
+            </help>
+            <uri><![CDATA[/workloads/rules/]]></uri>
+            <argsmap>
+                <arg cliname="rule_name" eainame="name" />
+            </argsmap>
+        </common>
+
+        <cmd name="add">
+            <implied_arg_name><![CDATA[rule_name]]></implied_arg_name>
+            <help>
+                <title><![CDATA[adds a workload-rule]]></title>
+                <syntax><![CDATA[add workload-rule <rule_name> [-parameter <value>] ...]]></syntax>
+                <required>
+                    <arg name="rule_name"><![CDATA[the name of the workload-rule to create]]></arg>
+                    <arg name="predicate"><![CDATA[the logical expression of workload-rule with predicate as <type>=<value>. eg: role=admin, app=search AND (NOT index=_internal). Possible values of type are: app, role, user, index]]></arg>
+                    <arg name="workload_pool"><![CDATA[the name of the workload-pool to associate the rule with, the workload-pool must be defined earlier]]></arg>
+                </required>
+                <examples>
+                    <ex><![CDATA[./splunk add workload-rule "my_role_rule" -predicate "role=admin OR app=search" -workload_pool "pool_a"]]></ex>
+                </examples>
+            </help>
+        </cmd>
+
+        <cmd name="remove">
+            <implied_arg_name><![CDATA[rule_name]]></implied_arg_name>
+            <help>
+                <title><![CDATA[removes a workload-rule]]></title>
+                <syntax><![CDATA[remove workload-rule <rule_name>]]></syntax>
+                <required>
+                    <arg name="rule_name"><![CDATA[the name of the workload-rule to remove]]></arg>
+                </required>
+            </help>
+            <eai_id>{rule_name}</eai_id>
+        </cmd>
+
+        <cmd name="edit">
+            <implied_arg_name><![CDATA[rule_name]]></implied_arg_name>
+            <help>
+                <title><![CDATA[edits a workload-rule]]></title>
+                <syntax><![CDATA[edit workload-rule <rule_name> [-parameter <value>] ...]]></syntax>
+                <required>
+                    <arg name="rule_name"><![CDATA[the name of the workload-rule to edit]]></arg>
+                </required>
+                <optional>
+                    <arg name="predicate"><![CDATA[the workload-rule in type=key format eg: app=search, role=admin. Possible values of type are: app, role]]></arg>
+                    <arg name="workload_pool"><![CDATA[the name of the workload-pool to associate the rule with]]></arg>
+                    <arg name="order"><![CDATA[the order of the workload-rule within the total set of rules]]></arg>
+                </optional>
+            </help>
+            <eai_id>{rule_name}</eai_id>
+            <examples>
+                <ex><![CDATA[./splunk edit workload-rule my_role_rule -workload_pool pool_b]]></ex>
+            </examples>
+        </cmd>
+
+        <cmd name="list">
+            <help>
+                <title><![CDATA[list all workload-rule]]></title>
+                <syntax><![CDATA[list workload-rule]]></syntax>
+            </help>
+            <default>
+                <arg name="count" value="-1" />
+            </default>
+        </cmd>
+    </item>
+
+    <!-- show workload-management-status -->
+    <item obj="workload-management-status">
+        <cmd name="show">
+            <uri><![CDATA[/workloads/status]]></uri>
+            <help>
+                <title><![CDATA[View status of workload management.]]></title>
+                <syntax><![CDATA[show workload-management-status]]></syntax>
+                <required/>
+                <examples>
+                    <ex><![CDATA['./splunk show workload-management-status']]></ex>
+                </examples>
+            </help>
+            <type>list</type>
+        </cmd>
+    </item>
+
+    <!-- list health report status -->
+    <item obj="health">
+        <cmd name="show" synonym="list" />
+        <cmd name="list">
+            <help>
+                <title><![CDATA[show the health report status of the Splunk instance.]]></title>
+                <syntax><![CDATA[list health [-features <feature_names>]]]></syntax>
+                <optional>
+                    <arg name="features"><![CDATA[Comma separated feature names to be listed]]></arg>
+                </optional>
+                <examples>
+                    <ex><![CDATA['./splunk list health -features "BatchReader, TailReader"']]></ex>
+                </examples>
+            </help>
+            <uri><![CDATA[/server/health/splunkd/details]]></uri>
+            <type>list</type>
+        </cmd>
+    </item>
 
     <!-- list|edit cluster-config -->
     <item obj="cluster-config">
@@ -973,7 +1352,8 @@ The package might be referenced either via a url or a local path.]]>
                     <arg name="replication_port"><![CDATA[specify the replication port]]></arg>
                     <arg name="max_peer_build_load"><![CDATA[specify the max number of concurrent jobs to make bucket searchable]]></arg>
                     <arg name="max_peer_rep_load"><![CDATA[specify the max number of concurrent replications that peer can take part in as target]]></arg>
-                    <arg name="secret"><![CDATA[sets the value of the secret key between master and slaves]]></arg>
+                    <arg name="max_nonhot_rep_kBps"><![CDATA[specify the max warm/cold/summary replication throughput(kb(bytes)/s) ]]></arg>
+                    <arg name="secret"><![CDATA[sets the value of the secret key between master and slaves <br /> Caution: Passing login credentials on the CLI is a security risk.]]></arg>
                     <arg name="multisite"><![CDATA[used to turn on the multisite feature for this cluster]]></arg>
                     <arg name="site_replication_factor"><![CDATA[sets the replication factor for a multisite configuration. See examples for usage]]></arg>
                     <arg name="site_search_factor"><![CDATA[sets the search factor for a multisite configuration. See examples for usage]]></arg>
@@ -1599,6 +1979,23 @@ More information in the online documentation for the corresponding REST endpoint
             </help>
             <type>edit</type>
         </cmd>
+        <cmd name="list">
+            <uri><![CDATA[/apps/deploy]]></uri>
+            <default>
+                <arg name="action" value="list-bundle-status" />
+            </default>
+            <help>
+                <title><![CDATA[ list the status of app bundles in a search head cluster deployer.]]></title>
+                <examples>
+                    <ex><![CDATA['./splunk list shcluster-bundle -member_uri https://member_name:port]]></ex>
+                </examples>
+                <required/>
+                <optional>
+                    <arg name="member_uri"><![CDATA[Specify the  uri of one member in the search head cluster.]]></arg>
+                </optional>
+            </help>
+            <type>list</type>
+        </cmd>
     </item>
 
     <!-- list|edit shcluster-config -->
@@ -1703,14 +2100,15 @@ More information in the online documentation for the corresponding REST endpoint
                     <arg name="raft_election_timeout_ms"><![CDATA[Sets the value of election timeout used by the raft protocol.]]></arg>
                     <arg name="conf_deploy_fetch_url"><![CDATA[Sets the uri from which a cluster member fetches its baseline configuration.]]></arg>
                     <arg name="manual_detention"><![CDATA[Sets the member in manual detention]]></arg>
-                    <arg name="rolling_restart"><![CDATA[Sets the mode that search head cluster rolling restart runs in]></arg>
+                    <arg name="rolling_restart"><![CDATA[Sets the mode that search head cluster rolling restart runs in. Possible values are restart/searchable/searchable_force]]></arg>
                     <arg name="decommission_search_jobs_wait_secs"><![CDATA[Sets timeout of searchable rolling restart]]></arg>
+                    <arg name="target_uri"><![CDATA[Specify the uri of search head to put in manual detention]]></arg>
                 </optional>
                 <examples>
                     <ex><![CDATA[./splunk edit shcluster-config -replication_port 4535]]></ex>
                     <ex><![CDATA[./splunk edit shcluster-config -secret foo]]></ex>
                     <ex><![CDATA[./splunk edit shcluster-config -captain_uri https://server_name:port -secret foo]]></ex>
-                    <ex><![CDATA[./splunk edit shcluster-config -manual_detention on]]></ex>
+                    <ex><![CDATA[./splunk edit shcluster-config -target_uri https://server_name:port -manual_detention on]]></ex>
                     <ex><![CDATA[./splunk edit shcluster-config -rolling_restart searchable -decommission_search_jobs_wait_secs 180]]></ex>
                 </examples>
             </help>
@@ -1889,6 +2287,22 @@ More information in the online documentation for the corresponding REST endpoint
         </cmd>
     </item>
 
+    <item obj="shcluster-splunk-secret">
+        <cmd name="rotate">
+            <uri><![CDATA[/shcluster/captain/control/default/rotate-splunk-secret]]></uri>
+            <help>
+                <title><![CDATA[Generate a new search head cluster common splunk.secret (encryption key), and re-encrypt all configuration with the new key. CAUTION: this command causes the members to be re-added the search head cluster, and might cause scheduled searches to be unavailable until the process completes.]]></title>
+                <syntax><![CDATA[rotate shcluster-splunk-secret]]></syntax>
+                <required/>
+                <optional/>
+                <examples>
+                    <ex><![CDATA[./splunk rotate shcluster-splunk-secret]]></ex>
+                </examples>
+            </help>
+            <type>edit</type>
+            <post_only/>
+        </cmd>
+    </item>
 
     <!-- set indexing-ready -->
     <item obj="shcluster-indexing-ready">
@@ -3037,7 +3451,7 @@ list forward-server]]></syntax>
                 <required>
                     <arg name="username"><![CDATA[the name of the Splunk user account to manage]]></arg>
                     <arg name="role"><![CDATA[Admin, Power, or User]]></arg>
-                    <arg name="password"><![CDATA[password of the account]]></arg>
+                    <arg name="password"><![CDATA[password of the account <br /> Caution: Passing login credentials on the CLI is a security risk.]]></arg>
                 </required>
                 <optional>
                     <arg name="full-name"><![CDATA[Real name of user in quotes (Example: "Nikola Tesla")]]></arg>
@@ -3799,6 +4213,8 @@ list forward-server]]></syntax>
 
           script          script to execute upon alert (ex: $SPLUNK_HOME/bin/myScript)
 
+          workload_pool   specify the name of the workload-pool for the search to run in
+
           threshold       the threshold to trigger the alert action
           [<threshold type>:<relation>:<quantity>]
           <threshold type>= num-events,num-sources,num-hosts
@@ -4483,11 +4899,13 @@ Supported commands and objects:
 
         rolling-restart     cluster-peers|shcluster-members
 
+        rotate              splunk-secret|shcluster-splunk-secret
+
         rtsearch            [app|batch|detach|earliest_time|header|id|max_time|maxout|output|preview|timeout|
-                            uri|wrap]
+                            uri|wrap|workload_pool]
 
         search              [app|batch|detach|earliest_time|header|id|index_earliest|index_latest|latest_time|
-                            max_time|maxout|output|preview|timeout|uri|wrap]
+                            max_time|maxout|output|preview|timeout|uri|wrap|workload_pool]
 
         set                 [datastore-dir|deploy-poll|default-hostname|default-index|
                             minfreemb|servername|server-type|splunkd-port|web-port|kvstore-port]
@@ -5224,6 +5642,9 @@ and don't reconfigure any of your Splunk settings.
         wrap         false   indicates whether to line wrap for individual lines
                              that are longer than the terminal width. Defaults
                              to true.
+
+       workload_pool value   the name of the workload-pool for the search to run in.
+
 
     See what search language is available for use in the CLI by using these
     help commands:

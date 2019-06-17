@@ -27,7 +27,7 @@ def check(args, kwargs, required=True):
         elif rtype == "json":
             try:
                 kwargs[rarg] = json.loads(kwargs[rarg])
-            except Exception, e:
+            except Exception as e:
                 raise e
                 raise Exception("bad json for %s: %s" % (rarg, kwargs[rarg]))
         else: pass
@@ -46,7 +46,7 @@ def mungeExamples(examples, fieldName):
     munged = copy.deepcopy(examples)
     for example in munged:
         if '_rawtext' in example:
-    	    fulltext = example['_rawtext']
+            fulltext = example['_rawtext']
             del example['_rawtext']
             eventDict = dict()
             eventDict[fieldName] = fulltext

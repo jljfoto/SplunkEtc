@@ -5,6 +5,7 @@
   <collection label="Indexing">
     <collection label="Performance">
       <view name="indexing_performance_instance" />
+      <view name="indexing_performance_advanced" />
       <view name="indexing_performance_deployment" />
     </collection>
     <collection label="Indexer Clustering">
@@ -30,6 +31,12 @@
     <collection label="License Usage">
       <view name="license_usage_today" />
       <view name="license_usage_30days" />
+    </collection>
+    <collection label="SmartStore">
+      <view name="smartstore_activity_instance" />
+      <view name="smartstore_activity_deployment" />
+      <view name="smartstore_cache_performance_instance" />
+      <view name="smartstore_cache_performance_deployment" />
     </collection>
   </collection>
   <collection label="Search">
@@ -63,6 +70,11 @@
     <view name="resource_usage_instance" />
     <view name="resource_usage_machine" />
     <view name="resource_usage_deployment" />
+    <collection label="Workload Management">
+      <view name="workload_management" />
+      <view name="workload_management_per_pool_instance" />
+      <view name="workload_management_per_pool_deployment" />
+    </collection>
   </collection>
   <collection label="Forwarders">
     <view name="forwarder_instance" />

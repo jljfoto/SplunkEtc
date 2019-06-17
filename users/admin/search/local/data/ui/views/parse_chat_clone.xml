@@ -128,7 +128,7 @@
       <title>Key Models</title>
       <chart>
         <search>
-          <query>index="parse_chat" model_name=kaybunz OR model_name=rose* OR model_name=sarah* OR model_name=hotchop* OR model_name=tigerlilly* OR model_name=utk* OR model_name=zilla* | timechart limit=1000 useother=f count by model_name</query>
+          <query>index="parse_chat" model_name=kaybunz OR model_name=rosea* OR model_name=sarahd* OR model_name=hotchop* OR model_name=tigerlilly* OR model_name=utk* OR model_name=zilla* OR model_name=amychocolate* OR model_name=izzywarm* | timechart limit=1000 useother=f count by model_name</query>
           <earliest>0</earliest>
           <latest></latest>
           <sampleRatio>1</sampleRatio>
@@ -242,7 +242,7 @@
       <title>Count of each Source over time period</title>
       <chart>
         <search>
-          <query>index=parse_chat filename=* | eval type=if(match(filename,"chaturbate"),"chaturbate",if(match(filename,"xvideos"),"xvideos",if(match(filename,"myfreecams"),"myfreecams",if(match(filename,"xhamster"),"xhamster","pornhub")))) | stats count by type | sort - count</query>
+          <query>index=parse_chat filename=* | eval type=if(match(filename,"chaturbate"),"chaturbate",if(match(filename,"xvideos"),"xvideos",if(match(filename,"myfreecams"),"myfreecams",if(match(filename,"xhamster"),"xhamster","pornhub")))) |eval mod_name=if(isnull(model_name),type."_none",type."_".model_name) | stats count by mod_name | sort - count</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>

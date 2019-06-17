@@ -29,7 +29,7 @@ define(
     ) {
         return BaseView.extend({
             moduleId: module.id,
-           
+
             initialize: function() {
                 BaseView.prototype.initialize.apply(this, arguments);
 
@@ -40,7 +40,7 @@ define(
 
                 var columns = [
                         { label: _('i').t(), className: 'col-info', html: '<i class="icon-info"></i>'},
-                        { label: _('').t(), className: 'col-select-all'},
+                        { label: '', className: 'col-select-all'},
                         { label: _('Instance (host)').t(), sortKey: 'host', className: 'col-name', tooltip: _('The "host" metadata field that an instance uses to tag the events it reads from data inputs. Set in inputs.conf / [default] / host.').t() },
                         { label: _('Instance (serverName)').t(), sortKey: 'peerName', className: 'col-serv-name', tooltip: _('The "splunk_server" internal field that an instance uses to tag the events it returns as search results. Set in server.conf / [general] / serverName.').t() },
                         { label: _('Machine').t(), sortKey: 'host_fqdn', className: 'col-mach-name', tooltip: _('The host name of the machine on which this Splunk Enterprise instance is running.').t() },
@@ -60,7 +60,7 @@ define(
                                 return column.className === 'col-select-all';
                             })
                         ),
-                        1 
+                        1
                     )[0];
 
                 localInstanceColumns.splice(2, 0, selectAllRow);
@@ -259,7 +259,7 @@ define(
                     } else {
                         value = peer.entry.content.get(sortKey);
                     }
-                   
+
                     return value;
                 }, this);
 
@@ -271,7 +271,7 @@ define(
                     var s = string.split('=')[1];
                     return s.replace(/[\"|\'|\s]/g, "");
                 };
-                
+
                 if (this.model.state.get('search')) {
                     peers = peers.filter(function(peer) {
                         // function in the DistributedSearchGroup mixin
@@ -279,7 +279,7 @@ define(
                         if(peer.containsRole(this.model.state.get('rawSearch'))) {
                             return true;
                         }
-                        
+
                         var searchables = [
                             peer.entry.content.get('peerName'),
                             peer.entry.content.get('host'),
@@ -302,9 +302,9 @@ define(
                         }, false, this);
                     }, this);
                 }
-                
+
                 var totalPeers = peers.length || 0;
-                
+
                 // Client side pagination, if necessary:
                 if (this.model.state.get('count') > 0 &&
                     this.model.state.get('count') < this.collection.peers.length) {

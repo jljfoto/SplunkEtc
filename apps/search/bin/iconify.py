@@ -15,7 +15,7 @@ if __name__ == '__main__':
                 sigHash = hashlib.sha1(eventSignature).hexdigest()
                 result['_icon'] = sigHash
         si.outputResults(results)
-    except Exception, e:
+    except Exception as e:
         import traceback
         stack =  traceback.format_exc()
         si.generateErrorResults("Error '%s'. %s" % (e, stack))

@@ -387,7 +387,7 @@ define([
                         d3.select(this).style("cursor", "pointer");
                         tooltip.style("opacity", 0.8);
 
-                        tooltip.html(formatDate(d.timestamp, -1, -1) + "<br>" + vizUtils.escapeHtml(d.bucket) + "<br>Number of Instances: " + d.numInstances)
+                        tooltip.html(formatDate(d.timestamp, -1, -1) + "<br>" + vizUtils.escapeHtml(d.bucket) + "<br>Number of Instances: " + vizUtils.escapeHtml(d.numInstances))
                             .style("left", (d3.event.pageX-75) + "px")
                             .style("top", (d3.event.pageY-85) + "px");
 

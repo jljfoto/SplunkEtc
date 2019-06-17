@@ -63,7 +63,7 @@ def getArgs():
 def isCovered(path, dirs):
     for d in dirs:
         if path.startswith(d):
-            #print "already covered:", path, "by", d
+            #print("already covered: %s by %s" % (path, d))
             return True
     return False
 
@@ -128,7 +128,7 @@ def getFileGroungs(results):
             depth = mypath.count(delimiter) + 1
             score = scorePath(depth, val, neededToEliminate)
             pathsAndScores.append((mypath, score))
-            #print "score: %s\tpath: %s " % (score, mypath)
+            #print("score: %s\tpath: %s " % (score, mypath))
 
         # SORT PATHS BY SCORE
         pathsAndScores.sort(floatSort)
@@ -142,18 +142,18 @@ def getFileGroungs(results):
             if isCovered(mypath, dirs):
                 continue
             files = dirobjs[mypath]['files']
-            #print len(files), myscore
+            #print("%u %s" % (len(files), str(myscore)))
             # REMOVE FILES COVERED BY THIS PATH FROM THE SET OF PATHS WE HAVE YET TO COVER
             removedCount = listDiff(notCovered, files)
             if removedCount > 0:
                 # ADD DIRECTORY TO LIST
                 dirs.append(mypath)
-                #print len(notCovered), len(dirs)
+                #print("%u %u" % (len(notCovered), len(dirs)))
             
 
         filesAndDirs = list(notCovered)
         filesAndDirs.extend(dirs)
-        #print "MAXCOUNT %s FILESANDDIRS %s" % (maxcount, len(filesAndDirs))
+        #print("MAXCOUNT %s FILESANDDIRS %s" % (maxcount, len(filesAndDirs)))
         if len(filesAndDirs) > 0:
             results = []
             for i, mypath in enumerate(filesAndDirs):
@@ -165,7 +165,7 @@ def getFileGroungs(results):
                 results.append({ pathfield: mypath, sizefield:total, countfield:count})
         return results
             
-    except Exception, e:
+    except Exception as e:
         import traceback
         stack =  traceback.format_exc()
         si.generateErrorResults("Error '%s'. %s" % (e, stack))

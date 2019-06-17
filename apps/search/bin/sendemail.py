@@ -2,7 +2,7 @@ import copy
 import cStringIO
 import csv
 import json
-import lxml.etree as et
+import defusedxml.lxml as safe_lxml
 import re
 import socket
 import time
@@ -133,13 +133,11 @@ def mail(email, argvals, ssContent, sessionKey):
         smtp.quit()
         logger.info(mail_log_msg)
 
-    except Exception, e:
+    except Exception as e:
         logger.error(mail_log_msg)
         raise
 
-def sendEmail(results, settings):
-    keywords, argvals = splunk.Intersplunk.getKeywordsAndOptions(CHARSET)
-
+def sendEmail(results, settings, keywords, argvals):
     for key in argvals:
         if key != 'ssname':
             argvals[key] =  unquote(argvals[key])
@@ -272,8 +270,8 @@ def sendEmail(results, settings):
         try:
             triggerSeconds = time.localtime(float(ssContent['trigger_time']))
             ssContent['trigger_date'] = time.strftime("%B %d, %Y", triggerSeconds)
-            ssContent['trigger_timeHMS'] = time.strftime("%I:%M:%S", triggerSeconds)
-        except Exception, e:
+            ssContent['trigger_timeHMS'] = time.strftime("%H:%M:%S %Z", triggerSeconds)
+        except Exception as e:
             logger.error(e)
 
     logger.debug('SENDEMAIL argvals %s' % argvals)
@@ -455,7 +453,7 @@ def sendEmail(results, settings):
 
     try:
         mail(email, argvals, ssContent, sessionKey)
-    except Exception, e:
+    except Exception as e:
         errorMessage = str(e) + ' while sending mail to: ' + ssContent.get("action.email.to")
         logger.error(errorMessage)
         results = dcu.getErrorResults(results, ssContent['graceful'], errorMessage)
@@ -500,7 +498,7 @@ def buildSafeMergedValues(ssContent, results, serverInfoContent, jobContent, vie
 
 def getDescriptionFromXml(xmlString):
     if xmlString:
-        dashboardNode = et.fromstring(unicode(xmlString).encode('utf-8'))
+        dashboardNode = safe_lxml.fromstring(unicode(xmlString).encode('utf-8'))
         return dashboardNode.findtext('./description')
     else:
         return None
@@ -523,8 +521,11 @@ def realize(valuesForTemplate, ssContent, sessionKey, namespace, owner, argvals)
         stringsForPost['action.email.subject'] = ssContent['action.email.subject']
 
     if ssContent.get('action.email.footer.text'):
-        stringsForPost['action.email.footer.text'] = ssContent['action.email.footer.text']
-    
+        # SPL-144752: allow footer to have no value at all if user choose to not have it.
+        # This can be done by setting footer = " " (note the space in between)
+        if len(ssContent['action.email.footer.text'].strip()) > 0:
+            stringsForPost['action.email.footer.text'] = ssContent['action.email.footer.text']
+
     realizeURI = entity.buildEndpoint([ 'template', 'realize' ])
 
     postargs = valuesForTemplate
@@ -532,6 +533,8 @@ def realize(valuesForTemplate, ssContent, sessionKey, namespace, owner, argvals)
     postargs['conf.recurse'] = 0
     try:
         for key, value in stringsForPost.iteritems():
+            if len(value.strip()) == 0:
+                logger.warning('Token substitution may fail due to key:%s contains only whitespaces' % key)
             postargs['name'] = value
             headers, body = simpleRequest(
                 realizeURI, 
@@ -541,7 +544,7 @@ def realize(valuesForTemplate, ssContent, sessionKey, namespace, owner, argvals)
             )
             body = json.loads(body)
             ssContent[key] = body['entry'][0]['content']['eai:data']
-    except Exception, e:
+    except Exception as e:
         logger.error(e)
         # SPL-96721: email subject didn't get replaced, reset it to ssname
         if ssContent.get('action.email.subject') == stringsForPost.get('action.email.subject'):
@@ -553,7 +556,7 @@ def setUserCrendentials(argvals, settings):
     password    = argvals.get("password" , "")
 
     # fetch credentials from the endpoint if none are supplied or password is encrypted
-    if (len(username) == 0 and len(password) == 0) or password.startswith('$1$') :
+    if (len(username) == 0 and len(password) == 0) or (password.startswith('$1$') or password.startswith('$7$')) :
         namespace  = settings.get("namespace", None)
         sessionKey = settings['sessionKey']
 
@@ -1145,7 +1148,7 @@ def buildAttachments(settings, ssContent, results, email, jobCount):
             if pdfgen_available:
                 # will raise an Exception on error
                 pdf = generatePDF(server, subject, searchid, settings, pdfview, ssName, paperSize, paperOrientation)
-        except Exception, e:
+        except Exception as e:
             logger.error("An error occurred while generating a PDF: %s" % e)
             ssContent['errorArray'].append("An error occurred while generating the PDF. Please see python.log for details.")
 
@@ -1280,10 +1283,10 @@ def generatePDF(serverURL, subject, sid, settings, pdfViewID, ssName, paperSize,
     try:
         response, content = simpleRequest("pdfgen/render", sessionKey = sessionKey, getargs = parameters, timeout = PDFGEN_SIMPLE_REQUEST_TIMEOUT)
 
-    except splunk.SplunkdConnectionException, e:
+    except splunk.SplunkdConnectionException as e:
         raise PDFException("Failed to fetch PDF (SplunkdConnectionException): %s" % str(e))
 
-    except Exception, e:
+    except Exception as e:
         raise PDFException("Failed to fetch PDF (Exception type=%s): %s" % (str(type(e)), str(e)))
 
     if response['status']!='200':
@@ -1317,7 +1320,7 @@ def getCredentials(sessionKey, namespace):
       ent = entity.getEntity('admin/alert_actions', 'email', namespace=namespace, owner='nobody', sessionKey=sessionKey)
       if 'auth_username' in ent and 'clear_password' in ent:
           return ent['auth_username'], ent['clear_password']
-   except Exception, e:
+   except Exception as e:
       logger.error("Could not get email credentials from splunk, using no credentials. Error: %s" % (str(e)))
 
    return '', ''
@@ -1334,9 +1337,62 @@ def getAlertActions(sessionKey):
 
     return settings
 
+def sendHealthAlertEmail(results, settings):
+    """
+    This function will only be called to send health report alerting emails.
+    Email parameters will be passed through settings/results.
+    """
+
+    if not results or len(results) < 1:
+        logger.error("There is no email content specified.")
+        return;
+
+    if not settings.get('to') and not settings.get('cc') and not settings.get('bcc'):
+        logger.error("There are no recipients specified")
+        return;
+
+    sessionKey = ""
+    alertConfig = {}
+    email = MIMEMultipart()
+    if settings.get('to'):
+        email['To'] = settings.get('to')
+    if settings.get('cc'):
+        email['Cc'] = settings.get('cc')
+    if settings.get('bcc'):
+        email['Bcc'] = settings.get('bcc')
+
+    if settings.get('from'):
+        email['From'] = settings.get('from')
+    alertConfig['action.email.use_ssl'] = normalizeBoolean(settings.get('use_ssl'))
+    alertConfig['action.email.use_tls'] = normalizeBoolean(settings.get('use_tls'))
+    if settings.get('mailserver'):
+        alertConfig['action.email.mailserver'] = settings.get('mailserver')
+
+    if settings.get('auth_username'):
+        argvals['username'] = settings.get('auth_username')
+    if settings.get('auth_password'):
+        argvals['password'] = settings.get('auth_password')
+
+    email['Subject'] = Header(results[0].get('subject'), CHARSET)
+    plainMsg = results[0].get('plain_msg')
+    email.attach(MIMEText(plainMsg, 'plain', _charset=CHARSET))
+
+    try:
+        mail(email, argvals, alertConfig, sessionKey)
+    except Exception as e:
+        errorMessage = 'Error sending Health Report alert. Error="%s".' % e
+        logger.error(errorMessage)
+
+    # For health report email alert, don't need return results.
+    return None
+
 results, dummyresults, settings = splunk.Intersplunk.getOrganizedResults()
 try:
-    results = sendEmail(results, settings)
-except Exception, e:
+    keywords, argvals = splunk.Intersplunk.getKeywordsAndOptions(CHARSET)
+    if 'is_health_alert' in argvals: 
+        results = sendHealthAlertEmail(results, settings)
+    else: 
+        results = sendEmail(results, settings, keywords, argvals)
+except Exception as e:
     logger.error(e)
 splunk.Intersplunk.outputResults(results)

@@ -1,4 +1,4 @@
-#   Version 7.1.2
+#   Version 7.3.0
 #
 # This is an example commands.conf.  Use this file to configure settings
 # for external search commands.
@@ -33,9 +33,6 @@ maxinputs = 50000
 
 # end defaults
 #####################
-
-[crawl]
-filename = crawl.py
 
 [createrss]
 filename = createrss.py

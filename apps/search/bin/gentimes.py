@@ -161,7 +161,7 @@ def generateTimestamps(results, settings):
 
             start += increment
 
-    except Exception, e:
+    except Exception as e:
         import traceback
         stack =  traceback.format_exc()
         results = splunk.Intersplunk.generateErrorResults(str(e) + ". Traceback: " + str(stack))
@@ -171,6 +171,3 @@ def generateTimestamps(results, settings):
 results, dummyresults, settings = splunk.Intersplunk.getOrganizedResults()
 results = generateTimestamps(results, settings)
 splunk.Intersplunk.outputResults(results)
-
-
-

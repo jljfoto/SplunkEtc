@@ -135,9 +135,8 @@ if __name__ == '__main__':
             si.outputInfo(False, False, False, reqsop, preop) # calls sys.exit()    
         run(messages, count, mapping)
 
-    except Exception, e:
+    except Exception as e:
         import traceback
         stack =  traceback.format_exc()
         si.addErrorMessage(messages, "%s. Traceback: %s" % (e, stack.replace('\n','\\n')))
         si.outputResults([], messages)
-

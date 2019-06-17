@@ -41,7 +41,7 @@ def add(requestObject):
         vals["authstr"] = authString
         input_tail.add(vals, True)
         message = 'Source %s successfully added.' % source
-    except Exception, e:
+    except Exception as e:
         message += 'Failed to add source: %s' % str(e)
         
     templ = Template.Template(bundle_paths.make_path('addtail_done.html'))
@@ -54,6 +54,6 @@ if __name__ == '__main__':
         vals = {'source': source, 'sourcetype':'', 'index':'main'}
         vals["authstr"] = comm.getAuthInfo('admin','changeme')
         input_tail.add(vals, True)
-        print 'Source %s successfully added.' % source
-    except Exception, e:
-        print 'Failed to add source: %s' % str(e)
+        print('Source %s successfully added.' % source)
+    except Exception as e:
+        print('Failed to add source: %s' % str(e))

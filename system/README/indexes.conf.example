@@ -1,4 +1,4 @@
-#   Version 7.1.2
+#   Version 7.3.0
 #
 # This file contains an example indexes.conf.  Use this file to configure
 # indexing properties.
@@ -35,6 +35,7 @@ maxHotBuckets = 10
 
 [default]
 maxTotalDataSizeMB = 650000
+maxGlobalRawDataSizeMB = 0
 maxGlobalDataSizeMB = 0
 
 
@@ -217,13 +218,10 @@ maxDataSize = auto_high_volume
 maxHotBuckets = 10
 
 ### This example demonstrates how to configure a volume that points to
-### S3-based remote storage, and an index that uses this volume.  The setting
+### S3-based remote storage and indexes that use this volume.  The setting
 ### "storageType=remote" indicates that this is a remote-storage volume.
 ### The "remotePath" parameter associates the index with that volume
 ### and configures a top-level location for uploading buckets.
-###
-### Note: Remote storage volumes are currently under development and
-### are not supported for production use.
 
 [volume:s3]
 storageType = remote
@@ -231,24 +229,15 @@ path = s3://example-s3-bucket/remote_volume
 remote.s3.access_key = S3_ACCESS_KEY
 remote.s3.secret_key = S3_SECRET_KEY
 
-[foo]
-coldPath=$SPLUNK_DB/foo/colddb
-homePath=$SPLUNK_DB/foo/db
-thawedPath=$SPLUNK_DB/foo/thaweddb
-remotePath=volume:s3/$_index_name
-
-### This example demonstrates how to configure a volume that points to
-### file-based remote storage, such as NFS-based remote storage.
-### The "remotePath" parameter under the [default] stanza causes all
-### indexes on the system to use the remote storage.
-###
-### Note: Remote storage volumes are currently under development and
-### are not supported for production use.
-
 [default]
-remotePath = volume:file/$_index_name
+remotePath = volume:s3/$_index_name
 
-[volume:file]
-storageType = remote
-path = file:///mount/nfs
+[i4]
+coldPath = $SPLUNK_DB/$_index_name/colddb
+homePath = $SPLUNK_DB/$_index_name/db
+thawedPath = $SPLUNK_DB/$_index_name/thaweddb
 
+[i5]
+coldPath = $SPLUNK_DB/$_index_name/colddb
+homePath = $SPLUNK_DB/$_index_name/db
+thawedPath = $SPLUNK_DB/$_index_name/thaweddb

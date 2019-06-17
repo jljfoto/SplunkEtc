@@ -20,3 +20,4 @@ deprecatedConfig = false
 scheduledHour = 16
 reportStartDate = 2017-10-27
 scheduledDay = 4
+bufferFlushTimeout = 600

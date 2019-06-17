@@ -181,12 +181,6 @@ export = system
 access = read : [ * ], write : [ admin ]
 export = system
 
-[commands/crawl]
-access = read : [ admin ], write : [ admin ]
-
-[commands/input]
-access = read : [ admin ], write : [ admin ]
-
 [commands/mappy]
 access = read : [ admin ], write : [ admin ]
 

@@ -47,7 +47,7 @@ def rlookup(ip):
 
 def main():
     if len(sys.argv) != 3:
-        print "Usage: python external_lookup.py [host field] [ip field]"
+        print("Usage: python external_lookup.py [host field] [ip field]")
         sys.exit(1)
 
     hostfield = sys.argv[1]

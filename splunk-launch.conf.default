@@ -1,16 +1,16 @@
-#   Version 7.1.2
+#   Version 7.3.0
 
 # Modify the following line to suit the location of your Splunk install.
 # If unset, Splunk will use the parent of the directory containing the splunk
 # CLI executable.
 #
-# SPLUNK_HOME=/opt/build/splunk-home
+# SPLUNK_HOME=/Users/jenkins/wrangler-2.0/workspace/corebld/build-home
 
 # By default, Splunk stores its indexes under SPLUNK_HOME in the
 # var/lib/splunk subdirectory.  This can be overridden
 # here:
 #
-# SPLUNK_DB=/opt/build/splunk-home/var/lib/splunk
+# SPLUNK_DB=/Users/jenkins/wrangler-2.0/workspace/corebld/build-home/var/lib/splunk
 # Splunkd daemon name
 SPLUNK_SERVER_NAME=Splunkd
 

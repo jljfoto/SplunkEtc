@@ -1,40 +1,46 @@
 [default]
+
 [_audit]
+selfStorageThreads = 
+compressRawdata = 1
+enableDataIntegrityControl = 0
+maxTotalDataSizeMB = 100
+minHotIdleSecsBeforeForceRoll = 0
+syncMeta = 1
+suspendHotRollByDeleteQuery = 0
+enableTsidxReduction = 0
 rtRouterQueueSize = 
 bucketRebuildMemoryHint = 0
-minHotIdleSecsBeforeForceRoll = 0
-enableDataIntegrityControl = 0
-syncMeta = 1
 rtRouterThreads = 
-suspendHotRollByDeleteQuery = 0
-maxTotalDataSizeMB = 1
-enableTsidxReduction = 0
-compressRawdata = 1
 enableOnlineBucketRepair = 1
 
 [_internal]
+compressRawdata = 1
+enableDataIntegrityControl = 0
+maxTotalDataSizeMB = 100
+minHotIdleSecsBeforeForceRoll = 0
+syncMeta = 1
+suspendHotRollByDeleteQuery = 0
+enableTsidxReduction = 0
 rtRouterQueueSize = 
 bucketRebuildMemoryHint = 0
-minHotIdleSecsBeforeForceRoll = 0
-enableDataIntegrityControl = 0
-syncMeta = 1
 rtRouterThreads = 
-suspendHotRollByDeleteQuery = 0
-maxTotalDataSizeMB = 1000
-enableTsidxReduction = 0
-compressRawdata = 1
 enableOnlineBucketRepair = 1
+archiver.enableDataArchive = 0
+maxDataSize = 100
+selfStorageThreads = 
+tsidxWritingLevel = 
 
 [_introspection]
+compressRawdata = 1
+enableDataIntegrityControl = 0
+maxTotalDataSizeMB = 1024
+minHotIdleSecsBeforeForceRoll = 0
+syncMeta = 1
+suspendHotRollByDeleteQuery = 0
+enableTsidxReduction = 0
 rtRouterQueueSize = 
 bucketRebuildMemoryHint = 0
-minHotIdleSecsBeforeForceRoll = 0
-enableDataIntegrityControl = 0
-syncMeta = 1
 rtRouterThreads = 
-suspendHotRollByDeleteQuery = 0
-maxTotalDataSizeMB = 1024
-enableTsidxReduction = 0
-compressRawdata = 1
 enableOnlineBucketRepair = 1
 

@@ -15,8 +15,8 @@ version = 7.1.1
 modtime = 1530404809.588230000
 
 [ui-prefs/search]
-version = 7.1.2
-modtime = 1535817031.207442000
+version = 7.3.0
+modtime = 1560437769.015517000
 
 [ui-tour/adddata-tour%3Aenterprise]
 version = 7.0.0
@@ -27,8 +27,8 @@ version = 7.0.0
 modtime = 1519793748.584773000
 
 [views/parse_chat_clone]
-version = 7.1.0
-modtime = 1525993050.391182000
+version = 7.2.3
+modtime = 1549746291.569466000
 
 [views/parse_chat_travel_drive_post_process]
 version = 7.1.1
@@ -37,3 +37,8 @@ modtime = 1531081366.719663000
 [views/splunk_internal_events]
 version = 7.1.1
 modtime = 1527780279.994067000
+
+[props/blood_sugar/EXTRACT-id%2Cdate_time%2Ctype%2Cglucose%2Cnote]
+owner = admin
+version = 7.1.2
+modtime = 1537716740.705526000

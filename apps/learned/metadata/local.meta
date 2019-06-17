@@ -192,3 +192,103 @@ modtime = 1533889328.023191000
 owner = nobody
 version = 7.1.1
 modtime = 1533889328.211012000
+
+[props/splunk_ta_aws_description.log]
+owner = nobody
+version = 7.1.2
+modtime = 1536014639.050076000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Fsplunk_ta_aws_description.log.3_Mon_Sep__3_15%3A43%3A59_2018_1061623700]
+owner = nobody
+version = 7.1.2
+modtime = 1536014639.289675000
+
+[props/splunk_ta_aws_description.log-2]
+owner = nobody
+version = 7.1.2
+modtime = 1536014641.247215000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Fsplunk_ta_aws_description.log.4_Mon_Sep__3_15%3A44%3A01_2018_1637786364]
+owner = nobody
+version = 7.1.2
+modtime = 1536014641.537339000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Fsplunk_ta_aws_description.log.4_Mon_Sep__3_15%3A44%3A02_2018_459089795]
+owner = nobody
+version = 7.1.2
+modtime = 1536014642.698209000
+
+[props/splunk_ta_aws_kinesis.log]
+owner = nobody
+version = 7.1.2
+modtime = 1536014643.296778000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Fsplunk_ta_aws_kinesis.log.3_Mon_Sep__3_15%3A44%3A03_2018_1530017573]
+owner = nobody
+version = 7.1.2
+modtime = 1536014643.465044000
+
+[props/splunk_ta_aws_cloudwatch.log]
+owner = nobody
+version = 7.1.2
+modtime = 1536014645.172696000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Fsplunk_ta_aws_cloudwatch.log.1_Mon_Sep__3_15%3A44%3A05_2018_1123594220]
+owner = nobody
+version = 7.1.2
+modtime = 1536014645.438118000
+
+[props/em_aws_input_restarter]
+owner = nobody
+version = 7.1.2
+modtime = 1536014654.540180000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Fem_aws_input_restarter.log_Mon_Sep__3_15%3A44%3A14_2018_207461603]
+owner = nobody
+version = 7.1.2
+modtime = 1536014654.714347000
+
+[props/mlspl_watchdog-too_small]
+owner = nobody
+version = 7.1.2
+modtime = 1537217392.907920000
+
+[props/mlspl-3]
+owner = nobody
+version = 7.1.2
+modtime = 1538021411.670581000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Fmlspl.log_Wed_Sep_26_21%3A10%3A11_2018_317319120]
+owner = nobody
+version = 7.1.2
+modtime = 1538021411.957076000
+
+[props/streamfwd-too_small]
+owner = nobody
+version = 7.2.3
+modtime = 1559437382.005967000
+
+[props/streamfwd-2]
+owner = nobody
+version = 7.2.3
+modtime = 1559736088.305306000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Fstreamfwd.log_Wed_Jun__5_08%3A01%3A28_2019_619888314]
+owner = nobody
+version = 7.2.3
+modtime = 1559736089.142790000
+
+[props/django_service-too_small]
+owner = nobody
+version = 7.3.0
+modtime = 1560436920.630471000
+
+[props/django_error-too_small]
+owner = nobody
+version = 7.3.0
+modtime = 1560436921.283874000
+
+[props/django_access-too_small]
+owner = nobody
+version = 7.3.0
+modtime = 1560436929.082571000

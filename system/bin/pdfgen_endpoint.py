@@ -529,7 +529,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
                 splunkdConnectionTimeout = defaultSplunkdConnectionTimeout
 
             splunk.rest.SPLUNKD_CONNECTION_TIMEOUT = splunkdConnectionTimeout
-        except Exception, e:
+        except Exception as e:
             logger.error("Exception while trying to get splunkdConnectionTimeout from web.conf e=%s" % e)
             splunk.rest.SPLUNKD_CONNECTION_TIMEOUT = defaultSplunkdConnectionTimeout
         finally:    

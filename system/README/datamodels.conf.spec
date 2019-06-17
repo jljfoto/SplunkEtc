@@ -1,4 +1,4 @@
-#   Version 7.1.2
+#   Version 7.3.0
 #
 # This file contains possible attribute/value pairs for configuring
 # data models.  To configure a datamodel for an app, put your custom
@@ -159,6 +159,24 @@ acceleration.schedule_priority = default | higher | highest
   ability of the scheduler to minimize search starvation.  Use this setting
   only for mission-critical searches.
 
+acceleration.allow_old_summaries = <bool>
+* Sets the default value of 'allow_old_summaries' for this data model.
+* Only applies to accelerated data models.
+* When you use commands like 'datamodel', 'from', or 'tstats' to run a search 
+  on this data model, allow_old_summaries=false causes the Splunk software to
+  verify that the data model search in each bucket's summary metadata matches 
+  the scheduled search that currently populates the data model summary.
+  Summaries that fail this check are considered "out of date" and are not used 
+  to deliver results for your events search.
+* This setting helps with situations where the definition of an accelerated
+  data model has changed, but the Splunk software has not yet updated its
+  summaries to reflect this change. When allow_old_summaries=false for a data
+  model, an event search of that data model only returns results from bucket
+  summaries that match the current definition of the data model.
+* If you set allow_old_summaries=true, your search can deliver results from
+  bucket summaries that are out of date with the current data model definition.
+* Default: false
+
 acceleration.hunk.compression_codec = <string>
 * Applicable only to Hunk Data models. Specifies the compression codec to
   be used for the accelerated orc/parquet files.
@@ -169,6 +187,19 @@ acceleration.hunk.dfs_block_size = <unsigned int>
 
 acceleration.hunk.file_format = <string>
 * Applicable only to Hunk data models. Valid options are "orc" and "parquet"
+
+acceleration.workload_pool = <name of workload pool>¬
+* Optional.
+* Sets the workload pool to be used by this search.
+* There are multiple workload pools defined in workload_pools.conf.
+  Each workload pool has resource limits associated with it. For example,
+  CPU, Memory, etc.
+* The specific workload_pool to use is defined in workload_pools.conf.
+* The search process for this search runs in the specified workload_pool.
+* If workload management is enabled and a workload_pool is not specified,
+  the search is put into a proper pool as specified by the workload rules defined
+  in workload_rules.conf. If there is no rule defined for this search, the
+  default_pool defined in workload_pools.conf is used.
 
 
 #******** Dataset Related Attributes ******

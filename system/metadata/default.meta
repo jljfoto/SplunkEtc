@@ -8,3 +8,8 @@ access = read : [ * ], write : [ admin ]
 
 [viewstates]
 access = read : [ * ], write : [ * ]
+
+### JSON Web Tokens: should only be readable/writable by admin
+
+[collections/JsonWebTokensV1]
+access = read : [ admin ], write : [ admin ]

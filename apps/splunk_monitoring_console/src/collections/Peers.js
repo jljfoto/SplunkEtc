@@ -40,7 +40,8 @@ define(
 				$.when(
 					this.distsearches.fetch({
 						data: {
-							search: 'name=dmc_*'
+							search: 'name=dmc_*',
+							count: 1000
 						}
 					}),
 					this.assets.fetch()

@@ -13,6 +13,7 @@ from splunk_instrumentation.report import report
 from splunk_instrumentation.metrics.metrics_transforms import transform_object
 from splunk_instrumentation.dataPoints.data_point import dataPointFactory
 from splunk_instrumentation.dataPoints.spl_data_point import SPLDataPoint  # noqa
+from splunk_instrumentation.dataPoints.report_data_point import ReportDataPoint  # noqa
 from splunk_instrumentation.splunklib import binding
 from splunk_instrumentation.constants import INTROSPECTION_INDEX_NAME
 

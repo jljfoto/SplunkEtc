@@ -41,6 +41,14 @@ class MetricsSchemaClass:
             dataPoints.append(MetricsSchemaDataPoint(dataPoint))
         return dataPoints
 
+    def getHashKey(self):
+        hash_key = self.classSchema.get('hash_key')
+        if hash_key is None:
+            hash_key = []
+        elif not isinstance(hash_key, list):
+            hash_key = [hash_key]
+        return hash_key
+
     def getRoles(self):
         roles = self.classSchema.get('roles')
         # default is to run telemetry data collection on lead node only

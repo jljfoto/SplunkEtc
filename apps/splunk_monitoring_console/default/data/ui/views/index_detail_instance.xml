@@ -1,10 +1,10 @@
-<form hideEdit="True" script="cell_fill_gauge.js, common_control.js">
+<form hideEdit="True" script="cell_fill_gauge.js, common_control.js" stylesheet="index_type.css">
   <label>Index Detail: Instance</label>
   <search id="indexes_base_search">
     <query>
-| rest splunk_server=$splunk_server$ /services/data/indexes datatype=all
+| rest splunk_server=$splunk_server$ /services/data/indexes $datatype$
   | join type=outer title [
-    | rest splunk_server=$splunk_server$ /services/data/indexes-extended datatype=all
+    | rest splunk_server=$splunk_server$ /services/data/indexes-extended $datatype$
   ]
 | `dmc_exclude_indexes`
 | eval warm_bucket_size = if(isnotnull('bucket_dirs.home.warm_bucket_size'), 'bucket_dirs.home.warm_bucket_size', 'bucket_dirs.home.size')
@@ -74,6 +74,12 @@
     <latest>$time.latest$</latest>
   </search>
   <fieldset autoRun="true" submitButton="false">
+    <input type="radio" searchWhenChanged="true" token="datatype">
+      <label>Index Type</label>
+      <choice value="">Event Indexes Only</choice>
+      <choice value="datatype=all">All Index Types *</choice>
+      <default></default>
+    </input>
     <input type="dropdown" searchWhenChanged="true" token="dmc_group">
       <label>Group</label>
       <showClearButton>false</showClearButton>
@@ -113,6 +119,9 @@
       </search>
       <selectFirstChoice>true</selectFirstChoice>
     </input>
+    <html id="index_type_disclaimer">
+      <p>The "All Index Types" option is not compatible with indexers running Splunk Enterprise 6.6 or earlier, where only event indexes exist.</p>
+    </html>
   </fieldset>
   <row>
     <panel>

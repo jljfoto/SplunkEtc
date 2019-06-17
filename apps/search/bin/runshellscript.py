@@ -103,7 +103,7 @@ else:
         stdin_data = "sessionKey=" + urllib.quote(sessionKey) + "\n"
 
         # strip any single/double quoting         
-        for i in xrange(len(cmd_args)):
+        for i in range(len(cmd_args)):
             if len(cmd_args[i]) > 2 and ((cmd_args[i][0] == '"' and cmd_args[i][-1] == '"') or (cmd_args[i][0] == "'" and cmd_args[i][-1] == "'")):
                  cmd_args[i] = cmd_args[i][1:-1]
 
@@ -185,7 +185,7 @@ else:
                 python_path = os.path.join(sharedStorage, "bin", python_exe)
                 shell_cmd = [ python_path ]
 
-        except Exception, e:
+        except Exception as e:
             pass
 
         # pass args as env variables too - this is to ensure that args are properly passed in windows
@@ -195,6 +195,13 @@ else:
         try:
             p = None
             if mswindows and use_cmd_exe:
+
+                # SPL-142755 [Triggering external Windows script failing with
+                # [Error 193] %1 is not a valid Win32 application]
+                # Quote first argument if it contains a space.
+                if cmd_args[0].find(' ') != -1:
+                    cmd_args[0] = '"' + cmd_args[0] + '"'
+
                 #
                 # Windows cmd.exe only allows 8191 characters on the command line.
                 # Including possible additional quotes and spaces, this comes down to 8155
@@ -230,6 +237,6 @@ else:
                code = p.returncode
                if code!=0:
                      results = splunk.Intersplunk.generateErrorResults("Script: " + cmd_args[0] + " exited with status code: " + str(code))
-        except OSError, e:
+        except OSError as e:
             results = splunk.Intersplunk.generateErrorResults('Error while executing script ' + str(e))
 splunk.Intersplunk.outputResults( results )

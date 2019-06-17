@@ -275,7 +275,7 @@ def main():
         if maxTerms > MAX_SEARCH_COMPLEXITY or maxTerms < 1:
             si.addWarnMessage(messages, "max_terms must be between 1 and %s.  Using default." % MAX_SEARCH_COMPLEXITY)
             maxTerms = MAX_SEARCH_COMPLEXITY
-    except Exception, e:
+    except Exception as e:
         maxTerms = MAX_SEARCH_COMPLEXITY
 
     dummy,options = si.getKeywordsAndOptions()
@@ -288,7 +288,7 @@ def main():
     results = []
     try:
         results = findTransaction(tname, tsearch, makeORs, eventsOnly, maxTerms, messages, **kwargs)
-    except Exception, e:
+    except Exception as e:
         error(e)
 
     events = []
@@ -308,6 +308,5 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-    except Exception, e:
+    except Exception as e:
         error(e)
-        

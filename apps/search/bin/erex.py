@@ -56,7 +56,7 @@ if __name__ == '__main__':
 
         try:
             regexes, extractions = ifl.learn(values, examples, badexamples)
-        except Exception, e:
+        except Exception as e:
             # log error
             stack =  traceback.format_exc()
             logger.error("Exception encountered: %s" % e)
@@ -84,7 +84,7 @@ if __name__ == '__main__':
                     result[k] = v
         
         si.outputResults(results, messages)
-    except Exception, e:
+    except Exception as e:
         stack =  traceback.format_exc()
         si.generateErrorResults("Error '%s'" % e)
         logger.error("Exception encountered: %s" % e)

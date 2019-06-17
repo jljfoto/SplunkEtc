@@ -166,18 +166,18 @@ class Bucket:
           bestPair = pair
 
           
-      #print "BEST PAIR:", bestPair, "COUNT:", bestCount, "IDEAL:", idealCount
+      #print("BEST PAIR: %s COUNT: %s IDEAL: %s" % (bestPair, bestCount, idealCount))
       bestField, bestValue = bestPair
       resultCount = len(self.results)
       fieldValues = uniqueValCounts[bestField]
-      #print "DISTINCT %s (%s=%s) BEST %s IDEAL %s RESULTS %s FIELDVALSLEN %s" % (distinctEnough(bestCount, resultCount), bestField, bestValue, bestCount, idealCount, resultCount, len(fieldValues))
+      #print("DISTINCT %s (%s=%s) BEST %s IDEAL %s RESULTS %s FIELDVALSLEN %s" % (distinctEnough(bestCount, resultCount), bestField, bestValue, bestCount, idealCount, resultCount, len(fieldValues)))
       # if every result has a unique value, or all results have the same count, we've failed to make a pivot
       if not distinctEnough(bestCount, resultCount) : #not len(fieldValues) == resultCount or not distinctEnough:
-        #print "FAILED TO MAKE PIVOT. BestCount: %s ResultCount: %s UniqueValueCount: %s Field: %s Values: %s" % (bestCount, resultCount, len(fieldValues), bestField, list(fieldValues)[:5])
+        #print("FAILED TO MAKE PIVOT. BestCount: %s ResultCount: %s UniqueValueCount: %s Field: %s Values: %s" % (bestCount, resultCount, len(fieldValues), bestField, list(fieldValues)[:5]))
         return None
       pivot = Pivot(bestField, DISCRETE_TYPE) # not continuous YET!!
       #??!! go over counts to get best attr to split into more than two groups
-      #print "FIELDVALUES:", fieldValues
+      #print("FIELDVALUES:%s" % fieldValues)
       for val in fieldValues:
         pivot.addValue(val) 
       return pivot
@@ -193,10 +193,10 @@ class Bucket:
             raw = result.get(RAW_FIELD, "")
             phrases = set(getPhrases(raw))
             result['_phrases'] = phrases
-        #print phrases
+        #print(phrases)
         for phrase in phrases:
           incCount(counts, phrase)
-      #print counts
+      #print(counts)
       # best pivot splits results in 2
       idealCount = len(self.results) / 2
       bestCount = 999999999
@@ -205,14 +205,14 @@ class Bucket:
         if abs(count - idealCount) < abs(bestCount - idealCount):
           bestCount = count
           bestPhrase = phrase
-      #print "BEST PHRASE:", bestPhrase, "COUNT:", bestCount, "IDEAL:", idealCount, "SELF:", self
+      #print("BEST PHRASE: %s COUNT: %s IDEAL: %s SELF: %s" % (bestPhrase, bestCount, idealCount, self))
 
       resultCount = len(self.results)
 
       
       #if bestCount == resultCount: # if all results have the phrase, we've failed to find a pivot 
       if not distinctEnough(bestCount, resultCount): 
-        #print "FAILED TO MAKE RAW PIVOT. BestCount: %s ResultCount: %s " % (bestCount, resultCount)
+        #print("FAILED TO MAKE RAW PIVOT. BestCount: %s ResultCount: %s " % (bestCount, resultCount))
         return None
 
       pivot = Pivot(RAW_FIELD, RAW_SUBSTRING_TYPE) # not continuous YET!!
@@ -223,7 +223,7 @@ class Bucket:
       
 
     def addResult(self, result):
-      #print "ADD RESULTS: %s "  % result
+      #print("ADD RESULTS: %s " % result)
       self.results.append(result)
       self.count += 1
       if 'eventtype' in result:
@@ -237,14 +237,14 @@ class Bucket:
             
       if self.example == None or self.example == '':
         self.example = getExampleText(result)
-        #print "ADDED:", self.example, self.toString(0)
+        #print("ADDED: %s %s" % (self.example, self.toString(0)))
 
 
 
       
     # support pivot of attr
     def splitOnPivot(self, useraw = False):
-        #print "SPLITONPIVOTRESULTS:", len(self.results)
+        #print("SPLITONPIVOTRESULTS: %u" % len(self.results))
         if len(self.results) <= 1:
           return
         self.pivot = self.getPivot()
@@ -258,7 +258,7 @@ class Bucket:
           match = self.pivot.getMatch(result)
           if match not in self.subBuckets:
             self.subBuckets[match] = Bucket([])
-          #print "PUT INTO %s : %s" % (match, result)
+          #print("PUT INTO %s : %s" % (match, result))
           # put result into child bucket
           self.subBuckets[match].addResult(result)
         # free up ungrouped copy of results
@@ -267,7 +267,7 @@ class Bucket:
           return
         # recursively split on children
         for bucket in self.subBuckets.values():
-          #print "SUBBUCKET RESULT COUNT %s" % len(bucket.results)
+          #print("SUBBUCKET RESULT COUNT %s" % len(bucket.results))
           bucket.splitOnPivot(useraw)
 
     def getEventTypes(self, root, types, keywords, parentStr = "", value = "", depth = 0):
@@ -344,8 +344,8 @@ def getPhrases(text):
   text = text.lower()
   tokens = set(TERM_REGEX.findall(text))
   tokensAndGarbage = TERM_REGEX.split(text)
-  #print "T:", tokens
-  #print "TG:", tokensAndGarbage
+  #print("T: %s" % tokens)
+  #print("TG %s:" % tokensAndGarbage)
   phrase = ""
   phrases = set()
   if not ONLY_PHRASES:
@@ -354,16 +354,16 @@ def getPhrases(text):
     if tok == '' or tok.isspace() or ((len(phrase)>0) and tok in OK_CONNECTORS):
       phrase += tok
     elif tok in ignored_keywords:
-      #print "1ADDING PHRASE: %s BECAUSE OF %s" %(phrase, tok)
+      #print("1ADDING PHRASE: %s BECAUSE OF %s" %(phrase, tok))
       phrase = addPhrase(phrases, phrase)      
     elif tok in tokens:
       phrase += tok
     else:
-      #print "2ADDING PHRASE: %s BECAUSE OF %s" %(phrase, tok)      
+      #print("2ADDING PHRASE: %s BECAUSE OF %s" %(phrase, tok))
       phrase = addPhrase(phrases, phrase)
   addPhrase(phrases, phrase)
-  #print "T:", text
-  #print "P:", phrases
+  #print("T: %s" % text)
+  #print("P: %s" % phrases)
   if NO_NUMBER_PHRASES:
     phrases = [phrase for phrase in phrases if not numericPhrase(phrase)]
   return phrases
@@ -402,8 +402,8 @@ def discover(results, keywords, maxtypes, ignore_covered, useraw):
     # resort by position for understandable tree view
     eventtypes.sort(lambda x, y: x['_pos'] - y['_pos'])
     
-    #print root
-    #print "EVENTTYPES:", eventtypes
+    #print(root)
+    #print("EVENTTYPES: %s" % eventtypes)
     
     return eventtypes
 
@@ -420,9 +420,9 @@ def profileMain():
   import pstats
   p = pstats.Stats('profresults.txt')
   p.strip_dirs().sort_stats(-1).print_stats()
-  print "CUMULATIVE"
+  print("CUMULATIVE")
   p.sort_stats('cumulative').print_stats(30)
-  print "TIME"
+  print("TIME")
   p.sort_stats('time').print_stats(30)
 
 
@@ -451,7 +451,7 @@ def main():
     results,dummyresults,settings = si.getOrganizedResults()
     #for r in results:
     #  for attr in r:
-    #     print attr, r[attr], len(r[attr])
+    #     print("%s %s %u" % (attr, r[attr], len(r[attr])))
     if len(results) > MAXRESULTS:
       results = results[:MAXRESULTS]
       si.addWarnMessage(messages, "For performance reasons, the maximum number of results used to discover event types was capped at %s. Consider a more restrictive search." % MAXRESULTS)
@@ -470,7 +470,7 @@ def main():
       firstarg = searches[0][0][1].strip()
       if firstcmd == 'search' and firstarg != '*':
         searchhead = firstarg
-    except Exception, e:
+    except Exception as e:
       pass
     
     results = discover(results, searchhead, maxtypes, ignore_covered, useraw)

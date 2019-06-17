@@ -5,7 +5,7 @@ from splunk.clilib import cli_common, control_api
 from splunk.appserver import Util, Template, html, SearchFormatter, SearchAgent
 import logging as logger
 import os, traceback
-import xml.etree.cElementTree as et
+from defusedxml.cElementTree import fromstring as safe_fromstring
 
 
 def get(requestObject) :
@@ -38,7 +38,7 @@ def get(requestObject) :
     else:
         t.messages = html.Raw("")
     
-    parsedResponse = et.fromstring(agentResponse)
+    parsedResponse = safe_fromstring(agentResponse)
     
     eventsBlock = html.HTMLList()
 
@@ -62,7 +62,7 @@ def get(requestObject) :
                 elif mNode.attrib["col"] == decIndex : 
                     thisDecoration = mNode.text
                 
-        except Exception, e: 
+        except Exception as e:
             logger.debug("could not get thisEventId")
             traceback.print_exc()
             
@@ -86,7 +86,7 @@ def get(requestObject) :
 
     t.events = eventsBlock
     
-    if( not requestArgs.has_key("server") ):
+    if "server" not in requestArgs:
         t.server = ""
 
     t.run(requestObject)
@@ -113,13 +113,13 @@ def export(requestObject) :
     # return the output from search agent
     agentResponse = searchAgent.run()
 
-    parsedResponse = et.fromstring(agentResponse)
+    parsedResponse = safe_fromstring(agentResponse)
 
     try :
         resultsNode = parsedResponse.findall(".//results")[0] 
         return resultsNode.text
 
-    except Exception,e : 
+    except Exception as e:
         logger.error("Show source did not return expected results. ")
         return agentResponse
 
@@ -133,7 +133,7 @@ def _getTemplate(fileNameStr,requestArgs) :
     try :
         frontEndName = cli_common.confSettings["web"]["settings"]
         if not frontend_name: frontend_name = 'oxiclean'
-    except Exception, e : 
+    except Exception as e:
         frontend_name = 'oxiclean'
     frontend_dirname = 'search_' + frontend_name
     path.append(frontend_dirname);
@@ -149,7 +149,7 @@ def _getTemplate(fileNameStr,requestArgs) :
 def _getSearchCommand(requestArgs) :
     searchCommand = ["|"]
     remote = False
-    if( requestArgs.has_key("server") ):
+    if "server" in requestArgs:
         remote = True
         searchCommand.append( "remote " + requestArgs["server"] + " [ ");
     searchCommand.append("surrounding")

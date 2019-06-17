@@ -35,7 +35,7 @@
 </define>
 
 <define name="_hour" extract="hour">
-	<text><![CDATA[([01]?[1-9]|[012][0-3])(?!\d)]]></text>
+	<text><![CDATA[([01]?[0-9]|[012][0-3])(?!\d)]]></text>
 </define>
 
 <define name="_minute" extract="minute">

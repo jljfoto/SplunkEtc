@@ -118,3 +118,7 @@ reportStartDate = <string>
 * Start date for the next telemetry data collection
 * Uses format YYYY-MM-DD
 * Defaults to empty string
+
+bufferFlushTimeout = <number>
+* Timeout for buffer flush, number in seconds
+* Defaults to 600s

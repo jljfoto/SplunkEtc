@@ -90,7 +90,7 @@ def gapsOverlaps(results, findGaps):
         results_cnt = len(results)
     
         #2. iterate over all results looking for overlaps/gaps
-        for i in xrange(0, results_cnt-1):
+        for i in range(0, results_cnt-1):
             p      = results[i]
             p_min  = parse_float(p[min_time_key])
             p_max  = parse_float(p[max_time_key])    
@@ -100,7 +100,7 @@ def gapsOverlaps(results, findGaps):
             # look for (1)  all overlaps and (2) the first gap (in events with same search name)
             # need the for loop to find *all* overlaps
             k = 0;
-            for j in xrange(i+1, results_cnt):
+            for j in range(i+1, results_cnt):
                 c     = results[j] 
                 
                 if p_name != c[search_name_key]:

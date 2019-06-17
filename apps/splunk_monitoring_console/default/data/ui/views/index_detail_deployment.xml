@@ -1,4 +1,4 @@
-<form hideEdit="True" script="common_control.js, cell_fill_gauge.js, index_detail_deployment_extension.js">
+<form hideEdit="True" script="common_control.js, cell_fill_gauge.js, index_detail_deployment_extension.js" stylesheet="index_type.css">
     <label>Index Detail: Deployment</label>
     <search id="index_base_search">
         <query>
@@ -27,6 +27,12 @@
         </query>
     </search>
     <fieldset autoRun="true" submitButton="false">
+        <input type="radio" searchWhenChanged="true" token="datatype">
+            <label>Index Type</label>
+            <choice value="">Event Indexes Only</choice>
+            <choice value="datatype=all">All Index Types *</choice>
+            <default></default>
+        </input>
         <input type="dropdown" searchWhenChanged="true" token="group">
             <label>Group</label>
             <showClearButton>false</showClearButton>
@@ -49,13 +55,16 @@
             <fieldForValue>title</fieldForValue>
             <search>
                 <query>
-                    | rest splunk_server_group=dmc_group_indexer splunk_server_group="$group$" /services/data/indexes datatype=all
+                    | rest splunk_server_group=dmc_group_indexer splunk_server_group="$group$" /services/data/indexes $datatype$
                     | `dmc_exclude_indexes`
                     | stats count by title
                     | fields - count
                 </query>
             </search>
         </input>
+        <html id="index_type_disclaimer">
+            <p>The "All Index Types" option is not compatible with indexers running Splunk Enterprise 6.6 or earlier, where only event indexes exist.</p>
+        </html>
     </fieldset>
     <row>
         <panel>

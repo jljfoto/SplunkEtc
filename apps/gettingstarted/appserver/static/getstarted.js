@@ -2,7 +2,7 @@ $(function(){
     $(".gsTOCLink").click(function(){
         $('.gsDetails').hide();
         var divToShow=$(this).attr("divToShow");
-        $(divToShow).show();
+        $(Splunk.util.escapeSelector(divToShow)).show();
         $('.gsTOCLink').removeClass("gsTOCLinkHighlighted");
         $(this).addClass("gsTOCLinkHighlighted");
         return false;
@@ -11,7 +11,7 @@ $(function(){
     $(".gsExpandLink").click(function(){
         $('.gsExpandDetails').hide();
         var divToShow=$(this).attr("divToShow");
-        $(divToShow).show();
+        $(Splunk.util.escapeSelector(divToShow)).show();
         $('.gsExpandLink').removeClass("gsExpandLinkHighlighted");
         $(this).addClass("gsExpandLinkHighlighted");
         return false;

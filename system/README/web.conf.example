@@ -1,4 +1,4 @@
-#   Version 7.1.2
+#   Version 7.3.0
 #
 # This is an example web.conf.  Use this file to configure data web
 # settings.
@@ -10,8 +10,6 @@
 # To learn more about configuration files (including precedence) please see
 # the documentation located at
 # http://docs.splunk.com/Documentation/Splunk/latest/Admin/Aboutconfigurationfiles
-
-
 
 # This stanza heading must precede any changes.
 [settings]
@@ -27,3 +25,6 @@ enableSplunkWebSSL = true
 privKeyPath = /home/user/certs/myprivatekey.pem
 serverCert = /home/user/certs/mycacert.pem
 # NOTE: non-absolute paths are relative to $SPLUNK_HOME
+
+# First party apps:
+splunk_dashboard_app_name = splunk-dashboard-app

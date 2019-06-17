@@ -37,7 +37,7 @@ class AppInstallHandler(admin.MConfigHandler):
 
         try:
             bundle, status = appbuilder.installApp(location, force)
-        except splunk.RESTException, e:
+        except splunk.RESTException as e:
             raise admin.InternalException(e.msg)
     
         upgraded = (status == bundle_paths.BundleInstaller.STATUS_UPGRADED)

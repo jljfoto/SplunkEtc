@@ -62,8 +62,7 @@
       <search id="snapshot_search_concurrency_base">
         <query>
           | rest splunk_server=$splunk_server$ /services/server/status/resource-usage/splunk-processes
-          | dedup search_props.sid
-          | search search_props.role="head"
+          | where process_type = "search"
         </query>
       </search>
       <search base="snapshot_search_concurrency_base">
@@ -357,6 +356,7 @@
         <choice value="search_head">Dispatching Search Head</choice>
         <choice value="label">Search Name</choice>
         <choice value="provenance">Provenance</choice>
+        <choice value="workload_pool">Workload Pool</choice>
         <change>
           <condition value="mode">
             <set token="resourceSnapshotModeDoc">true</set>
@@ -466,6 +466,7 @@
         <choice value="search_head">Dispatching Search Head</choice>
         <choice value="label">Search Name</choice>
         <choice value="provenance">Provenance</choice>
+        <choice value="workload_pool">Workload Pool</choice>
         <change>
           <condition value="mode">
             <set token="concurrencyModeDoc">true</set>
@@ -564,6 +565,7 @@
         <choice value="search_head">Dispatching Search Head</choice>
         <choice value="label">Search Name</choice>
         <choice value="provenance">Provenance</choice>
+        <choice value="workload_pool">Workload Pool</choice>
         <change>
           <condition value="mode">
             <set token="resourceModeDoc">true</set>
@@ -761,6 +763,7 @@ $dispatcher$ host=$host$
         <choice value="search_head">Dispatching Search Head</choice>
         <choice value="label">Search Name</choice>
         <choice value="provenance">Provenance</choice>
+        <choice value="workload_pool">Workload Pool</choice>
         <change>
           <condition value="mode">
             <set token="runtimeModeDoc">true</set>

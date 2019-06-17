@@ -3,6 +3,7 @@ import splunk.Intersplunk as si
 import StringIO
 from lxml import etree
 import lxml
+import defusedxml.lxml as safe_lxml
 
 def tostr(node):
     if isinstance(node, lxml.etree._Element):
@@ -34,19 +35,19 @@ if __name__ == '__main__':
                 # make event value valid xml
                 myxml = "<data>%s</data>" % myxml
                 try:
-                    et = etree.parse(StringIO.StringIO(myxml))
+                    et = safe_lxml.parse(StringIO.StringIO(myxml))
                     nodes = et.xpath(path)
                     values = [tostr(node) for node in nodes]
                     result[outfield] = values
                     added = True
-                except Exception, e:
+                except Exception as e:
                     pass # consider throwing exception and explain path problem
                 
             if not added and defaultval != None:
                 result[outfield] = defaultval
                 
         si.outputResults(results)
-    except Exception, e:
+    except Exception as e:
         import traceback
         stack =  traceback.format_exc()
         si.generateErrorResults("Error '%s'. %s" % (e, stack))

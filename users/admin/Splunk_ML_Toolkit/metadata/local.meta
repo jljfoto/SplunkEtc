@@ -9,3 +9,11 @@ modtime = 1510082468.125338000
 [history/.dummy_history]
 version = 7.0.0
 modtime = 1510082469.317423000
+
+[lookups/__mlspl_example_server_power.csv]
+version = 7.1.2
+modtime = 1537217393.203417000
+
+[lookups/__mlspl_sample_glucose.csv]
+version = 7.1.2
+modtime = 1537218269.575024000

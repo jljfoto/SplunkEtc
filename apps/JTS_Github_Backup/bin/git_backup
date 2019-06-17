@@ -1,0 +1,10 @@
+#!/bin/bash
+
+dte=`/bin/date "+%Y-%m-%d %T"`
+
+cd /opt/splunk/etc
+
+/usr/bin/git add .
+/usr/bin/git commit -a -m "Automated backup of jljfoto /home/splunk/etc - ${dte}"
+/usr/bin/git pull && /usr/bin/git push
+exit

@@ -69,7 +69,7 @@
             `dmc_set_index_internal` search_group=dmc_group_indexer splunk_server=$splunk_server$ source=*splunkd.log*
             (component=AggregatorMiningProcessor OR component=LineBreakingProcessor OR component=DateParserVerbose)
             (log_level=WARN OR log_level=ERROR)
-            | rex field=message "Context: source::(?<context_source>[^\|]*?)\|host::(?<context_host>[^\|]*?)\|(?<context_sourcetype>[^\|]*?)\|"
+            | rex field=event_message "Context: source(::|=)(?<context_source>[^\|]*?)\|host(::|=)(?<context_host>[^\|]*?)\|(?<context_sourcetype>[^\|]*?)\|"
             | eval data_source = if(isnull(data_source) AND isnotnull(context_source), context_source, data_source)
             | eval data_host = if(isnull(data_host) AND isnotnull(context_host), context_host, data_host)
             | eval data_sourcetype = if(isnull(data_sourcetype) AND isnotnull(context_sourcetype), context_sourcetype, data_sourcetype)
@@ -151,7 +151,7 @@
             `dmc_set_index_internal` search_group=dmc_group_indexer splunk_server=$splunk_server$ source=*splunkd.log*
             (component=AggregatorMiningProcessor OR component=LineBreakingProcessor OR component=DateParserVerbose)
             (log_level=WARN OR log_level=ERROR)
-            | rex field=message "Context: source::(?<context_source>[^\|]*?)\|host::(?<context_host>[^\|]*?)\|(?<context_sourcetype>[^\|]*?)\|"
+            | rex field=event_message "Context: source(::|=)(?<context_source>[^\|]*?)\|host(::|=)(?<context_host>[^\|]*?)\|(?<context_sourcetype>[^\|]*?)\|"
             | eval data_source = if(isnull(data_source) AND isnotnull(context_source), context_source, data_source)
             | eval data_host = if(isnull(data_host) AND isnotnull(context_host), context_host, data_host)
             | eval data_sourcetype = if(isnull(data_sourcetype) AND isnotnull(context_sourcetype), context_sourcetype, data_sourcetype)

@@ -1,4 +1,4 @@
-#   Version 7.1.2
+#   Version 7.3.0
 #
 # This is an example times.conf.  Use this file to create custom time ranges
 # that can be used while interacting with the search system.
@@ -80,3 +80,8 @@ sub_menu = Other options
 [other]
 label = Other options
 order = 202
+
+#
+# Disable the realtime panel in the time range picker
+[settings]
+show_realtime = false
