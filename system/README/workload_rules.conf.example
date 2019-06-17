@@ -1,0 +1,26 @@
+[workload_rules_order]
+rules = my_analyst_rule,my_app_rule,my_user_rule,my_index_rule
+
+[workload_rule:my_app_rule]
+predicate = app=search
+workload_pool = my_app_pool
+
+[workload_rule:my_analyst_rule]
+predicate = role=analyst
+workload_pool = my_analyst_pool
+
+[workload_rule:my_user_rule]
+predicate = user=admin
+workload_pool = my_user_pool
+
+[workload_rule:my_index_rule]
+predicate = index=_internal
+workload_pool = my_index_pool
+
+[workload_rule:my_logical_rule_1]
+predicate = app=search AND (NOT index=_internal)
+workload_pool = my_logical_pool_1
+
+[workload_rule:my_logical_rule_2]
+predicate = NOT role=power OR user=admin
+workload_pool = my_logical_pool_2

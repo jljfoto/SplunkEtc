@@ -1,0 +1,60 @@
+<dashboard>
+  <label>Splunk Cloud™ Dynamic Data: Active Archive</label>
+  <description>Summary of Dynamic Data: Active Archive</description>
+  
+  <row>
+    <panel>
+      <html>
+        <h3>Overview</h3>
+        <p>Dynamic Data Active Archive, a new optional service, enables Splunk Cloud customers to easily and cost effectively retain data for long term to meet regulatory and compliance requirements. Once their index retention settings are met, customers can optionally chose to move their data to a Splunk managed archive. Customers can easily restore data from the archive to their Splunk Cloud instance for incident investigations or meet auditing requirements.</p>
+        
+        <h3>Key Features</h3>
+        <ul>
+          <li>Long term cost effective retention of data in Splunk Cloud</li>
+          <li>Meet audit and incident investigation requirements by quickly and easily restoring data from archive</li>
+          <li>Complete archive lifecycle managed by Splunk</li>
+        </ul>
+
+        <h3>Use Cases</h3>
+        <ul>
+          <li>IT Ops</li>
+          <li>Security</li>
+        </ul>
+
+        <h3>Setup</h3>
+        <p>Dynamic Data Active Archive is an optional service available to Splunk Cloud customers. Please contact your account representative for details.</p>
+      </html>
+    </panel>
+  </row>
+  
+  <row>
+  	<panel>
+  		<html>
+  			<h3>Index Settings</h3>
+        <div style="text-align:center">
+          <img src="/static/app/splunk_essentials_7_2/images/dd_aa_index.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <html>
+        <h3>Set Up Archive</h3>
+        <div style="text-align:center">
+          <img src="/static/app/splunk_essentials_7_2/images/dd_aa_archive.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+
+    <panel>
+      <html>
+        <h3>Restore Data From Archive</h3>
+        <div style="text-align:center">
+          <img src="/static/app/splunk_essentials_7_2/images/dd_aa_restore.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+  </row>
+</dashboard>

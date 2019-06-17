@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+
+    <title>Tour Home | Splunk</title>
+    <link href="{{SPLUNKWEB_URL_PREFIX}}/static/img/favicon_splunk.ico" rel="shortcut icon" />
+    <link href="{{SPLUNKWEB_URL_PREFIX}}/static/css/build/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{SPLUNKWEB_URL_PREFIX}}/static/css/build/pages/dashboard-simple-bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
+    <!--[if IE 7]><link rel="stylesheet" href="{{SPLUNKWEB_URL_PREFIX}}/static/css/sprites-ie7.css" /><![endif]-->
+
+    <style>
+
+    body {
+        background-color: #222;
+        color: #f5f5f5;
+        position: relative;
+    }
+    .body {
+        max-width: 900px;
+        max-height: 600px;
+        padding-top: 60px;
+        margin: auto;
+        position: relative;
+        color: #f5f5f5;
+    }
+    .circle {
+        width: 8px;
+        height: 8px;
+        border-radius: 15px 15px 15px 15px;
+        background-color: #222;
+        border: 2px solid #bfbfbf;
+        position: absolute;
+        visibility: hidden;
+    }
+    .hline {
+        height: 1px;
+        border: 1px solid #bfbfbf;
+        background: #bfbfbf;
+        padding: 0;
+        position: absolute;
+        visibility: hidden;
+    }
+    .large {
+        display: block;
+        position: absolute;
+        width: 300px;
+        height: 65px;
+        left: 5%;
+        border: 2px solid #bfbfbf;
+        padding: 10px 25px 10px 25px;
+        background: #222;
+        cursor: pointer;
+    }
+    .large:hover,
+    .large:focus,
+    .large:active {
+        background-color: #FBF0D9;
+        color: #222;
+    }
+    .tcontent {
+        display: block;
+        position: absolute;
+        width: 40%;
+        right: 5%;
+        height: 490px;
+        top: calc(100px * 0 + 35px);
+        bottom: calc(100px * 0 + 35px);
+        border: 2px solid #bfbfbf;
+        border-radius: 0 25px 0 20px;
+        padding: 10px 25px 10px 25px;
+        background: #222;
+        visibility: hidden;
+    }
+    .atype {
+        border-radius: 25px 0 25px 0;
+    }
+    .btype {
+        border-radius: 0 25px 0 20px;
+    }
+    .mleft {
+        position: relative;
+        display: block;
+        top: 35%;
+        width: 20%;
+        height: 100%;
+        float: left;
+        vertical-align: middle;
+        font-size: 4em;
+        font-weight: 900;
+        color: #0078C0;
+    }
+    .mright {
+        position: relative;
+        display: block;
+        width: 80%;
+        height: 100%;
+        float: left;
+        vertical-align: middle;
+        /*font-size: 1em;  */
+    }
+    .small {
+        width: 50px;
+        height: 50px;
+        border: 2px solid #bfbfbf;
+        padding: 10px 10px 10px 10px;
+        text-align: center;
+        background: #222;
+        font-size: 2em;
+        font-weight: 900;
+        border-radius: 5px 0 15px 0;
+        position: absolute;
+    }
+    .small:hover {
+        background-color: #e47911;
+    }
+    #l1 {
+        left: calc(5% + 355px);
+        right: 50%;
+        top: calc(100px * 0 + 35px + 30px);
+    }
+    #l2 {
+        left: calc(5% + 355px);
+        right: 50%;
+        top: calc(100px * 1 + 40px + 55px);
+    }
+    #l3 {
+        left: calc(5% + 355px);
+        right: 50%;
+        top: calc(100px * 2 + 45px + 30px);
+    }
+    #l4 {
+        left: calc(5% + 355px);
+        right: 50%;
+        top: calc(100px * 3 + 50px + 55px);
+    }
+    #l5 {
+        left: calc(5% + 355px);
+        right: 50%;
+        top: calc(100px * 4 + 55px + 30px);
+    }
+    #p1 {
+        left: calc(5% + 347px);
+        top: calc(100px * 0 + 35px + 25px);
+    }
+    #p2 {
+        left: calc(5% + 347px);
+        top: calc(100px * 1 + 40px + 50px);
+    }
+    #p3 {
+        left: calc(5% + 347px);
+        top: calc(100px * 2 + 45px + 25px);
+    }
+    #p4 {
+        left: calc(5% + 347px);
+        top: calc(100px * 3 + 50px + 50px);
+    }
+    #p5 {
+        left: calc(5% + 347px);
+        top: calc(100px * 4 + 55px + 25px);
+    }
+    #search {
+        top: calc(100px * 0 + 35px);
+    }
+    #pivot {
+        top: calc(100px * 1 + 40px);
+    }
+    #report {
+        top: calc(100px * 2 + 45px);
+    }
+    #alert {
+        top: calc(100px * 3 + 50px);
+    }
+    #dashboard {
+        top: calc(100px * 4 + 55px);
+    }
+    #tour {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        right: 50px;
+        bottom: 10px;
+        border-radius: 50px 50px 50px 50px;
+        z-index: 1;
+    }
+    #tour a {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .tour_content {
+        z-index: -1;
+        position: relative;
+    }
+    #tour_svg {
+        width: 50px;
+        height: 50px;
+    }
+
+    </style>
+</head>
+
+<!-- 
+BEGIN LAYOUT This section contains the layout for the dashboard. Splunk uses proprietary styles in <div> tags, similar to Bootstrap's grid system. 
+-->
+
+<body>
+    <a class="navSkip" href="#navSkip" tabindex="1">Screen reader users, click here to skip the navigation bar</a>
+
+    <div class="header">
+        <div id="placeholder-splunk-bar">
+            <a class="brand" href="{{SPLUNKWEB_URL_PREFIX}}/app/launcher/home" title="splunk &gt; listen to your data">splunk<strong>&gt;</strong></a>
+        </div>
+
+        <div id="placeholder-app-bar"></div>
+    </div><a id="navSkip"></a>
+
+    <div class="body">
+        <div class="body-content">
+            <div class="large atype" id="search" onclick="setTargetDescription('search');">
+                <div class="mleft">
+                    S
+                </div>
+
+                <div class="mright">
+                    <ul>
+                        <li>Human language notation</li>
+                        <li>Time-series organization</li>
+                        <li>Search-time schema</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="large btype" id="pivot" onclick="setTargetDescription('pivot');">
+                <div class="mleft">
+                    P
+                </div>
+
+                <div class="mright">
+                    <ul>
+                        <li>Search syntax abstraction</li>
+                        <li>Instantaneous analysis</li>
+                        <li>Insights visualization</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="large atype" id="report" onclick="setTargetDescription('report');">
+                <div class="mleft">
+                    R
+                </div>
+                <div class="mright">
+                    <ul>
+                        <li>Knowledge automation</li>
+                        <li>Prescriptive collaboration</li>
+                        <li>Automated distribution</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="large btype" id="alert" onclick="setTargetDescription('alert');">
+                <div class="mleft">
+                    A
+                </div>
+                <div class="mright">
+                    <ul>
+                        <li>Event notification</li>
+                        <li>Process integration</li>
+                        <li>Runbook automation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="large atype" id="dashboard" onclick="setTargetDescription('dashboard');">
+                <div class="mleft">
+                    D
+                </div>
+                <div class="mright">
+                    <ul>
+                        <li>Interactive data exploration</li>
+                        <li>Prescriptive knowledge</li>
+                        <li>Contextual insights</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="hline" id="l1"></div>
+            <div class="hline" id="l2"></div>
+            <div class="hline" id="l3"></div>
+            <div class="hline" id="l4"></div>
+            <div class="hline" id="l5"></div>
+
+            <div class="circle" id="p1"></div>
+            <div class="circle" id="p2"></div>
+            <div class="circle" id="p3"></div>
+            <div class="circle" id="p4"></div>
+            <div class="circle" id="p5"></div>
+
+            <div class="tcontent" id="search_desc">
+                <h2>Search</h2>
+
+                <p>One of the strategic benefits in using search is the ability
+                to access all of your data from a single location. Regardless
+                of the volume and variety of the data, you have the ability to
+                explore with a Google-like search capability. Our universal
+                machine data platform is open and extensible; it delivers
+                integrated, end-to-end data collection, management and analysis
+                which helps amplify visibility across your entire
+                environment.</p>
+
+                <p>At Splunk we believe that your data should be fully
+                actionable with minimal latency. Splunk customers deal with an
+                enormous assortment of use cases that involve acquisition,
+                management and analysis of thousands of disparate data types,
+                at incredible volumes and in real-time.</p>
+
+                <p>Splunk has discarded the idea of data extraction,
+                transformation or any kind of pre-processing prior to
+                ingestion. Instead we empower you to analyze your data quickly
+                with a simple and flexible search-time schema. This allows you
+                to interact with your data by extracting properties
+                automatically and changing perspective at search time.</p>
+
+                <div id="tour">
+                    <a href="/en-US/app/bLeaf/search?tour=search-01">SEARCH TOUR</a>
+                </div>
+            </div>
+
+            <div class="tcontent" id="pivot_desc">
+                <h2>Pivot</h2>
+
+                <p>Pivot is to search what a spreadsheet is to a calculator.
+                You can achieve very significant results with a calculator as
+                long as you are able to invest the time with calculations and
+                figures on your own. A spreadsheet will allow you to achieve
+                results faster because you can automate the calculations once
+                you are able enter the figures once.</p>
+
+                <p>With Pivot we focus on the use of the data. The search
+                syntax is still part of the process; however, the search
+                language is abstracted onto the background so the end users can
+                achieve results with a point-and-click journey. The main
+                requirement to use Pivot is the pre-arrangement of the data
+                properties onto useful data collections for the end users.</p>
+
+                <p>The experience with Pivot is visual and it requires a short
+                learning experience.</p>
+
+                <div id="tour">
+                    <a href="/en-US/app/bLeaf/search?tour=pivot-01">PIVOT TOUR</a>
+                </div>
+            </div>
+
+            <div class="tcontent" id="report_desc">
+                <h2>Report</h2>
+
+                <p>Splunk reports offer you the advantage of automated
+                knowledge distribution and collaboration. Reports take in the
+                foundation of your search experience and the proprietary
+                knowledge that fuels your operational landscape.</p>
+
+                <p>The expectation is that you will obtain reports on demand,
+                on a scheduled basis, or via your e-mail inbox. The upshot
+                benefit is a collaborative approach where operational knowledge
+                becomes a commodity that allows for continuous improvement.</p>
+
+                <div id="tour">
+                    <a href="/en-US/app/bLeaf/search?tour=report-00">REPORT TOUR</a>
+                </div>
+            </div>
+
+            <div class="tcontent" id="alert_desc">
+                <h2>Alert</h2>
+
+                <p>The idea of data-driven alerts reflects a strategy where you 
+                use your data to support vital operational processes without 
+                relying on traditional invasive surgery. The Splunk platform is 
+                able to analyze your data in historic mode or real-time and you 
+                can propose conditions which reflect risk for operations, security, 
+                fraud, etc. This is yet another way to extract even more value from 
+                key findings in your data.</p>
+
+                <p>Alerts are the result of a behavioral condition that occurs
+                within your operational environment. Splunk considers an alert
+                as a special knowledge item with multiple mechanisms to
+                broadcast notifications, initiate corrective action or to
+                trigger operational processes. The upshot benefit is to expand
+                the qualification of an alert to match conditions across
+                multiple layers of technology and traditional counter-driven
+                blips.</p>
+
+                <p>The most common scenario under a condition that triggers 
+                critical alerts is the initiation of external, automated work 
+                that is part of a runbook. At Splunk we believe that your data 
+                should be fully actionable with minimal latency. That means new 
+                and innovative ways to manage increasing service requirements by 
+                identifying potential problems and beginning to repair those 
+                problems in real-time.</p>
+
+                <div id="tour">
+                    <a href="/en-US/app/bLeaf/search?tour=alert-00">ALERTS TOUR</a>
+                </div>
+            </div>
+
+            <div class="tcontent" id="dashboard_desc">
+                <h2>Dashboard</h2>
+
+                <p>Dashboards are like radar for air traffic controllers; they 
+                provide all of the essential information to continually direct 
+                and maintain your business running. IT personnel and business 
+                users rely in up-to-date information in order to make decisions 
+                and dashboards summarize findings and analyses at a glance. And, 
+                because dashboards are interactive portals for exploration, 
+                you have complete visibility of your information from a flag in 
+                the highest peak of a mountain to the lowest depth in your ocean 
+                of data.</p>
+
+                <p>What is important to understand is that dashboards provide an 
+                opportunity to consolidate knowledge for collaboration. That means 
+                you break cultural barriers between separate working groups by making 
+                relevant information available, without the need to access all the 
+                assets involved. With dashboards, you can narrow down the type 
+                information and control the access level to each finding.</p>
+
+                <p>When you are able to consolidate and explore the information and 
+                analyses derived from your data, you can easily focus on the specific 
+                area of expertise and avoid all the extra noise. The insights you 
+                gain through your exploration find a collaborative context and will 
+                help improve the overall stance of your business.</p>
+
+                <div id="tour">
+                    <a href="/en-US/app/bLeaf/search?tour=dashboard-00">DASHBOARDS TOUR</a>
+                </div>
+            </div>
+      </div>
+    </div><!-- 
+END LAYOUT
+-->
+    <script src="{{SPLUNKWEB_URL_PREFIX}}/config?autoload=1"></script> 
+    <script src="{{SPLUNKWEB_URL_PREFIX}}/static/js/i18n.js"></script> 
+    <script src="{{SPLUNKWEB_URL_PREFIX}}/i18ncatalog?autoload=1"></script> 
+    <script src="{{SPLUNKWEB_URL_PREFIX}}/static/js/build/simplexml.min/config.js"></script> 
+  
+    <script type="text/javascript">
+    
+    require.config({
+    baseUrl: "{{SPLUNKWEB_URL_PREFIX}}/static/js",
+    waitSeconds: 0 // Disable require.js load timeout
+    });
+
+    //
+    // LIBRARY REQUIREMENTS
+    //
+    // In the require function, we include the necessary libraries and modules for
+    // the HTML dashboard. Then, we pass variable names for these libraries and
+    // modules as function parameters, in order.
+    // 
+    // When you add libraries or modules, remember to retain this mapping order
+    // between the library or module and its function parameter. You can do this by
+    // adding to the end of these lists, as shown in the commented examples below.
+
+    require([
+    "splunkjs/mvc",
+    "splunkjs/mvc/utils",
+    "splunkjs/mvc/tokenutils",
+    "underscore",
+    "jquery",
+    "splunkjs/mvc/simplexml",
+    "splunkjs/mvc/headerview",
+    "splunkjs/mvc/footerview",
+    "splunkjs/mvc/simplexml/dashboardview",
+    "splunkjs/mvc/simplexml/element/chart",
+    "splunkjs/mvc/simplexml/element/event",
+    "splunkjs/mvc/simplexml/element/html",
+    "splunkjs/mvc/simplexml/element/list",
+    "splunkjs/mvc/simplexml/element/map",
+    "splunkjs/mvc/simplexml/element/single",
+    "splunkjs/mvc/simplexml/element/table",
+    "splunkjs/mvc/simpleform/formutils",
+    "splunkjs/mvc/simpleform/input/dropdown",
+    "splunkjs/mvc/simpleform/input/radiogroup",
+    "splunkjs/mvc/simpleform/input/multiselect",
+    "splunkjs/mvc/simpleform/input/checkboxgroup",
+    "splunkjs/mvc/simpleform/input/text",
+    "splunkjs/mvc/simpleform/input/timerange",
+    "splunkjs/mvc/simpleform/input/submit",
+    "splunkjs/mvc/searchmanager",
+    "splunkjs/mvc/savedsearchmanager",
+    "splunkjs/mvc/postprocessmanager",
+    "splunkjs/mvc/simplexml/urltokenmodel"
+    // Add comma-separated libraries and modules manually here, for example:
+    // ..."splunkjs/mvc/simplexml/urltokenmodel",
+    // "splunkjs/mvc/checkboxview"
+    ],
+    function(
+        mvc,
+        utils,
+        TokenUtils,
+        _,
+        $,
+        DashboardController,
+        HeaderView,
+        FooterView,
+        Dashboard,
+        ChartElement,
+        EventElement,
+        HtmlElement,
+        ListElement,
+        MapElement,
+        SingleElement,
+        TableElement,
+        FormUtils,
+        DropdownInput,
+        RadioGroupInput,
+        MultiSelectInput,
+        CheckboxGroupInput,
+        TextInput,
+        TimeRangeInput,
+        SubmitButton,
+        SearchManager,
+        SavedSearchManager,
+        PostProcessManager,
+        UrlTokenModel
+
+        // Add comma-separated parameter names here, for example: 
+        // ...UrlTokenModel, 
+        // CheckboxView
+        ) {
+
+        //var pageLoading = true;
+
+        // 
+        // TOKENS
+        //
+        
+        // Create token namespaces
+        //var urlTokenModel = new UrlTokenModel();
+        //mvc.Components.registerInstance('url', urlTokenModel);
+        //var defaultTokenModel = mvc.Components.getInstance('default', {create: true});
+        //var submittedTokenModel = mvc.Components.getInstance('submitted', {create: true});
+
+        //urlTokenModel.on('url:navigate', function() {
+        //    defaultTokenModel.set(urlTokenModel.toJSON());
+        //    if (!_.isEmpty(urlTokenModel.toJSON()) && !_.all(urlTokenModel.toJSON(), _.isUndefined)) {
+        //        submitTokens();
+        //    } else {
+        //        submittedTokenModel.clear();
+        //    }
+        //});
+
+        // Initialize tokens
+        //defaultTokenModel.set(urlTokenModel.toJSON());
+
+        //function submitTokens() {
+            // Copy the contents of the defaultTokenModel to the submittedTokenModel and urlTokenModel
+        //    FormUtils.submitForm({ replaceState: pageLoading });
+        //}
+
+        //function setToken(name, value) {
+        //    defaultTokenModel.set(name, value);
+        //    submittedTokenModel.set(name, value);
+        //}
+
+        //function unsetToken(name) {
+        //    defaultTokenModel.unset(name);
+        //    submittedTokenModel.unset(name);
+        //}
+
+        //
+        // SEARCH MANAGERS
+        //
+
+        //
+        // SPLUNK HEADER AND FOOTER
+        //
+
+        new HeaderView({
+            id: 'header',
+            section: 'dashboards',
+            el: $('.header'),
+            acceleratedAppNav: true,
+            useSessionStorageCache: true
+        }, {tokens: true}).render();
+
+    //new FooterView({
+    //      id: 'footer',
+    //      el: $('.footer')
+    //  }, {tokens: true}).render();
+
+
+        //
+        // DASHBOARD EDITOR
+        //
+
+    //new Dashboard({
+    //      id: 'dashboard',
+    //el: $('.dashboard-body')
+    //}, {tokens: true}).render();
+
+        //
+        // VIEWS: VISUALIZATION ELEMENTS
+        //
+
+        // Initialize time tokens to default
+        //if (!defaultTokenModel.has('earliest') && !defaultTokenModel.has('latest')) {
+        //    defaultTokenModel.set({ earliest: '0', latest: '' });
+        //}
+
+        //submitTokens();
+
+
+        //
+        // DASHBOARD READY
+        //
+
+       DashboardController.ready();
+       //pageLoading = false;
+
+    }
+    );
+
+      window.onload = function() {
+          document.getElementById("l1").style.visibility='visible';
+          document.getElementById("p1").style.visibility='visible';
+          document.getElementById("search_desc").style.visibility='visible';
+      };
+
+
+      function hideDescription() {
+          var divElements = [
+              "l1","p1","search_desc",
+              "l2","p2","pivot_desc",
+              "l3","p3","report_desc",
+              "l4","p4","alert_desc",
+              "l5","p5","dashboard_desc"
+          ];
+
+          for ( var i = 0; i < divElements.length; i++ ) {
+            document.getElementById(divElements[i]).style.visibility='hidden';
+          }
+      };
+
+      function setTargetDescription(targetName) {
+
+          hideDescription();
+
+          switch(targetName) {        
+              case "search" :
+                  document.getElementById("l1").style.visibility='visible';
+                  document.getElementById("p1").style.visibility='visible';
+                  document.getElementById("search_desc").style.visibility='visible';
+              break;
+              case "pivot" :
+                  document.getElementById("l2").style.visibility='visible';
+                  document.getElementById("p2").style.visibility='visible';
+                  document.getElementById("pivot_desc").style.visibility='visible';
+              break;
+              case "report" :
+                  document.getElementById("l3").style.visibility='visible';
+                  document.getElementById("p3").style.visibility='visible';
+                  document.getElementById("report_desc").style.visibility='visible';
+              break;
+              case "alert" :
+                  document.getElementById("l4").style.visibility='visible';
+                  document.getElementById("p4").style.visibility='visible';
+                  document.getElementById("alert_desc").style.visibility='visible';
+              break;
+              case "dashboard" :
+                  document.getElementById("l5").style.visibility='visible';
+                  document.getElementById("p5").style.visibility='visible';
+                  document.getElementById("dashboard_desc").style.visibility='visible';
+              break;
+          }
+      };
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<dashboard>
+
+  <label>SmartStore</label>
+
+  <description>Summary of SmartStore </description>
+
+  <row>
+
+    <panel>
+
+      <html>
+
+        <p><strong>Description</strong></p>
+
+        <p> With increasing data volumes, the existing scale-out deployment model for Splunk adds compute and storage at the same time. This model is a great fit at lower data volumes, as you add more data, you need more processing power. However, with exponentially growing data volumes, the demand for storage is outpacing the demand for compute, requiring an architechture evolution that can meet these growing business needs. </p>
+
+        <p> SmartStore is our next generation data architecture purpose built for massive scale, with the ability to size compute and storage independently. This can significantly lower hardware costs but also reducing operational complexity. SmartStore is designed to align with a hyper data growth model by introducing a new remote storage tier that can scale independently and provide a low-cost solution for longer retention. This is made possible by keeping frequently accessed data in fast local storage and less frequently accessed data in AWS S3 and S3 API compliant cost-efficient, highly available and scalable external storage systems.  </p>
+
+       <p> SmartStore meets both scale and performance requirements for large data volumes at relatively lower cost. It also provides secondary and tertiary benefits in the form of global size-based retention (in addition to existing global time-based retention), elastic on-demand scaling, as well the ability to bootstrap a cluster entirely from the remote store. </p> 
+
+     </html>
+   </panel>
+ </row>
+ 
+ <row>
+  <panel>
+    <html>
+
+         <p><strong>Key benefits with SmartStore </strong></p>
+         <ol>
+           <li>Provide flexibility to deployment architecture </li>
+              <ul>
+                <li> Massive scalability </li>
+                <li> Scale up/down compute and storage on-demand </li>
+              </ul>
+           <li>TCO Reduction </li>
+             <ul>
+               <li>Longer retention at lower cost </li>
+               <li>Reduced indexer footprint on cluster expansion </li>
+               <li>Leverage cost benefits and HA features from cloud/server/storage innovation </li>
+             </ul>
+           <li>Simplified management and deployment </li>
+             <ul>
+               <li>On-demand cluster setup and tear down </li>
+               <li>Global size based retention (+ time based retention) per index </li>
+               <li>Faster data rebalance and indexer recovery </li>
+             </ul>
+         </ol>
+
+         <p><strong>Use Cases</strong></p>
+         <ul>
+           <li> High ingest volume or expansion deployments </li>
+           <li> Longer data retention with data searchability, at lower cost </li>
+           <li> On-demand cluster setup and tear down </li>
+         </ul>
+
+    </html>
+  </panel>
+
+  <panel>
+    <html>
+
+         <p><strong> What factors make SmartStore a good fit </strong></p>
+         <ul>
+           <li> Infrastructure costs slowing down expansion and limiting data retention time </li>
+           <li> Data archival is not a solution since older data (~1 year) needs to be searchable  </li>
+           <li> Large splunk deployment with indexer clustering, typically over ~10 indexers  </li>
+           <li> Majority (more than 95%) of searches are over recent data (less than 90 days) </li>
+           <li> Outlier searches over older data (> 90 days) are uncommon and occasional slower search performance is acceptable </li>
+          </ul>
+
+         <p><strong> Best Practices  </strong></p>
+         <ul>
+           <li> Set maxDataSize=auto (750M), which is the existing default </li>
+           <li> Set replication_factor(RF)=search_factor(SF) </li>
+           <li> Set maxHotSpanSecs=86400 (24 hours), to ensure faster data copy onto remote storage to meet HA and RPO objectives </li>
+           <li> Disable TSIDX reduction (set enableTsidxReduction="false") </li>
+           <li> Disable summary replication  </li>
+           <li> Do not disable  bloom filters (set createBloomfilter="true") </li>
+           <li> Do not change bloomHomePath </li>
+          </ul>
+          <br/>
+      </html>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <html>
+        <h3>Classic Architecture vs. SmartStore Architecture</h3>
+          <p> SmartStore includes an application aware cache for both hot and frequently accessed data.  The cache resides locally on indexers and leverages spatial and temporal data locality to ensure that active datasets are cached and processed from the most performant storage. On a cache miss, it will optimally pre-fetch data/metadata from the remote storage-tier in order to mitigate any performance impact.  </p>
+        <div style="text-align:center">
+          <img src="/static/app/splunk_essentials_7_2/images/s2_arch.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <html>
+
+         <p><strong> How to setup SmartStore </strong></p>
+         <ol>
+            <li> SmartStore supported remote storage - AWS S3 or S3 compliant remote storage </li>
+              <ul>
+                <li> To determine whether your object store is S3-compliant, use the S3 compatibility checking tool, located at https://github.com/splunk/s3-tests </li> 
+                 <li>To use the tool, follow the instructions in the repository's README file </li>
+               </ul>
+            <li> Set up SmartStore in indexer clustering </li>
+              <ul>
+                <li> Configure cluster master node, with desired replication factor and search factor (for example, rf=2, sf=2) </li>
+                <li> On the master node, edit $SPLUNK_HOME/etc/master-apps/_cluster/local/indexes.conf and specify the below settings </li>
+                  <p> 
+                    [default] <br/>
+                    # put all indexes on SmartStore  <br/>
+                    remotePath = volume:rstore/$_index_name    <br/>
+                    repFactor = auto    <br/>
+                        <br/>
+                    [volume:rstore]     <br/>
+                    storageType = remote    <br/>
+                    path = s3://{bucket name}/{prefix path}    <br/>
+                    remote.s3.access_key = {aws access key}    <br/>
+                    remote.s3.secret_key = {aws secret key}    <br/>
+                    remote.s3.endpoint = {https://s3-us-west-2.amazonaws.com}    <br/>
+                        <br/>
+                    [cs_index]    <br/>
+                    coldPath = $SPLUNK_DB/cs_index/colddb    <br/>
+                    homePath = $SPLUNK_DB/cs_index/db    <br/>
+                    thawedPath = $SPLUNK_DB/cs_index/thaweddb    <br/>
+                  </p>
+               </ul>
+            <li> To enable the new volume configuration, run below command from the cluster master </li>
+               <ul>
+                 <li>splunk apply cluster-bundle --answer-yes </li>
+              </ul>
+             <li>  Setup indexer cluster peers </li>
+                <ul>
+                  <li> Install and configure one or more indexer nodes as cluster peers to the master </li>
+                  <li> Wait for cluster peers to be added to the cluster and download the bundle </li>
+                  <li> Monitor cluster status using: splunk show cluster-status </li>
+                </ul>
+             <li> Validate remote storage access </li>
+                <ul>
+                  <li> Run below command from one of the cluster peer nodes </li>
+                  <li> splunk cmd splunkd rfs ls --starts-with volume:rstore </li>
+                </ul>
+             <li> Send data to the indexers (cluster peer nodes) and run searches in SmartStore </li>
+         </ol>
+         <br/>
+        </html>
+      </panel>
+    </row>
+
+</dashboard>

@@ -1,0 +1,27 @@
+sid,search,"splunk_server","_time","is_realtime",provenance,"api_et","api_lt","event_count","exec_time","result_count","scan_count","search_et","search_lt",status,"total_run_time","savedsearch_name","__mv_sid","__mv_search","__mv_splunk_server","__mv__time","__mv_is_realtime","__mv_provenance","__mv_api_et","__mv_api_lt","__mv_event_count","__mv_exec_time","__mv_result_count","__mv_scan_count","__mv_search_et","__mv_search_lt","__mv_status","__mv_total_run_time","__mv_savedsearch_name"
+"rt_md_1549557575.40","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1549557575.583639",1,"UI:Search",,,0,1549557575,0,0,,,canceled,"26.318",,,,,,,,,,,,,,,,,,
+"rt_md_1549557595.47","| metadata type=sourcetypes | search totalCount > 0 | table sourcetype totalCount recentTime | fieldformat totalCount=tostring(totalCount, ""commas"") | fieldformat recentTime=strftime(recentTime, ""%Y-%m-%dT%H:%M:%S.%Q%:z"")","Jonathons-MacBook-Air.local","1549557595.043381",1,"UI:Search",,,0,1549557595,0,0,,,canceled,"8.182",,,,,,,,,,,,,,,,,,
+"rt_md_1549557595.49","| metadata type=sources | search totalCount > 0 | table source totalCount recentTime | fieldformat totalCount=tostring(totalCount, ""commas"") | fieldformat recentTime=strftime(recentTime, ""%Y-%m-%dT%H:%M:%S.%Q%:z"")","Jonathons-MacBook-Air.local","1549557595.046851",1,"UI:Search",,,0,1549557595,0,0,,,canceled,"7.266",,,,,,,,,,,,,,,,,,
+"1549557601.53","search host=""AK-01""","Jonathons-MacBook-Air.local","1549557601.744500",0,"UI:Search","1549468800.000000000","1549557601.000000000",111,1549557602,111,111,"1549468800.000000000","1549557601.000000000",completed,"0.669",,,,,,,,,,,,,,,,,,
+"admin__admin__bLeaf__search1_1549557699.59","search sourcetype=""pos:bus"" merchantID=""*"" | dedup merchantID | stats dc(merchantID) AS ""All Merchants""","Jonathons-MacBook-Air.local","1549557699.117998",0,"UI:Dashboard:merchant_subscriptions",,,2544,1549557699,1,15000,,,completed,"0.979",search1,,,,,,,,,,,,,,,,,
+"admin__admin__bLeaf__RMD56f5c4a53fdfe1799_1549557700.60","| gentimes start=-7 
+      | eval target_market=""CA,NY,FL,WA,PA,VA,TX,IL"" 
+      | makemv delim="","" target_market 
+      | mvexpand target_market 
+      | eval actual=random()%13 
+      | eval wday=strftime(endtime, ""%a"") 
+      | stats list(actual) AS count by wday, target_market","Jonathons-MacBook-Air.local","1549557700.717102",0,"UI:Dashboard:merchant_subscriptions",,,0,1549557701,56,0,,,completed,"0.706","punchcard_search",,,,,,,,,,,,,,,,,
+"admin__admin__bLeaf__global_1549557700.61","| gentimes start=-30 
+ | eval subscriptions=random()%103 
+ | eval Actual=subscriptions 
+ | accum Actual 
+ | rename starttime AS _time","Jonathons-MacBook-Air.local","1549557700.720296",0,"UI:Dashboard:merchant_subscriptions",,,0,1549557700,30,0,,,completed,"0.8310000000000001",global,,,,,,,,,,,,,,,,,
+"admin__admin__bLeaf__search2_1549557700.62","search sourcetype=""pos:bus"" merchantID=""*"" | reverse | dedup merchantID | stats dc(merchantID) AS ""Unique Merchants""","Jonathons-MacBook-Air.local","1549557700.722260",0,"UI:Dashboard:merchant_subscriptions","1549554060.000000000","1549557700.000000000",2394,1549557701,1,7096,"1549554060.000000000","1549557700.000000000",completed,"1.407",search2,,,,,,,,,,,,,,,,,
+"admin__admin__bLeaf__search3_1549557700.63","search sourcetype=""pos:bus"" merchantID=""*"" | dedup merchantID | table merchantID newRegistration | search newRegistration=""Y"" | stats dc(merchantID) AS ""New Registrations""","Jonathons-MacBook-Air.local","1549557700.753429",0,"UI:Dashboard:merchant_subscriptions","1549554060.000000000","1549557700.000000000",12,1549557701,1,7096,"1549554060.000000000","1549557700.000000000",completed,"1.465",search3,,,,,,,,,,,,,,,,,
+"admin__admin__bLeaf__search4_1549557700.64","search sourcetype=""pos:bus"" merchantID=""*"" | dedup merchantID | dedup merchantID | search newRegistration=""Y"" | rex field=host ""(?<state>\w{2})"" | lookup geo_us_states.csv state AS state OUTPUT latitude AS Lat longitude AS Lon full_name AS featureId | stats dc(merchantID) AS Merchants by featureId | geom geo_us_states","Jonathons-MacBook-Air.local","1549557700.805693",0,"UI:Dashboard:merchant_subscriptions","1549554060.000000000","1549557700.000000000",12,1549557701,12,7096,"1549554060.000000000","1549557700.000000000",completed,"3.14",search4,,,,,,,,,,,,,,,,,
+"1549557724.81","| gentimes start=-30 
+ | eval subscriptions=random()%103 
+ | eval Actual=subscriptions 
+ | accum Actual 
+ | rename starttime AS _time |  timechart list(Actual) as Actual list(subscriptions) AS Daily     | predict Actual AS ""Future Subscribers""     | eval ""Corporate Target""=2000","Jonathons-MacBook-Air.local","1549557724.357820",0,"UI:Search",,,0,1549557724,35,0,,,completed,"1.938",,,,,,,,,,,,,,,,,,
+"rt_md_1549576194.349","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1549576194.697574",1,"UI:Search",,,0,1549576194,0,0,,,failed,"3738.051",,,,,,,,,,,,,,,,,,

@@ -1,0 +1,91 @@
+<dashboard>
+  <label>Accessibility Enhancements</label>
+  <description>Summary of Accessibility Enhancements</description>
+  
+  <row>
+    <panel>
+      <html>
+        <h3>Overview</h3>
+        <p>Splunk Enterprise 7.2 includes several improvements in the area of UI accessibility, following recommendations of the <a href="https://www.section508.gov/">Section 508</a> and <a href="https://www.w3.org/TR/2008/REC-WCAG20-20081211/">WCAG2.0 standards</a>.</p>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <html>
+        
+        <h3>Screen Reader Friendly User Interface</h3>
+        <p>The Splunk UI was enhanced to better support use of the product via assistive technologies such as screen readers.  These improvements include proper labeling throughout the UI, logical page structure and hierarchy, and more.  As an example an editor was developed that enables users with screen readers to edit SPL code in the search bar. To enable the screen reader friendly editor open up the User->Preferences menu in the Splunk UI and navigate to SPL Editor and un-select the Advanced Editor toggle button to select the basic editor. Refer to the right for examples.</p>
+
+        <p> Splunk Enterprise is exhaustively tested using the <a href="https://www.freedomscientific.com/Products/Blindness/JAWS">JAWS</a>, <a href="https://www.zoomtext.com/">ZoomText</a> and <a href="https://www.nvaccess.org/">NVDA</a> screen readers. Many issues identified in this testing have been addressed in the Splunk Enterprise 7.2 release.</p>
+
+      </html>
+    </panel>
+
+    <panel>
+      <html>
+        <h3>Screen Reader Friendly User Interface</h3>
+        <p>Enable the screen-reader friendly user interface:</p>
+        <div style="text-align:center">
+          <img src="/static/app/splunk_essentials_7_2/images/accessibility_1.png" width="400px"/>
+          </div>
+          <br/>
+
+          <p>Now the Splunk search bar is accessible to screen readers:</p>
+          <div style="text-align:center">
+          <img src="/static/app/splunk_essentials_7_2/images/accessibility_2.png" width="800px"/>
+          </div>
+
+        </html>
+      </panel>
+    </row>
+
+    <row>
+      <panel>
+        <html>
+          <p><b>Improved Keyboard Navigation:</b> The Splunk UI was enhanced to make it completely navigable via the keyboard, avoiding any traps, and providing sufficient focus state as indication.</p>
+          <div style="text-align:center">
+          <img src="/static/app/splunk_essentials_7_2/images/accessibility_3.png" width="800px"/>
+          </div>
+        </html>
+      </panel>
+
+      <panel>
+        <html>
+          <p><b>Improved Keyboard Navigation:</b> An example of using a keyboard to navigate to the <i>Job</i> settings in the search bar is shown below.</p>
+          <div style="text-align:center">
+          <img src="/static/app/splunk_essentials_7_2/images/accessibility_4.png" width="500px"/>
+          </div>
+        </html>
+      </panel>
+    </row>
+
+    <row>
+      <panel>
+        <html>
+          <h3>Visual Contrast and Focus</h3>
+          <p>Another important accessibility consideration is for the UI elements to have the proper visual contrast and focus. Multiple areas in the Splunk UI with poor visual contrast were identified and fixed by either changing the foreground/background colors, size of text as well as the font. An example of where we fixed contrast issues in the UI is shown below:</p>
+
+          <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/accessibility_5.png" width="800px"/>
+          </div>
+          <br/>
+
+          <p>Dark mode dashboards with improved visual contrast is now available. A screenshot is shown below:</p>
+
+          <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/accessibility_6.png" width="800px"/>
+          </div>
+          <br/>
+
+          <p>UI elements with poor focus were identified and fixed. An example is shown below:</p>
+
+          <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/accessibility_7.png" width="800px"/>
+          </div>
+
+        </html>
+      </panel>
+    </row>
+       
+</dashboard>

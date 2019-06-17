@@ -1,0 +1,85 @@
+<dashboard>
+  <label>Splunk Metrics Workspace</label>
+  <description>Visual Data Analysis for Metrics and Accelerated Datasets - Accelerating Time to Insight and Action </description>
+  <row>
+    <panel>
+      <html>
+          <h3> Overview 
+          </h3>
+          <p>Splunk Metrics Workspace provides an easy-to-use visual analysis interface within the Search and Reporting app for monitoring and analyzing metrics data and accelerated datasets without editing SPL. You can create interactive visualizations in the workspace, perform a variety of analytic functions to gain insight into your system's metrics and performance, and take action by creating alerts and dashboards from a single view. The Splunk Metrics Workspace helps you to quickly identify any aspects of your data that require further investigation.  
+          </p>
+          <p> Note: Splunk Metrics Workspace is delivered as Splunk App. Download from <a href="https://splunkbase.splunk.com/app/3976/"> here </a> </p>
+        <p><strong>Description</strong></p>
+        <p>
+            The Splunk Metrics Workspace enables ...
+        <ul>
+          <li> <a href="#sawga-a"> Data Browsing and Exploration </a></li>
+          <li> <a href="#sawga-b"> Visualizing Data </a></li>
+          <li> <a href="#sawga-c"> Analytic Operations and Functions</a></li>
+          <li> <a href="#sawga-d"> Actions and Insights</a></li>
+        </ul>
+        </p>
+         <h2 id="sawga-a"> Data Browsing and Exploration </h2>
+         <ul>
+            <li>View a hierarchy of available data sources in the Data panel. </li>
+            <li>Browse through a list of metrics and datasets currently available for visual analysis. </li>
+         </ul>
+
+         <h2 id="sawga-b"> Visualizing Data </h2>
+         <ul>
+            <li>Select data sources to create interactive charts in the Metrics Workspace. </li>
+            <li>Charts contain time series based on aggregated data. </li>
+            <li>All charts in the Metrics Workspace share the same time range and hairline. </li>
+         </ul>
+
+         <h2 id="sawga-c"> Analytic Operations and Functions</h2>
+         <ul>
+            <li><b><i>Aggregations</i></b> - Summarize data points into meaningful values. </li>
+            <li><b><i>Time comparisons</i></b> - Overlay a previous time period on the chart. </li>
+            <li><b><i>Split by</i></b> - Shows results for a specific dimension. </li>
+            <li><b><i>Filters</i></b> - Include or exclude certain results. </li>
+         </ul>
+
+         <h2 id="sawga-d"> Actions and Insights </h2>
+         <ul>
+            <li><b><i>Alerts</i></b> - Notify you of certain behavior in your data. </li>
+            <li><b><i>Dashboards</i></b> - Allow you to monitor or share your findings. </li>
+         </ul>
+         <p><strong>Use Cases</strong></p>
+         <ul>
+            <li>Visually correlated several metrics, time compare metrics and their aggregations </li>
+            <li>Create alerts and dashboards based on metrics thresholds </li>
+            <li>Create sophisticated SPL from GUI for further fine-tuning </li>
+         </ul>
+      </html>
+    </panel>
+  </row>
+
+  <row>
+  	<panel>
+  		<html>
+  			<h3>Analysis View</h3>
+  			<div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/sawga11.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+    <panel>
+      <html>
+        <h3> Analysis View </h3>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/sawga4.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+    <panel>
+      <html>
+        <h3> Alert Creation </h3>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/sawga8.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+  </row>
+
+</dashboard>

@@ -1,0 +1,223 @@
+<form script="autodiscover.js">
+  <label>MERCHANT SUBSCRIPTIONS</label>
+  <fieldset submitButton="false">
+    <input type="time" token="timestamp">
+      <label></label>
+      <default>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <single>
+        <title>ALL MERCHANTS</title>
+        <search>
+          <query>sourcetype="pos:bus" merchantID="*" | dedup merchantID | stats dc(merchantID) AS "All Merchants"</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="numberPrecision">0</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="height">90</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>CURRENTLY ACTIVE</title>
+        <search>
+          <query>sourcetype="pos:bus" merchantID="*" | reverse | dedup merchantID | stats dc(merchantID) AS "Unique Merchants"</query>
+          <earliest>$timestamp.earliest$</earliest>
+          <latest>$timestamp.latest$</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x65a637","0x6db7c6","0xf7bc38","0xf58f39","0xd93f3c"]</option>
+        <option name="rangeValues">[0,30,70,100]</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="trendInterval">auto</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="linkView">search</option>
+        <option name="drilldown">none</option>
+        <option name="height">90</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>NEW REGISTRATIONS</title>
+        <search>
+          <query>sourcetype="pos:bus" merchantID="*" | dedup merchantID | table merchantID newRegistration | search newRegistration="Y" | stats dc(merchantID) AS "New Registrations"</query>
+          <earliest>$timestamp.earliest$</earliest>
+          <latest>$timestamp.latest$</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="numberPrecision">0</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="linkView">search</option>
+        <option name="drilldown">none</option>
+        <option name="height">90</option>
+        <option name="rangeColors">["0x65a637","0x6db7c6","0xf7bc38","0xf58f39","0xd93f3c"]</option>
+        <option name="rangeValues">[0,30,70,100]</option>
+        <option name="unitPosition">after</option>
+      </single>
+    </panel>
+  </row>
+  <search id="punchcard_search">
+    <query>| gentimes start=-7 
+      | eval target_market="CA,NY,FL,WA,PA,VA,TX,IL" 
+      | makemv delim="," target_market 
+      | mvexpand target_market 
+      | eval actual=random()%13 
+      | eval wday=strftime(endtime, "%a") 
+      | stats list(actual) AS count by wday, target_market</query>
+  </search>
+  <row>
+    <panel>
+      <title>TARGET MARKETS</title>
+      <html>
+                <div id="punchcard" class="splunk-view" data-require="app/bLeaf/components/punchcard/punchcard" data-options="{                         &quot;managerid&quot;: &quot;punchcard_search&quot;,                         &quot;range_values&quot;: [&quot;Sun&quot;, &quot;Mon&quot;, &quot;Tue&quot;, &quot;Wed&quot;, &quot;Thu&quot;, &quot;Fri&quot;, &quot;Sat&quot;],                         &quot;height&quot;: 450                     }">
+                </div>
+            </html>
+    </panel>
+    <panel>
+      <title>NEW REGISTRATIONS</title>
+      <map>
+        <search>
+          <query>sourcetype="pos:bus" merchantID="*" | dedup merchantID | dedup merchantID | search newRegistration="Y" | rex field=host "(?&lt;state&gt;\w{2})" | lookup geo_us_states.csv state AS state OUTPUT latitude AS Lat longitude AS Lon full_name AS featureId | stats dc(merchantID) AS Merchants by featureId | geom geo_us_states</query>
+          <earliest>$timestamp.earliest$</earliest>
+          <latest>$timestamp.latest$</latest>
+        </search>
+        <option name="mapping.choroplethLayer.colorBins">5</option>
+        <option name="mapping.choroplethLayer.colorMode">auto</option>
+        <option name="mapping.choroplethLayer.maximumColor">0x006299</option>
+        <option name="mapping.choroplethLayer.minimumColor">0x2F25BA</option>
+        <option name="mapping.choroplethLayer.neutralPoint">0</option>
+        <option name="mapping.choroplethLayer.shapeOpacity">0.75</option>
+        <option name="mapping.choroplethLayer.showBorder">1</option>
+        <option name="mapping.data.maxClusters">100</option>
+        <option name="mapping.drilldown">none</option>
+        <option name="mapping.map.center">(39.82,-96.9)</option>
+        <option name="mapping.map.panning">true</option>
+        <option name="mapping.map.scrollZoom">0</option>
+        <option name="mapping.map.zoom">4</option>
+        <option name="mapping.markerLayer.markerMaxSize">50</option>
+        <option name="mapping.markerLayer.markerMinSize">10</option>
+        <option name="mapping.markerLayer.markerOpacity">0.8</option>
+        <option name="mapping.showTiles">1</option>
+        <option name="mapping.tileLayer.maxZoom">7</option>
+        <option name="mapping.tileLayer.minZoom">0</option>
+        <option name="mapping.tileLayer.tileOpacity">1</option>
+        <option name="mapping.type">choropleth</option>
+        <option name="height">500</option>
+        <option name="drilldown">none</option>
+      </map>
+    </panel>
+  </row>
+  <searchTemplate id="subscription">
+    <![CDATA[ | gentimes start=-30 
+	| eval subscriptions=random()%103 
+	| eval Actual=subscriptions 
+	| accum Actual 
+	| rename starttime AS _time
+	]]>
+  </searchTemplate>
+  <row>
+    <panel>
+      <title>PROJECTED SUBSCRIPTIONS</title>
+      <chart>
+        <search base="global">
+          <query>| stats max(Actual) AS Actual      | eval Corporate_Target=2000      | eval Subscriptions="2,000"      | eval Pending=Corporate_Target-Actual      | fields - Corporate_Target      | fields Subscriptions Pending Actual</query>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">bar</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.legend.labels">[Pending,Actual]</option>
+        <option name="charting.seriesColors">[0xAF1D12,0x006299]</option>
+        <option name="height">75</option>
+        <drilldown>
+          <link>/app/bLeaf/custom_viz_calendarheatmap?form.timestamp.earliest=-1h@h&amp;form.timestamp.latest=now</link>
+        </drilldown>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <search base="global">
+          <query>| timechart list(Actual) as Actual list(subscriptions) AS Daily     | predict Actual AS "Future Subscribers"     | eval "Corporate Target"=2000</query>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">1</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.overlayFields">Actual,"Corporate Target","Future Subscribers"</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.legend.labels">[Actual,"Corporate Target","Future Subscribers",Daily]</option>
+        <option name="charting.seriesColors">[0x006299,0x360C00,0xAF1D12,0xFF3900]</option>
+        <option name="height">500</option>
+        <drilldown>
+          <link>
+            <![CDATA[/app/bLeaf/transaction_conversion?form.timestamp.earliest=-1h@h&form.timestamp.latest=now]]>
+          </link>
+        </drilldown>
+      </chart>
+    </panel>
+  </row>
+</form>

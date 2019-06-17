@@ -1,0 +1,78 @@
+[
+{
+    "id": "smartstore",
+    "title": "SmartStore",
+    "short-description": "Scale to exponentially growing volumes of machine data by scaling compute and storage independently, while achieving high availability, longer data retention and significant TCO reduction.",
+    "category": "Performance, Scale, and Manageability"
+},
+
+{
+    "id": "workload_management",
+    "title": "Workload Management",
+    "short-description": "Policy-based mechanism to reserve system resources -CPU & memory, for critical workloads and guard against excessive resource usage leading to more predictability in meeting business SLAs.",
+    "category": "Performance, Scale, and Manageability"
+},
+
+{
+    "id": "dark_mode",
+    "title": "Dashboard Dark Mode",
+    "short-description": "Dark theme support with dashboards for optimized display on NOC, SOC, and overhead monitor walls.",
+    "category": "Investigation and Exploration"
+},
+
+{
+    "id": "sawga",
+    "title": "Splunk Metrics Workspace",
+    "short-description": "Easily visualize analytics for metrics and accelerated datasets, without the need for any SPL.",
+    "category": "Investigation and Exploration"
+},
+
+{
+    "id": "metrics_v3",
+    "title": "Log to Metrics",
+    "short-description": "Convert logs containing metric data into discrete metrics data points at index-time.",
+    "category": "Analyze Any Data"
+},
+
+{
+    "id": "splunk_docker",
+    "title": "Splunk on Docker Support",
+    "short-description": "Easily scale Splunk deployments on containerized infrastructures while lowering the total cost of ownership.",
+    "category": "Performance, Scale, and Manageability"
+},
+
+{
+    "id": "mltk_updates",
+    "title": "Machine Learning Toolkit 3.3, 3.4, and 4.0",
+    "short-description": "Introducing our new Splunk Community for MLTK Algorithms on GitHub, Splunk MLTK Connector for Apache Spark™, Splunk MLTK Container for TensorFlow™, pre-processing with TF-IDF, Python for Scientific Computing Update, new algorithms, and much more.",
+    "category": "Investigation and Exploration"
+},
+
+{
+    "id": "splunk_gdi",
+    "title": "Guided Data Onboarding",
+    "short-description": "Guidance on how to ingest top data sources into a specific Splunk deployment environment.",
+    "category": "Analyze Any Data"
+},
+
+{
+	"id": "proactive_splunk_monitoring_v2",
+	"title": "Splunk Component Monitoring via REST Endpoints",
+	"short-description": "New alerting capabilities and support for new features - Search Head Clustering and Index Processor.",
+	"category": "Investigation and Exploration"
+},
+
+{
+    "id": "accessibility",
+    "title": "Accessibility Enhancements",
+    "short-description": "Usability improvements addressing US Federal Government 508 standard and Web Content Accessibility Guidelines.",
+    "category": "Investigation and Exploration"
+},
+
+{
+    "id": "dd_aa",
+    "title": "Splunk Cloud™ Dynamic Data: Active Archive",
+    "short-description": "Easily and cost effectively retain data for long term to meet regulatory and compliance requirements. Cloud only.",
+    "category": "Performance, Scale, and Manageability"
+}
+]

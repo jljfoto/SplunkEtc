@@ -1,0 +1,61 @@
+<dashboard>
+  <label>Dashboard Dark Mode</label>
+  <description>Dark theme support with dashboards for optimized display on NOC, SOC, and overhead monitor walls.</description>
+  
+  <row>
+    <panel>
+      <html>
+        <h3>Overview</h3>
+        <p>Splunk is already a critical element within security and network operation centers - support for dark theme within dashboards out-of-the-box further optimizes Splunk presence on the NOC/SOC wall.</p>
+        
+        <br/>
+        <p>Key Features:</p>
+        <ul>
+          <li><b><i>Edit Mode Theme Setting</i></b> - Set the default view theme for a given dashboard from a UI confuguration within edit mode</li>
+          <li><b><i>Advanced URL Param</i></b> - For advanced usage in view mode, pass the url param "?theme=dark" to set the theme. (note that not all dashboards may support this)</li>
+          <li><b><i>Custom Visualization Support</i></b> - Several custom visualizations have been updated to support the new theming feature.</li>
+        </ul>
+
+        <p> To activate Dark Mode, simply navigate to any custom dashboard and click "Edit". From there, toggle "Dark Theme" and refresh the page.</p>
+      </html>
+    </panel>
+  </row>
+  
+  <row>
+  	<panel>
+  		<html>
+  			<h3>Example Dashboard (Dark)</h3>
+  			<div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/dark_mode_game_stats_dark.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+    <panel>
+      <html>
+        <h3>Example Dashboard (Light)</h3>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/dark_mode_game_stats_light.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+  </row>
+
+  <row>
+  	<panel>
+  		<html>
+  			<h3>Example Dashboard (Dark)</h3>
+  			<div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/dark_mode_analysis_dark.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+    <panel>
+      <html>
+        <h3>Example Dashboard (Light)</h3>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/dark_mode_analysis_light.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+  </row>
+</dashboard>

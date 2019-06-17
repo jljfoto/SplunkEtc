@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+
+    <title>bLeaf | Splunk</title>
+    <link href="{{SPLUNKWEB_URL_PREFIX}}/static/img/favicon_splunk.ico" rel="shortcut icon" />
+    <link href="{{SPLUNKWEB_URL_PREFIX}}/static/css/build/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{SPLUNKWEB_URL_PREFIX}}/static/css/build/pages/dashboard-simple-bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
+    <!--[if IE 7]><link rel="stylesheet" href="{{SPLUNKWEB_URL_PREFIX}}/static/css/sprites-ie7.css" /><![endif]-->
+
+
+    <style>
+
+    body {
+        color: #f5f5f5;
+        position: relative;
+        background-color: #222;
+    }
+    .body {
+        max-width: 900px;
+        max-height: 600px;
+        padding-top: 60px;
+        margin: auto;
+        position: relative;
+        color: #f5f5f5;
+    }
+    .container {
+        width: 900px;
+        height: 675px;
+    }
+    .container .outer {
+        width: 100%;
+        padding-top: 75%;
+        /* defines aspect ratio */
+        
+        position: relative;
+    }
+    .container .outer .inner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    #bg {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+    .circle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        position: absolute;
+        cursor: pointer;
+        /* background-color: #222;
+        border: 4px solid #bfbfbf; */
+    }
+    .note {
+        width: 100px;
+		height: 100px;
+        border-radius: 50%;
+        color: #f5f5f5;
+        vertical-align: middle;
+		text-align: center;
+		padding: 30px 0px 0px 0px;
+    }
+    #p1 {
+        left: 249px;
+        top: 209px;
+    }
+    #p2 {
+        left: 434px;
+        top: 219px;
+    }
+    #p3 {
+        left: 556px;
+        top: 75px;
+    }
+    #p4 {
+        left: 435px;
+        top: 11px;
+    }
+    #p5 {
+        left: 289px;
+        top: 37px;
+    }
+    #p6 {
+        left: 510px;
+        top: 347px;
+    }
+    #p7 {
+        left: 583px;
+        top: 202px;
+    }
+
+    </style>
+</head>
+      
+      <!-- 
+BEGIN LAYOUT
+This section contains the layout for the dashboard. Splunk uses proprietary
+styles in <div> tags, similar to Bootstrap's grid system. 
+-->
+
+<body>
+    <a class="navSkip" href="#navSkip" tabindex="1">Screen reader users, click here to skip the navigation bar</a>
+
+    <div class="header">
+        <div id="placeholder-splunk-bar">
+            <a class="brand" href="{{SPLUNKWEB_URL_PREFIX}}/app/launcher/home" title="splunk &gt; listen to your data">splunk<strong>&gt;</strong></a>
+        </div>
+
+        <div id="placeholder-app-bar"></div>
+    </div><a id="navSkip"></a>
+
+    <div class="body">
+        <div class="body-content">
+            <div class="container">
+                <div class="outer">
+                    <div class="inner">
+                        <img id="bg" src="/static/app/bLeaf/idea.svg"></img> 
+                      
+                      
+                      
+<a href="/en-US/app/bLeaf/search?tour=business-case">
+    <div id="p1" class="circle">
+		<div id="t1" class="note">
+		    <h1>SCENE</h1>
+		</div>	
+	</div>
+</a>
+
+                        <a href="/en-US/app/bLeaf/sprad">
+                            <div class="circle" id="p2">
+                                <div class="note" id="t2">
+                                    <h1>SPRAD</h1>
+                                </div>
+                            </div>
+                        </a>
+                      
+    <div id="p3" class="circle">
+		<div id="t3" class="note">
+		    <h1></h1>
+		</div>	
+	</div>
+    <div id="p4" class="circle">
+		<div id="t4" class="note">
+		    <h1></h1>
+		</div>	
+	</div>
+    <div id="p5" class="circle">
+		<div id="t5" class="note">
+		    <h1></h1>
+		</div>	
+	</div>
+    <div id="p6" class="circle">
+		<div id="t6" class="note">
+		    <h1></h1>
+		</div>	
+	</div>
+    <div id="p7" class="circle">
+		<div id="t7" class="note">
+		    <h1></h1>
+		</div>	
+	</div>
+
+                      
+                      
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 
+END LAYOUT
+-->
+    <script src="{{SPLUNKWEB_URL_PREFIX}}/config?autoload=1"></script> 
+    <script src="{{SPLUNKWEB_URL_PREFIX}}/static/js/i18n.js"></script> 
+    <script src="{{SPLUNKWEB_URL_PREFIX}}/i18ncatalog?autoload=1"></script> 
+    <script src="{{SPLUNKWEB_URL_PREFIX}}/static/js/build/simplexml.min/config.js"></script> 
+  
+    <script type="text/javascript">
+    require.config({
+    baseUrl: "{{SPLUNKWEB_URL_PREFIX}}/static/js",
+    waitSeconds: 0 // Disable require.js load timeout
+    });
+
+    //
+    // LIBRARY REQUIREMENTS
+    //
+    // In the require function, we include the necessary libraries and modules for
+    // the HTML dashboard. Then, we pass variable names for these libraries and
+    // modules as function parameters, in order.
+    // 
+    // When you add libraries or modules, remember to retain this mapping order
+    // between the library or module and its function parameter. You can do this by
+    // adding to the end of these lists, as shown in the commented examples below.
+
+    require([
+    "splunkjs/mvc",
+    "splunkjs/mvc/utils",
+    "splunkjs/mvc/tokenutils",
+    "underscore",
+    "jquery",
+    "splunkjs/mvc/simplexml",
+    "splunkjs/mvc/headerview",
+    "splunkjs/mvc/footerview",
+    "splunkjs/mvc/simplexml/dashboardview",
+    "splunkjs/mvc/simplexml/element/chart",
+    "splunkjs/mvc/simplexml/element/event",
+    "splunkjs/mvc/simplexml/element/html",
+    "splunkjs/mvc/simplexml/element/list",
+    "splunkjs/mvc/simplexml/element/map",
+    "splunkjs/mvc/simplexml/element/single",
+    "splunkjs/mvc/simplexml/element/table",
+    "splunkjs/mvc/simpleform/formutils",
+    "splunkjs/mvc/simpleform/input/dropdown",
+    "splunkjs/mvc/simpleform/input/radiogroup",
+    "splunkjs/mvc/simpleform/input/multiselect",
+    "splunkjs/mvc/simpleform/input/checkboxgroup",
+    "splunkjs/mvc/simpleform/input/text",
+    "splunkjs/mvc/simpleform/input/timerange",
+    "splunkjs/mvc/simpleform/input/submit",
+    "splunkjs/mvc/searchmanager",
+    "splunkjs/mvc/savedsearchmanager",
+    "splunkjs/mvc/postprocessmanager",
+    "splunkjs/mvc/simplexml/urltokenmodel"
+    // Add comma-separated libraries and modules manually here, for example:
+    // ..."splunkjs/mvc/simplexml/urltokenmodel",
+    // "splunkjs/mvc/checkboxview"
+    ],
+    function(
+        mvc,
+        utils,
+        TokenUtils,
+        _,
+        $,
+        DashboardController,
+        HeaderView,
+        FooterView,
+        Dashboard,
+        ChartElement,
+        EventElement,
+        HtmlElement,
+        ListElement,
+        MapElement,
+        SingleElement,
+        TableElement,
+        FormUtils,
+        DropdownInput,
+        RadioGroupInput,
+        MultiSelectInput,
+        CheckboxGroupInput,
+        TextInput,
+        TimeRangeInput,
+        SubmitButton,
+        SearchManager,
+        SavedSearchManager,
+        PostProcessManager,
+        UrlTokenModel
+
+        // Add comma-separated parameter names here, for example: 
+        // ...UrlTokenModel, 
+        // CheckboxView
+        ) {
+
+        //var pageLoading = true;
+
+
+        // 
+        // TOKENS
+        //
+        
+        // Create token namespaces
+        //var urlTokenModel = new UrlTokenModel();
+        //mvc.Components.registerInstance('url', urlTokenModel);
+        //var defaultTokenModel = mvc.Components.getInstance('default', {create: true});
+        //var submittedTokenModel = mvc.Components.getInstance('submitted', {create: true});
+
+        //urlTokenModel.on('url:navigate', function() {
+        //    defaultTokenModel.set(urlTokenModel.toJSON());
+        //    if (!_.isEmpty(urlTokenModel.toJSON()) && !_.all(urlTokenModel.toJSON(), _.isUndefined)) {
+        //        submitTokens();
+        //    } else {
+        //        submittedTokenModel.clear();
+        //    }
+        //});
+
+        // Initialize tokens
+        //defaultTokenModel.set(urlTokenModel.toJSON());
+
+        //function submitTokens() {
+            // Copy the contents of the defaultTokenModel to the submittedTokenModel and urlTokenModel
+        //    FormUtils.submitForm({ replaceState: pageLoading });
+        //}
+
+        //function setToken(name, value) {
+        //    defaultTokenModel.set(name, value);
+        //    submittedTokenModel.set(name, value);
+        //}
+
+        //function unsetToken(name) {
+        //    defaultTokenModel.unset(name);
+        //    submittedTokenModel.unset(name);
+        //}
+
+        //
+        // SEARCH MANAGERS
+        //
+
+        //
+        // SPLUNK HEADER AND FOOTER
+        //
+
+        new HeaderView({
+            id: 'header',
+            section: 'dashboards',
+            el: $('.header'),
+            acceleratedAppNav: true,
+            useSessionStorageCache: true
+        }, {tokens: true}).render();
+
+    //new FooterView({
+    //      id: 'footer',
+    //      el: $('.footer')
+    //  }, {tokens: true}).render();
+
+
+        //
+        // DASHBOARD EDITOR
+        //
+
+    //new Dashboard({
+    //      id: 'dashboard',
+    //el: $('.dashboard-body')
+    //}, {tokens: true}).render();
+
+        //
+        // VIEWS: VISUALIZATION ELEMENTS
+        //
+
+        // Initialize time tokens to default
+        //if (!defaultTokenModel.has('earliest') && !defaultTokenModel.has('latest')) {
+        //    defaultTokenModel.set({ earliest: '0', latest: '' });
+        //}
+
+        //submitTokens();
+
+        //
+        // DASHBOARD READY
+        //
+
+       DashboardController.ready();
+       //pageLoading = false;
+
+    }
+    );
+
+    </script>
+</body>
+</html>

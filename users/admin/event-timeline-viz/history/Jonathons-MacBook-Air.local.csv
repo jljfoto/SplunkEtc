@@ -1,0 +1,9 @@
+sid,search,"splunk_server","_time","is_realtime",provenance,"api_et","api_lt","event_count","exec_time","result_count","savedsearch_name","scan_count","search_et","search_lt",status,"total_run_time","__mv_sid","__mv_search","__mv_splunk_server","__mv__time","__mv_is_realtime","__mv_provenance","__mv_api_et","__mv_api_lt","__mv_event_count","__mv_exec_time","__mv_result_count","__mv_savedsearch_name","__mv_scan_count","__mv_search_et","__mv_search_lt","__mv_status","__mv_total_run_time"
+"admin__admin_ZXZlbnQtdGltZWxpbmUtdml6__search1_1551270905.6","| inputlookup splunk-release-dates.csv 
+| rename Category as group
+| eval tooltip=group . "": "" . label
+| table group, label, start, data,tooltip","Jonathons-MacBook-Air.local","1551270905.343438",0,"UI:Dashboard:event_timeline_viz","1551182400.000000000","1551270905.000000000",0,1551270905,16,search1,0,"1551182400.000000000","1551270905.000000000",completed,"0.178",,,,,,,,,,,,,,,,,
+"admin__admin_ZXZlbnQtdGltZWxpbmUtdml6__search1_1551271044.25","| inputlookup splunk-release-dates.csv 
+| rename Category as group
+| eval tooltip=group . "": "" . label
+| table group, label, start, data,tooltip","Jonathons-MacBook-Air.local","1551271044.877563",0,"UI:Dashboard:event_timeline_viz","1551182400.000000000","1551271044.000000000",0,1551271044,16,search1,0,"1551182400.000000000","1551271044.000000000",completed,"0.056",,,,,,,,,,,,,,,,,

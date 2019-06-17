@@ -1,0 +1,8 @@
+<nav search_view="search" color="#3c444d">
+  <view name="event_timeline_viz"  default="true" />
+  <view name="example_one_operations" />
+  <view name="example_two_server_metrics" />
+  <view name="example_three_splunk_admin" />
+  <view name="settings" />
+  
+</nav>

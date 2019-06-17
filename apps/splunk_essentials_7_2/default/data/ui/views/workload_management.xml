@@ -1,0 +1,159 @@
+<dashboard>
+  <label>Workload Management </label>
+  <description>Summary of Workload Management</description>
+  <row>
+    <panel>
+      <html>
+        <p><strong>Description</strong></p>
+        <p>
+          Workload management provides a policy-based mechanism to reserve system resource (CPU, memory) for ingestion and search workloads, in alignment with business priorities. It enables administrators to classify workloads into different workload groups, and reserve portions of system resources (CPU, memory) per workload group regardless of the load on the system. By adding guardrails, workload management brings more predictability to meet business SLAs.
+
+Workload management allows administrators to map resource allocation to apps, roles and users. It allows dynamic reassignment of resource groups empowering power users to update resource allocation on-demand. This provides the ability to specify varying resource allocations for search workloads based on roles/apps, ensuring efficient utilization of resources in accordance with business priorities.
+        </p>
+
+         <p><strong>Use Cases</strong></p>
+          <ul>
+            <li> Prioritize critical search workloads over non-critical workloads </li>
+            <li> Limit impact of runaway/expensive searches on the entire system  </li>
+            <li> Avoid data ingestion lags due to heavy search workload </li>
+            <li> Predictability onboard new users, apps and data sources </li>
+          </ul>
+
+          <br/>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <html>
+        <p></p>
+        <p><strong><font size="+2">Using Workload Management</font> </strong></p>
+        <p>
+          <ul>
+            <li> Access Workload Management by navigating to Settings --> Workload Management under "System" </li>
+            <li> Toggle the "Disabled" button to enable the feature </li>
+            <li> Click "Add Workload Pool" to name a pool, assign CPU and memory, and specify default vs. ingest pools </li>
+            <li> Click "Add Workload Rule" to assign priorities, predicates, and workload pools </li>
+          </ul>
+        </p>
+      </html>
+    </panel>
+  </row>
+
+    <row>
+        <panel>
+          <html>
+              <h3>Adding a Workload Pool</h3>
+            <div style="text-align:center">
+               <img src="/static/app/splunk_essentials_7_2/images/wlm_3.png" style="margin: 20px 0" width="350px"/>
+            </div>
+          </html>
+        </panel>
+
+        <panel>
+          <html>
+              <h3>Adding a Workload Rule</h3>
+            <div style="text-align:center">
+               <img src="/static/app/splunk_essentials_7_2/images/wlm_4.png" style="margin: 20px 0" width="350px"/>
+            </div>
+          </html>
+        </panel>
+
+        <panel>
+          <html>
+              <h3>Edit any pool to define resource allotment</h3>
+            <div style="text-align:center">
+               <img src="/static/app/splunk_essentials_7_2/images/wlm_2.png" style="margin: 20px 0" width="700px"/>
+            </div>
+          </html>
+        </panel>
+    </row>   
+
+    <row>
+        <panel>
+          <html>
+              <p><h3>Use CLI/REST to implement Workload Management</h3></p>
+              <p><li>Create/modify workload pools and rules specifying default search and ingest pool using CLI/REST.</li></p>
+                <ul>
+                  <li> splunk add workload-pool {pool_name} [-cpu_weight {group_name} -mem_weight {group_name} -default_pool {true|false} -ingest_pool {true|false} </li>
+                  <li> splunk edit workload-pool {pool_name} [-cpu_weight {group_name} -mem_weight {group_name} -default_pool {true|false} -ingest_pool {true|false} </li>
+                  <li> splunk add workload-rule {rule_name} -predicate {type} -workload_pool {pool} </li>
+                  <li> splunk edit workload-rule {rule_name} -predicate {type} </li>
+                </ul>
+          </html>
+        </panel>
+
+        <panel>
+          <html>
+            <div style="text-align:center">
+               <img src="/static/app/splunk_essentials_7_2/images/wlm_5.png" style="margin: 20px 0" width="500px"/>
+            </div>
+          </html>
+        </panel>
+    </row>  
+
+    <row>
+      <panel>
+        <html>
+          <p><h3>Monitoring Workload Management</h3></p>
+          <p> Monitor Workload Management in three main ways: </p>
+            <ul>
+              <li> Monitor workload management status and configuration: Resource Usage --> Workload Management</li>
+              <li> Monitor deployment-wide CPU and Memory usage by workload pool: Resource Usage --> Workload Management </li>
+              <li> Monitor search activity by workload pool: --> Activity --> Search Activity: Instance </li>
+            </ul>
+          <p> Maintain a full view of your Workload Management health and efficiency, and use the monitoring tools to adjust as needed. </p>
+        </html>
+      </panel>
+
+      <panel>
+          <html>
+            <h3> Monitor status and configuration</h3>
+              <div style="text-align:center">
+                 <img src="/static/app/splunk_essentials_7_2/images/wlm_6.png" style="margin: 20px 0" width="500px"/>
+              </div>
+          </html>
+        </panel>
+    </row>
+
+    <row>
+        <panel>
+          <html>
+            <h3> Monitor CPU and Memory usage</h3>
+              <div style="text-align:center">
+                 <img src="/static/app/splunk_essentials_7_2/images/wlm_11.png" style="margin: 20px 0" width="500px"/>
+              </div>
+          </html>
+        </panel>
+
+        <panel>
+          <html>
+            <h3> Monitor search activity by workload pool </h3>
+              <div style="text-align:center">
+                 <img src="/static/app/splunk_essentials_7_2/images/wlm_8.png" style="margin: 20px 0" width="500px"/>
+              </div>
+          </html>
+        </panel>
+
+        <panel>
+          <html>
+            <h3> Specify workload pool on search time </h3>
+              <div style="text-align:center">
+                 <img src="/static/app/splunk_essentials_7_2/images/wlm_12.png" style="margin: 20px 0" width="500px"/>
+              </div>
+          </html>
+        </panel>
+    </row>  
+              
+         <br/>
+
+         <br/>
+
+         <br/>
+
+         <br/>
+
+         <br/>
+
+         <br/>
+</dashboard>

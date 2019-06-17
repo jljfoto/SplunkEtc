@@ -1,0 +1,18 @@
+<nav color="#0078c0">
+   <collection label="SPRAD">
+       <collection label="Customer Views">
+       <view name="merchant_subscriptions" />
+       <view name="transaction_conversion" />
+       <view name="system_errors_investigation" />
+       </collection>
+       <collection label="Guides">
+           <view name="bleaf" default="true"/>
+           <view name="sprad" />
+       </collection>
+   </collection>  
+   <view name="search" />
+   <a href="pivot?model=%2FservicesNS%2Fnobody%2FbLeaf%2Fdatamodel%2Fmodel%2FSPRAD">Pivot</a>
+   <view name="reports" />
+   <view name="alerts" />
+   <view name="dashboards" />  
+</nav>

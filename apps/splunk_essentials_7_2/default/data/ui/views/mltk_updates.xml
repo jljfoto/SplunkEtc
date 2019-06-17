@@ -1,0 +1,157 @@
+<dashboard>
+  <label>Machine Learning Toolkit 3.3 and 3.4</label>
+  <description>Summary of Machine Learning Toolkit Updates</description>
+  <row>
+    <panel>
+      <html>
+        <h3>Overview</h3>
+        <p> The Splunk Machine Learning Toolkit (MLTK)  operationalizes machine learning in Splunk so you can get insight and drive intelligent automation for any custom use case on your real time machine data! The MLTK extends the Splunk by integrating with several popular ML runtimes and libraries (Python for Scientific Computing, Splunk MLTK Connector for Apache Spark™ and Splunk MLTK Container for TensorFlow™). Splunk’s MLTK is packed with guided model building Assistants for codeless ML, an Experiment Management Framework, custom visualizations, powerful ML custom SPL commands, and more. Check out the showcase and the many tutorials and videos to get started today!
+
+</p>
+      </html>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <html>
+        <h2> What's New in MTLK 4.0? </h2>
+        <br/>
+        <h3>Splunk Community for MLTK Algorithms on GitHub</h3>
+          <p>Splunk Community for MLTK Algorithms on GitHub allows our many splunk users to easily share open source algorithms for the MLTK. The MLTK comes with an extensible ML-SPL API for customers to import their own algorithms or ones from the open source communities as first class citizens in Splunk.</p>
+          <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/mltk_github.png" width="700px"/>
+        </div>
+
+        <br/>
+         <h3>Limited Availability Release: Splunk MLTK Connector for Apache Spark™</h3>
+         <p> Splunk MLTK Connector for Apache Spark™ allows users to leverage their own Apache Spark 2.2 clusters for model building outside of the Splunk infrastructure. The Connector leverages the popular MLLib algorithms right from the SPL command line, without Scala programming required. A user friendly configuration and testing system comes with our LAR. </p>
+          <p> Note: this feature is not available in Splunk Cloud.</p>
+          <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/mltk_spark.png" width="400px"/>
+          </div>
+
+          <br/>
+         <h3>Settings tab for the MLSPL.CONF</h3>
+         <p> Change your configuration settings like a pro! The Machine Learning Toolkit downloads in safe mode to ensure curious customers are unlikely to take down their production systems while exploring machine learning. Better safe than sorry, eh? A Splunk administrator can change the default settings for production use of machine learning by directly editing the mlspl.conf file.</p>
+          <p>Note: this feature is limited on Splunk Cloud.</p>
+          <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/mltk_mlspl_ui.png" width="450px"/>
+          </div>
+
+          <br/>
+         <h3>Splunk MLTK Container for TensorFlow™ (from PS)</h3>
+         <p>TensorFlow™ is a super popular open source framework for Deep Learning by Google. With <b>Splunk MLTK Container for TensorFlow™</b> add-on, now you can <b>|fit</b> and <b>|apply</b> neural network models on your Splunk data as a first-class citizen using SPL. And the best part is that you can use your CPUs or GPUs bespoke infrastructure for accelerating your training jobs. Yes, we said GPU. Only available through Splunk PS.</p>
+         <p> Note: this product is not available in Splunk Cloud. </p>
+
+         <br/>
+        <h3>Monitor your Experiments - Automatically</h3>
+        <p>Remember that one time that you found the best parameters and fields for your awesome predictive model, but you kept experimenting until you lost your golden setup? We took care of that in MLTK 3.2. We made it possible to track a bunch of useful information in your experiments such as the algorithms, their parameters, notes on each experiment, as well as information on the model’s accuracy. </p>
+        <p> In 3.4 we continued to improved EMF, with the addition of publishing option for Machine Learning Models:</p>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/mltk_publishing.png" width="450px"/>
+        </div>
+
+          <p>With MLTK 4.0, we added the EMF’s model history so you could monitor a model’s accuracy through its retraining cycles.</p>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/mltk_history.png" width="450px"/>
+        </div>
+
+        <br/>
+        <h3>New Algorithms</h3>
+        <ul>
+          <li> <b> LocalOutlierFactor </b> allows for unsupervised anomaly detection</li>
+          <li> <b> MLP Classifier: </b> partial fit option added for incremental learning</li>
+        </ul>
+
+        <br/>
+        <h3>Score Command</h3>
+        <p>The score command provides a full set of statistical tests for validating your models and predictions with the same familiar ML SPL grammar. Forget about writing sophisticated SPL snippets and chunky macros for scoring your models. With the score command, you just need to “put that in your |” and easily validate your model.</p>
+          <p> From the log plot, we can see that our classifier often misclassified the Chevrolet Corvette with the AUDI RS5, and the AUDI RS5 with the Ferrari 458:  </p>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/MLTK_score.png" width="900px"/>
+        </div>
+
+        <br/>
+        <h3> A different type of Scoring: Cross-Validation</h3>
+        <p>In MLTK 4.0, we added a new feature so that you can <b>cross-validate</b> your models right from your search query that trains your model. Only specify the number of folds you want to test by setting fit command’s new parameter, <b>kfold_cv</b>. </p>
+      </html>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <html>
+        <h2> What's New in MLTK 3.3 and 3.4? </h2>
+        <br/>
+     
+          <h3>New Pre-processing Options - TF-IDF </h3>
+            <p> If you have textual data in Splunk and are wondering what else can we do with that data, then have a look at TF-IDF as a pre-processing option. TF-IDF (Term Frequency-Inverse Document Frequency) is a text mining algorithm using which one can find relevant words in a document. TF-IDF breaks downs list of documents into word or characters, and then it finds the importance of each word/char in each document based on which we can categorize that document as we do using tags.</p>
+          <br/>
+
+<li><strong>Use-case:</strong> Imagine going through an unknown ServiceNow ticket and trying to find out which team should it belong to. TF-IDF could do that for you. It will break down the ticket with other old tickets into words and would find the important word/tag for the unknown ticket using which you can find the right team for it.</li>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/mltk_tfidf.png" style="margin: 20px 0" width="700px"/>
+        </div>  
+        <br/>              
+
+          <h3> New Algorithms </h3>
+            <br/>
+          <ul>
+            <li><b>Robust Scaler :</b> One of the best practice of Machine Learning is to standardize the data before any Machine Learning modeling or calculation, i.e. if you have two fields to be used for model training: temperature with a scale of 21 to 40 and memory size with a scale of 10000 to 1000000 bytes then it needs to be standardized to a comparable scale. Using Robust Scaler, one can standardize multiple fields at the same time.</li>
+          <br/>
+
+<p>How is it different from Standard Scaler? Standard Scaler in the Machine Learning Toolkit helps with standardization but it can be sensitive to outliers. On the other hand, Robust Scaler is not because it standardizes the data fields by scaling their median and interquartile range to 0 and 1, respectively. (Standard Scaler does that using mean)</p>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/mltk_robust.png" style="margin: 20px 0" width="700px"/>
+          <br/>
+        </div>
+
+<li><b>MLP Classifier : </b> Multi-layer Perceptron (MLP) is a supervised learning algorithm based on neural network
+
+The advantages of Multi-layer Perceptron are:
+<ul>
+<li>Capability to learn non-linear models.</li>
+<li>Capability to learn models in real-time (on-line learning) using partial_fit.</li>
+</ul>
+</li>
+</ul>
+<p>Note: MLP is sensitive to feature scaling, so don't forget to standardize your data.</p>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/mltk_mlp.png" style="margin: 20px 0" width="700px"/>
+          <br/>
+        </div>
+
+
+          <h3>Experiment Management Framework Update - </h3>
+            <p>Re-launching an improved and robust EMF, the framework that unifies the SPL-ML pipeline, with the addition of some new features such as:</p>
+ <ul>
+<li>Publishing option for Machine Learning Models,</li>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/mltk_publication.png" style="margin: 20px 0" width="700px"/>
+          <br/>
+        </div>
+<li>and History of Machine Learning Model Training (a path to Auto-ML) and beyond.</li>
+ </ul>
+        
+          <h3>Python for Scientific Computing Update:</h3>
+<br/>
+            <p>With the PSC 1.3 update, we have updated more than 13 libraries such as numpy, pandas, scikit-learn etc., which in turn increased the Machine Learning Toolkit’s coverage with a larger set of algorithms available for users such as:</p>
+<ul>
+<li>Multi-layer Perceptron, one of the Neural network models from scikit-learn</li>
+<li>K-fold Validation, to help remove over fitting of a model or to get better results when you have less data</li>
+<li>and support for more via ML-SPL API</li>
+</ul>
+        <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/mltk_psc.png" style="margin: 20px 0" width="700px"/>
+          <br/>
+        </div>
+
+ 
+
+          <p>For bug fixes, see <a href="http://docs.splunk.com/Documentation/MLApp/3.3.0/User/Fixedissues">Fixed issues.</a></p>
+
+        </html>
+    </panel>
+  </row>
+</dashboard>

@@ -1,0 +1,87 @@
+<dashboard>
+	<label>Splunk Component Monitoring via REST Endpoints </label>
+	<row>
+		<panel>
+			<html>
+				
+				<p>
+					<strong>Overview </strong>
+				</p>
+				<p> The Splunk Component Monitoring framework delivers exciting new capabilities and builds on existing ones:</p> 
+
+				<ul>
+					<li> Health Report Manager: The new UI capability enables Splunk administrators to enable/disable, and define thresholds for features via Splunk Web </li>
+					<li> Health alerts: The new capability allows administrators to configure health alerts for features and configure different channels to send alerts </li>
+					<li> Support for new features - Index Processor and Search Head Clustering</li>
+				</ul>
+
+				<p>
+					<strong>High Level Capabilities </strong>
+				</p>
+				<ul>
+					<li> Health Report Manager to enable/disable features, and set thresholds for individual features  in Splunk Web</li>
+					<li> Configure health report alerts via health.conf </li>
+					<li> Configure alert actions - email, pagerduty or Webhook</li>
+					<li> New feature support  - Index Processor - Buckets, DiskSpace, IndexOptimization</li>
+					<li> New feature support - Search Head Clustering - Members, Replication Factor, Dynamic Captain Election, Detention State, Shared Baseline, Stable Captain </li>
+				</ul>
+				<p>
+					<strong>REST API Requests:</strong>
+				</p>
+				<ul>
+					<li> GET /services/server/health-config - list all alert actions and feature settings </li>
+					<li> POST /services/server/health-config/ - edit alert actions, health report default settings and feature specific settings e.g API: curl -k -u admin:pass https://localhost:8089/services/server/health-config/alert_action:email -d ... </li>
+				</ul>
+				<br/>
+			</html>
+		</panel>
+	</row>
+
+	<row>
+		<panel>
+			<html>
+				<h3> Health Report Manager</h3>
+				<p> Enable/disable features, and set thresholds for individual features.</p>
+					<div style="text-align:center">
+					<img src="/static/app/splunk_essentials_7_2/images/proactive_splunk_monitoring_Health_Report_Manager.png " style="margin: 20px 0" width="900px"/>
+					<br/>
+				</div>
+			</html>
+		</panel>
+
+		<panel>
+			<html>
+				<h3> Health Status of Splunkd </h3>
+				<p> Quickly see if any Splunk component is functioning sub-optimally, and analyze root cause. </p>
+					<div style="text-align:center">
+					<img src="/static/app/splunk_essentials_7_2/images/proactive_splunk_monitoring_splunkd.png" style="margin: 20px 0" width="400px"/>
+					<br/>
+				</div>
+			</html>
+		</panel>
+	</row>
+
+	<row>
+		<panel>
+			<html>
+				<h3> Alerts: pagerduty </h3>
+				<div style="text-align:center">
+					<img src="/static/app/splunk_essentials_7_2/images/proactive_splunk_monitoring_PagerDuty_Alert.png" style="margin: 20px 0" width="700px"/>
+					<br/>
+					<br/>
+				</div>
+			</html>
+		</panel>
+
+		<panel>
+			<html>
+				<h3> Alerts: Email </h3>
+				<div style="text-align:center">
+					<img src="/static/app/splunk_essentials_7_2/images/proactive_splunk_monitoring_Email_Alert.png" style="margin: 20px 0" width="700px"/>
+					<br/>
+					<br/>
+				</div>
+			</html>
+		</panel>
+	</row>
+</dashboard>

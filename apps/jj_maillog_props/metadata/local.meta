@@ -1,0 +1,20 @@
+[props/email_log/EXTRACT-pid%2Cqid]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 7.2.4.2
+modtime = 1559152216.442346000
+
+[props/email_log/EXTRACT-milter_action]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 7.2.4.2
+modtime = 1559153006.570579000
+
+[props/email_log/EXTRACT-spam_pct]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 7.2.4.2
+modtime = 1559153267.529388000

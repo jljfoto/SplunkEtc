@@ -1,0 +1,60 @@
+<dashboard>
+  <label>Log to Metrics</label>
+  <description>Summary of Log to Metrics </description>
+  <row>
+    <panel>
+      <html>
+        <p><strong> Overview</strong></p>
+        <p>
+            Useful metrics information is often captured in unstructured and semi-structured log data. Previously, there were two main methods to ingest metrics into Splunk: through use of agents such as <i>statsd</i> and <i>collectd</i>, and through search-time creation and storage of metrics with commands such as <i>mcollect</i>. The new index-time Log to Metrics feature enables the Splunk platform to convert logs containing metric data into discrete metrics data points as it ingests and indexes them. Through creation of a custom "Log to Metrics" sourcetype, metric information can easily be extracted from logs and indexed in the metrics store.
+          </p>
+
+          <p><strong> Metrics Background </strong></p>
+          <p>
+            A metric is a set of numbers describing a particular process or activity over an interval of time (i.e. time series data), and can be considered a measurement at a point in time for any given system. This consists of a timestamp, a metric name, a metric value, and an optional dimension describing the process. Since metrics include only these values, a metric is a fraction of the size of a log entry that may also contain the same information, making metrics cost effective and faster to query.
+          </p>
+
+        <p><strong>Features</strong></p>
+          <li> With Log to Metrics, the Splunk platform can extract each log event field with a numeric value as an individual metrics data point. </li>
+          <li> You can specify which log event fields are metrics. All other fields in the event are treated as dimensions. </li>
+          <li> If there are dimensions that need not appear in the metric data points, you can blacklist them. </li>
+            <p>Log-to-metrics extraction rules are tied to source types. When you define source types for your log inputs in Splunk Web, you can arrange for logs to be converted into metric data points as they are ingested. You can also edit existing source types in Splunk Web to enable this functionality.</p>
+
+            <p>This feature complements the mcollect and meventcollect commands, which enable users to convert log events to metrics data points at search time. These commands were introduced to the Splunk platform in the 7.1 release. </p>
+
+      </html>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <html>
+        <h3>Add Custom Log to Metrics Sourcetype</h3>
+          <p> Define a sourcetype by navigating to Settings --> Source types --> New Source Type  </p>
+        <div style="text-align:center">
+          <img src="/static/app/splunk_essentials_7_2/images/L2M_1.png" width="500px"/>
+        </div>
+      </html>
+    </panel>
+
+     <panel>
+      <html>
+        <h3>Define Metrics</h3>
+          <p> Specify which log event fields should be extracted as metrics, and blacklist dimensions that need not appear in metric data  </p>
+        <div style="text-align:center">
+          <img src="/static/app/splunk_essentials_7_2/images/L2M_2.png" width="500px"/>
+        </div>
+      </html>
+    </panel>
+
+     <panel>
+      <html>
+        <h3>Choose Sourcetype at Index-time</h3>
+          <p> Use the new custom sourcetype like any other sourcetype</p>
+        <div style="text-align:center">
+          <img src="/static/app/splunk_essentials_7_2/images/L2M_3.png" width="500px"/>
+        </div>
+      </html>
+    </panel>
+  </row>
+</dashboard>

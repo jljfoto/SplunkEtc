@@ -1,0 +1,135 @@
+{
+    "modelName": "email_data",
+    "displayName": "email_data",
+    "description": "",
+    "objectSummary": {
+        "Event-Based": 0,
+        "Transaction-Based": 0,
+        "Search-Based": 1
+    },
+    "objects": [
+        {
+            "objectName": "email_data",
+            "displayName": "email_data",
+            "parentName": "BaseSearch",
+            "comment": "",
+            "fields": [
+                {
+                    "fieldName": "from",
+                    "owner": "email_data",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "from",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "milter_action",
+                    "owner": "email_data",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "milter_action",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "pri",
+                    "owner": "email_data",
+                    "type": "number",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "pri",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "qid",
+                    "owner": "email_data",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "qid",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "sender",
+                    "owner": "email_data",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "sender",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "size",
+                    "owner": "email_data",
+                    "type": "number",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "size",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "stat",
+                    "owner": "email_data",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "stat",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "to",
+                    "owner": "email_data",
+                    "type": "string",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "to",
+                    "comment": ""
+                },
+                {
+                    "fieldName": "delay",
+                    "owner": "email_data",
+                    "type": "number",
+                    "fieldSearch": "",
+                    "required": false,
+                    "multivalue": false,
+                    "hidden": false,
+                    "editable": true,
+                    "displayName": "delay",
+                    "comment": ""
+                }
+            ],
+            "calculations": [],
+            "constraints": [],
+            "lineage": "email_data",
+            "baseSearch": "index=\"maildata\" sourcetype=\"email_log\""
+        }
+    ],
+    "objectNameList": [
+        "email_data"
+    ]
+}

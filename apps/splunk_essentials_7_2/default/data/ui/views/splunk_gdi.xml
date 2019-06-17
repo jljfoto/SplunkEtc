@@ -1,0 +1,42 @@
+<dashboard>
+  <label>Guided Data Onboarding</label>
+  <description>Guidance on how to ingest top data sources into a specific Splunk deployment environment.</description>
+  
+  <row>
+    <panel>
+      <html>
+        <h3>Overview</h3>
+        <p>Guided Data Onboarding is a new feature helping Splunk users understand the crucial concepts of how to get data from their desired sources into Splunk.  It then guides the user to the appropriate onboarding approach based on the users specific Splunk deployment environment.</p>
+        
+        <br/>
+        <h3>Key Features:</h3>
+        <ul>
+          <li>Search for top data sources or select from category of data sources</li>
+          <li>Select specific deployment environment</li>
+          <li>View high level steps and details to setup and configuration a source from the device or server to Splunk</li>
+        </ul>
+      </html>
+    </panel>
+  </row>
+  
+  <row>
+  	<panel>
+  		<html>
+  			<h3>Add Data landing screen</h3>
+          <p>Choose from a variety of popular sources to ingest from. </p>
+  			<div style="text-align:center">
+          <img src="/static/app/splunk_essentials_7_2/images/splunk_gdi_landing_screen.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+    <panel>
+      <html>
+        <h3>High Level Steps</h3>
+          <p>Receive guidance on suggested collection methods, required environment configuration, and steps to validate data ingestion. </p> 
+        <div style="text-align:center">
+          <img src="/static/app/splunk_essentials_7_2/images/splunk_gdi_high_level_steps.png" width="800px"/>
+        </div>
+      </html>
+    </panel>
+  </row>
+</dashboard>

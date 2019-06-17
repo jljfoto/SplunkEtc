@@ -1,0 +1,187 @@
+
+<dashboard>
+
+  <label>Splunk on Docker</label>
+
+  <description>Summary</description>
+
+  <row>
+
+    <panel>
+
+      <html>
+
+        <h3> Overview </h3>
+
+         <p> A container is a lightweight software package that bundles application code along with the runtime, tools, system libraries and environment settings required to execute it. This enables an application to be abstracted from the environment that they are executed in and allows it to be isolated from other applications. Containers are extremely portable and can run on a variety of operating systems, hypervisors and bare metal  at massive scale. Containers can also be spun-up and down quickly. With applications deployed in containers IT operations teams are more agile, have more flexibility in their deployments and potentially reduce their total cost of ownership. As opposed to hypervisors that abstract the hardware but still require the virtual machines to have their own guest operating system, the container runtime enables applications to share the same kernel. </p>
+
+         <p> Historically Splunk has been deployed on bare metal servers, and on Hypervisor environments like VMWare. With Enterprise 7.2 release, Splunk customers now have the option of deploying Splunk in a Docker container. </p>
+
+         <p>To learn more about Splunk in Docker Support, visit the blog post at <a href="https://blogs.splunk.com">blogs.splunk.com</a>.</p>
+
+       </html>
+     </panel>
+
+     <panel>
+     <html>
+      <h3> Container Overview </h3>
+      <p><i>Source: <a href="https://cloud.google.com/containers/">https://cloud.google.com/containers/</a></i></p>
+          <div style="text-align:center">
+          <img src="/static/app/splunk_essentials_7_2/images/docker_containers.png" width="800px"/>
+          </div>
+     </html>
+   </panel>
+ </row>
+
+ <row>
+  <panel>
+    <html>
+
+
+         <h3>Key Benefits </h3>
+         <ul>
+           <li><strong>Lower TCO - </strong> Well designed containerized deployments leads to a smaller operating system, hypervisor  and  hardware footprint. Containerized applications provides better system utilization as multiple applications can be deployed on a single host.  </li>
+           <li><strong>Faster Time-to-value - </strong> Containerized deployments are order of magnitude faster to deploy than hypervisor based deployments.  Applications can be deployed and upgraded quickly which enables end users to get value out of their applications faster.</li>
+           <li><strong>Increased Flexibility - </strong> With containerized applications Enterprises can quickly expand the footprint of Splunk and onboard new teams. Enterprises will gain more flexibility because containers can be easily brought up and down based on their needs.  Containers are well aligned with the paradigm of microservices based software development where a complex application is decomposed into loosely coupled micro-services that can be developed and deployed independently, leading to greater agility in the enterprise. </li>     
+         </ul>
+
+         <h3>Container Orchestration</h3>
+         <p>Container orchestration refers to the automated deployment, scaling and management of containerized applications. Real world deployments of containerized applications are managed through a container orchestration platform like Kubernetes, Docker Swarm, Mesos and Rancher.</p>
+         <p>The Splunk Docker image is orchestrator agnostic. Our customers are currently testing out deployments with all the four major container orchestration platforms. The Orchestration platform selected by the customer needs to support Docker Engine 17.06.02 or later.</p>
+         <p>To help advanced customers plan their production deployments, we are also providing examples targeted for Kubernetes users in the <a href="https://github.com/splunk">Splunk Github repository</a>.</p>
+
+         <h3> Customer Outcomes </h3>
+         <p>Customers with experience managing production deployments with containerized applications, and with an advanced knowledge of Splunk, can plan out production deployments with the Splunk Docker image. Customers who have advanced knowledge of containers as well as Splunk can start with building out Splunk in a dev/test environment. For other customers who are new to Splunk as well as the world of containers we recommend the path of prototyping. While planning any deployment of Splunk we recommend using the <a href="https://www.splunk.com/pdfs/white-papers/splunk-validated-architectures.pdf">Splunk Validated Architectures</a>. These deployment blueprints guide customers on selecting the right deployment architecture for Splunk. To start with we will officially support the S1 (single server) architecture. Examples and guidance are provided for the D1/C1/C3 architectures. We have internally validated these architectures but official support will be provided in a follow-on release.</p>
+       </html>
+     </panel>
+
+    <panel>
+      <html>
+        <h2>Datasheet</h2>
+        <p>Summary of what the Splunk Docker image supports today is shown below.</p>
+        <table style="border:1px solid black">
+          <tr style="border:1px solid black">
+            <td valign="center" style="border:1px solid black"><b>&#160;Splunk Enterprise &#160;Version</b></td>
+            <td valign="center" style="border:1px solid black">
+              <ul>
+                <li>7.2.0 and later versions will be officially supported by Splunk</li>
+                <li>Versions earlier than 7.2.0 will still be available but will be community supported</li>
+                <li>Upgrade from an earlier version to 7.2.0 and later versions will not be supported</li>
+              </ul>
+            </td>
+          </tr>
+
+          <tr style="border:1px solid black">
+            <td valign="center" style="border:1px solid black"><b>&#160;Hardware &#160;Architecture</b></td>
+            <td valign="center" style="border:1px solid black">
+              <ul>
+                <li>Splunk Enterprise: x86 64 bit</li>
+                <li>Universal Forwarder: x86 64 bit, s390x</li>
+              </ul>
+            </td>
+          </tr>
+
+          <tr style="border:1px solid black">
+            <td valign="center" style="border:1px solid black"><b>&#160;Hardware &#160;Recommendations</b></td>
+            <td valign="center" style="border:1px solid black">
+              <ul>
+                <li>No Changes</li>
+              </ul>
+            </td>
+          </tr>
+
+          <tr style="border:1px solid black">
+            <td valign="center" style="border:1px solid black"><b>&#160;Docker Engine</b></td>
+            <td valign="center" style="border:1px solid black">
+              <ul>
+                <li>Docker Engine 17.06.02 or later</li>
+              </ul>
+            </td>
+          </tr>
+
+          <tr style="border:1px solid black">
+            <td valign="center" style="border:1px solid black"><b>&#160;Splunk Validated &#160;Architectures</b></td>
+            <td valign="center" style="border:1px solid black">
+              <ul>
+                <li>Official support for <a href="https://www.splunk.com/pdfs/white-papers/splunk-validated-architectures.pdf">S1</a> architecture. <a href="https://www.splunk.com/pdfs/white-papers/splunk-validated-architectures.pdf">D1/C1/C3</a> architectures will be community supported.</li>
+                <li>Universal Forwarder: x86 64 bit, s390x</li>
+                <li>Best practices examples and guidance provided for deploying Splunk following Splunk Validated Architectures</li>
+              </ul>
+            </td>
+          </tr>
+
+          <tr style="border:1px solid black">
+            <td valign="center" style="border:1px solid black"><b>&#160;Orchestration &#160;and &#160;Premium &#160;Solutions</b></td>
+            <td valign="center" style="border:1px solid black">
+              <ul>
+                <li>Orchestrator agnostic. Customers will determine the orchestration platform that is right for their organization. <i>Splunk does not support any particular container orchestration platform at this time.</i></li>
+                <li>Deployment of ITSI and ES will require a Professional Services engagement</li>
+              </ul>
+            </td>
+          </tr>
+
+        </table>
+      </html>
+    </panel>
+  </row>
+
+   <row>
+      <panel>
+        <html>
+
+         <h2>Getting Started</h2>
+
+         <p> The Splunk Enterprise Docker image along with full getting started documentation is available on <a href="https://hub.docker.com/r/splunk/splunk/">DockerHub</a>. </p>
+
+         <p> Once you have <a href="https://store.docker.com/search?type=edition&#38;offering=community">installed</a> the Docker Engine, a single instance of Splunk can be run using the following steps. To get the latest docker image from <a href="https://hub.docker.com/r/splunk/splunk/">DockerHub</a>, enter the following on the command line:</p>
+
+         <font face="courier new, verdana"><p>docker pull splunk/splunk:latest</p></font>
+
+         <p>To start a single instance of Splunk, enter:</p>
+
+         <font face="courier new, verdana"><p>docker run -d -p 8000:8000 -e 'SPLUNK_START_ARGS=--accept-license' -e 'SPLUNK_PASSWORD=&#60;password&#62;' splunk/splunk:latest</p></font>
+
+         <p>The above command publishes the container's port 8000 on which the Splunk web service runs  to port 8000 of the localhost. To check the status of the container, enter:</p>
+
+         <font face="courier new, verdana"><p>docker ps</p></font>
+
+         <p>To access Splunk web enter http://localhost:8000/ in your browser and login to Splunk with the password that was passed at the command line. To stop the instance of the container, enter:</p>
+
+         <font face="courier new, verdana"><p>docker stop &#60;CONTAINER ID&#62;</p></font>
+
+         <p><h3>For Advanced Users</h3></p>
+
+         <p>The Splunk Github repo has some examples of deploying a Splunk cluster on Kubernetes in the <font face="courier new, verdana">test_scenarios/kubernetes</font> folder. To build out a Splunk cluster with 3 indexers, 1 search head, and 1 cluster master, enter:</p>
+
+         <font face="courier new, verdana"><p>kubectl apply -f 3idx1sh1cm</p></font>
+
+         <p> To get the status of your Kubernetes pods, enter: </p>
+
+         <font face="courier new, verdana"><p>kubectl get pods</p></font>
+
+         <p>The status above indicates that all the cluster components have been started and are active. To access a particular component of the cluster from your web browser you can use the Kubernetes port forwarding command</p>
+
+         <font face="courier new, verdana"><p>kubectl port-forward master-99cd7fdd9-d5vlc 9999:8000</p></font>
+
+         <p> Now you should be able access the cluster master by entering <a href="http://localhost:9999/">http://localhost:9999/</a> in your browser window by using the username <i>admin</i> and the password <i>helloworld</i>.</p>
+
+         <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/docker_cm2.png" width="800px"/>
+          </div>
+          <br/>
+
+         <p>To scale the cluster to 4 indexers, enter: </p>
+
+         <font face="courier new, verdana"><p>kubectl scale statefulsets indexer --replicas=4</p></font>
+
+         <p>You can see now that an additional indexer has been added to the cluster. The view in the Splunk UI for the cluster master node changes accordingly:</p>
+
+         <div style="margin-left:30px">
+          <img src="/static/app/splunk_essentials_7_2/images/docker_cm1.png" width="800px"/>
+          </div>
+
+
+        </html>
+    </panel>
+  </row>
+</dashboard>

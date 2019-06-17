@@ -1,0 +1,98 @@
+<!-- ---------------------  Options Form ---------------------------->
+<form class="splunk-formatter-section" section-label="General">
+  	 <!-- Event Orientation? -->
+	 <splunk-control-group label="Time Location">
+		<splunk-radio-input name="{{VIZ_NAMESPACE}}.orientation" value="top">
+			<option value="top">Top</option>
+			<option value="bottom">Bottom</option>
+			<option value="both">Both</option>
+		</splunk-radio-input>
+	</splunk-control-group>
+
+
+	 <!-- Event Overlap -->
+	 <splunk-control-group label="Prevent Overlap">
+		<splunk-radio-input name="{{VIZ_NAMESPACE}}.stack" value="true">
+			<option value="true">True</option>
+			<option value="false">False</option>
+		</splunk-radio-input>
+	</splunk-control-group>
+	
+	
+	<!-- Tooltip Date Format -->
+	<splunk-control-group label="Tooltip Date Format">
+		<splunk-select name="{{VIZ_NAMESPACE}}.tooltipDateFormat" value="DD-MMM-YYYY">
+			<option value="YYYY-MM-DD">2019-10-13</option>
+			<option value="MM-DD-YYYY">10-13-2019</option>
+			<option value="DD-MMM-YYYY">13-OCT-2019</option>
+			<option value="DD-MMM-YY">13-OCT-19</option>
+			<option value="DD-MM-YYYY">13-10-2019</option>
+			<option value="MM-DD-YYYY">10-13-2019</option>
+			<option value="DD MMMM YYYY">13 October 2019</option>
+			<option value="DD MMMM YY">13 October 19</option>
+			<option value="DD MMMM">13 October</option>
+			<option value="X">1570971665</option>
+		</splunk-select>
+	</splunk-control-group>
+		
+	<!-- Tooltip Time Format -->
+	<splunk-control-group label="Tooltip Time Format">
+		<splunk-select name="{{VIZ_NAMESPACE}}.tooltipTimeFormat" value="">
+			<option value="">Don't display time</option>
+			<option value="hh:mm:ss">13:01:05</option>
+			<option value="h:mm:ss A">1:01:05 PM</option>
+			<option value="hh:mm:ss Z">13:01:05 +07:00</option>
+			<option value="hh:mm:ss.SSS">13:01:05.123</option>
+			<option value="X">1570971665</option>
+		</splunk-select>
+	</splunk-control-group>
+	
+	<!-- Minimum Zoom -->
+	<splunk-control-group label="Mininum Zoom">
+		<splunk-select name="{{VIZ_NAMESPACE}}.minZoom" value="10">
+			<option value="10">No Limit</option>
+			<option value="10">10ms</option>
+			<option value="60000">Minute</option>
+			<option value="3600000">Hour</option>
+			<option value="86400000">Day</option>
+			<option value="604800000">Week</option>
+			<option value="2629746000">Month</option>
+			<option value="10518984000">Quarter</option>
+			<option value="31556952000">Year</option>
+		</splunk-select>
+	</splunk-control-group>
+	
+	<!-- Maximum Zoom -->
+	<splunk-control-group label="Maximum Zoom">
+		<splunk-select name="{{VIZ_NAMESPACE}}.maxZoom" value="315360000000000">
+			<option value="315360000000000">No Limit</option>
+			<option value="10">10ms</option>
+			<option value="60000">Minute</option>
+			<option value="3600000">Hour</option>
+			<option value="86400000">Day</option>
+			<option value="604800000">Week</option>
+			<option value="2629746000">Month</option>
+			<option value="10518984000">Quarter</option>
+			<option value="31556952000">Year</option>
+		</splunk-select>
+	</splunk-control-group>
+</form>
+
+<!-- ---------------------  Tokens Form ---------------------------->
+<form class="splunk-formatter-section" section-label="Tokens">
+    <splunk-control-group label="Start Timestamp">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.tokenStart" value="tok_et_start"></splunk-text-input>
+    </splunk-control-group>
+	<splunk-control-group label="End Timestamp">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.tokenEnd" value="tok_et_end"></splunk-text-input>
+    </splunk-control-group>
+	<splunk-control-group label="Event Data">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.tokenData" value="tok_et_data"></splunk-text-input>
+    </splunk-control-group>
+	<splunk-control-group label="Event Label">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.tokenLabel" value="tok_et_label"></splunk-text-input>
+    </splunk-control-group>
+	<splunk-control-group label="All Visible Events' Data">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.tokenAllVisible" value="tok_et_all_visible"></splunk-text-input>
+    </splunk-control-group>
+</form>

@@ -1,0 +1,220 @@
+<dashboard script="autodiscover.js">
+  <label>SYSTEM ERRORS INVESTIGATION</label>
+  <search id="sankey_search">
+    <query>
+      <![CDATA[
+
+index="main" sourcetype="app:war" build_status=FAILURE | lookup geo_us_states.csv state AS state OUTPUT latitude AS Lat longitude AS Lon full_name AS featureId | search featureId="$STATE$"| stats count by state module| rename state AS from module AS to 
+| append [ search index="main" sourcetype="app:war" build_status=FAILURE | lookup geo_us_states.csv state AS state OUTPUT latitude AS Lat longitude AS Lon full_name AS featureId | search featureId="$STATE$" | stats count by module host | rename module AS from host AS to ]
+| append [search index="main" sourcetype="pos:bus" ERROR_MESSAGE="*" SYSTEM_ERROR=True | lookup geo_us_states.csv state AS state OUTPUT latitude AS Lat longitude AS Lon full_name AS featureId | search featureId="$STATE$" | stats count by host ERROR_MESSAGE | rename host AS from ERROR_MESSAGE AS to] 
+| append [search index="main" sourcetype="pos:bus" ERROR_MESSAGE="*" SYSTEM_ERROR=True | lookup geo_us_states.csv state AS state OUTPUT latitude AS Lat longitude AS Lon full_name AS featureId | search featureId="$STATE$" | stats count by ERROR_MESSAGE merchantID | rename ERROR_MESSAGE AS from merchantID AS to] 
+
+                ]]>
+    </query>
+    <earliest>-60m@m</earliest>
+    <latest>now</latest>
+  </search>
+  <row>
+    <panel>
+      <title>ALL TRANSACTIONS</title>
+      <single>
+        <search>
+          <query>index=main sourcetype="pos:bus" | stats count</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="linkView">search</option>
+        <option name="drilldown">none</option>
+        <option name="rangeColors">["0x6db7c6","0x6db7c6"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="trendInterval">auto</option>
+      </single>
+    </panel>
+    <panel>
+      <title>SUCCESS</title>
+      <single>
+        <search>
+          <query>index=main sourcetype="pos:bus" | eval tnx_status=if(respCode&gt;200,"SYSTEM_ERROR",if(respCode&gt;100 AND respCode&lt;200,"USER_ERROR","SUCCESS"))| search tnx_status=SUCCESS | stats count</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="rangeColors">["0x80B3DA","0x80B3DA"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="trendInterval">auto</option>
+        <option name="linkView">search</option>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+    <panel>
+      <title>USER ERRORS</title>
+      <single>
+        <search>
+          <query>index=main sourcetype="pos:bus" | eval tnx_status=if(respCode&gt;200,"SYSTEM_ERROR",if(respCode&gt;100 AND respCode&lt;200,"USER_ERROR","SUCCESS"))| search tnx_status=USER_ERROR | stats count</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="rangeColors">["0x5894C2","0x5894C2"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="trendInterval">auto</option>
+        <option name="linkView">search</option>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+    <panel>
+      <title>SYSTEM ERRORS</title>
+      <single>
+        <search>
+          <query>index=main sourcetype="pos:bus" | eval tnx_status=if(respCode&gt;200,"SYSTEM_ERROR",if(respCode&gt;100 AND respCode&lt;200,"USER_ERROR","SUCCESS"))| search tnx_status=SYSTEM_ERROR | stats count</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="linkView">search</option>
+        <option name="drilldown">none</option>
+        <option name="rangeColors">["0x65a637","0xd93f3c"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="trendInterval">auto</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>TOP 10 SYSTEM ERRORS</title>
+      <chart>
+        <search>
+          <query>index=main sourcetype="pos:bus" | eval tnx_status=if(respCode&gt;200,"SYSTEM_ERROR",if(respCode&gt;100 AND respCode&lt;200,"USER_ERROR","SUCCESS"))  | search tnx_status=SYSTEM_ERROR | top limit=10 ERROR_MESSAGE</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleY.visibility">collapsed</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">bar</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.seriesColors">[0xd93f3c]</option>
+        <option name="height">500</option>
+        <option name="drilldown">row</option>
+        <drilldown>
+          <set token="ERROR_MESSAGE">$row.ERROR_MESSAGE$</set>
+        </drilldown>
+      </chart>
+    </panel>
+    <panel>
+      <title>$ERROR_MESSAGE$ BY REGION</title>
+      <map depends="$ERROR_MESSAGE$">
+        <search>
+          <query>index="main" sourcetype="pos:bus" ERROR_MESSAGE="$ERROR_MESSAGE$" | lookup geo_us_states.csv state AS state OUTPUT latitude AS Lat longitude AS Lon full_name AS featureId | stats count by featureId | geom geo_us_states</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="mapping.type">choropleth</option>
+        <option name="mapping.choroplethLayer.colorBins">5</option>
+        <option name="mapping.choroplethLayer.colorMode">auto</option>
+        <option name="mapping.choroplethLayer.maximumColor">0xAF1D12</option>
+        <option name="mapping.choroplethLayer.minimumColor">0x2F25BA</option>
+        <option name="mapping.choroplethLayer.neutralPoint">0</option>
+        <option name="mapping.choroplethLayer.shapeOpacity">0.75</option>
+        <option name="mapping.choroplethLayer.showBorder">1</option>
+        <option name="mapping.data.maxClusters">100</option>
+        <option name="mapping.map.center">(38.2,-92.81)</option>
+        <option name="mapping.map.panning">true</option>
+        <option name="mapping.map.scrollZoom">false</option>
+        <option name="mapping.map.zoom">4</option>
+        <option name="mapping.markerLayer.markerMaxSize">50</option>
+        <option name="mapping.markerLayer.markerMinSize">10</option>
+        <option name="mapping.markerLayer.markerOpacity">0.8</option>
+        <option name="mapping.showTiles">1</option>
+        <option name="mapping.tileLayer.maxZoom">7</option>
+        <option name="mapping.tileLayer.minZoom">0</option>
+        <option name="mapping.tileLayer.tileOpacity">1</option>
+        <option name="height">500</option>
+        <option name="drilldown">row</option>
+        <drilldown>
+          <set token="STATE">$row.featureId$</set>
+        </drilldown>
+      </map>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>System errors related to $STATE$</title>
+      <html depends="$STATE$">
+	      <div id="sankey" class="splunk-view" data-require="app/bLeaf/components/sankey/sankey" data-options="{                    &quot;managerid&quot;: &quot;sankey_search&quot;,                    &quot;height&quot;: 600                 }">
+           </div>
+        </html>
+    </panel>
+    <panel>
+      <title>Candidate events related to $STATE$</title>
+      <event depends="$STATE$">
+        <search>
+          <query>index="main" ( sourcetype="app:war" OR sourcetype="app:rms" ) (stall* OR fail*) | lookup geo_us_states.csv state AS state OUTPUT latitude AS Lat longitude AS Lon full_name AS featureId | search featureId="$STATE$"</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="count">5</option>
+        <option name="list.drilldown">full</option>
+        <option name="list.wrap">1</option>
+        <option name="maxLines">5</option>
+        <option name="raw.drilldown">full</option>
+        <option name="rowNumbers">0</option>
+        <option name="table.drilldown">all</option>
+        <option name="table.wrap">1</option>
+        <option name="type">list</option>
+        <option name="height">600</option>
+        <fields>["host","source","sourcetype"]</fields>
+      </event>
+    </panel>
+  </row>
+</dashboard>

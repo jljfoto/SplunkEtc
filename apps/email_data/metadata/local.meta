@@ -1,0 +1,52 @@
+[app/ui]
+version = 7.2.4.2
+modtime = 1559153840.434721000
+
+[app/launcher]
+version = 7.2.4.2
+modtime = 1559153840.436069000
+
+[views/mail_dashboard]
+owner = admin
+version = 7.2.3
+modtime = 1559308342.054605000
+
+[props/email_log/EXTRACT-pid%2Cqid]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 7.2.4.2
+modtime = 1559155714.550365000
+
+[props/email_log/EXTRACT-milter_action]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 7.2.4.2
+modtime = 1559155772.609637000
+
+[props/email_log/EXTRACT-spam_pct]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 7.2.4.2
+modtime = 1559155810.284983000
+
+[indexes/maildata]
+owner = admin
+version = 7.2.3
+modtime = 1559274661.559052000
+
+[datamodels/email_data]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 7.2.3
+modtime = 1559315326.468719000
+
+[models/email_data]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 7.2.3
+modtime = 1559315211.092438000

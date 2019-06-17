@@ -1,0 +1,256 @@
+<dashboard script="autodiscover.js">
+  <label>TRANSACTION CONVERSION</label>
+  <search id="basesearch">
+    <query>| gentimes start=-1 increment=0.5s | eval twenty_four_hours = 60*60*24 | eval starttime = starttime + twenty_four_hours | eval four_hours = 60*60*6 | eval four_hours_ago=now()-four_hours | fields starttime four_hours_ago | where starttime &gt; four_hours_ago AND starttime &lt; now() | rename starttime AS _time | eval respCode=random()%220 | eval tnx_status=if(respCode&gt;200,"SYSTEM_ERROR",if(respCode&gt;100 AND respCode&lt;200,"USER_ERROR","SUCCESS")) | search NOT tnx_status="USER_ERROR" | timechart span=1m count by tnx_status</query>
+    <earliest>-4h@m</earliest>
+    <latest>now</latest>
+  </search>
+  <search id="heatmap_success_search" base="basesearch">
+    <query>fields _time, S* | rename SUCCESS AS "SUCCESSFULLY COMPLETED"| rename SYSTEM_ERROR AS "SYSTEM ERRORS"</query>
+  </search>
+  <row>
+    <panel>
+      <single>
+        <title>ALL TRANSACTIONS</title>
+        <search>
+          <query>index=main sourcetype="pos:bus" | stats count</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="linkView">search</option>
+        <option name="drilldown">none</option>
+        <option name="rangeColors">["0xB2D4EF","0xB2D4EF"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="trendInterval">auto</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>SUCCESS</title>
+        <search>
+          <query>index=main sourcetype="pos:bus" | eval tnx_status=if(respCode&gt;200,"SYSTEM_ERROR",if(respCode&gt;100 AND respCode&lt;200,"USER_ERROR","SUCCESS"))| search tnx_status=SUCCESS | stats count</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="rangeColors">["0x80B3DA","0x80B3DA"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="trendInterval">auto</option>
+        <option name="linkView">search</option>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>CONVERSION RATIO</title>
+        <search>
+          <query>index=main sourcetype="pos:bus" | eval tnx_status=if(respCode&gt;200,"SYSTEM_ERROR",if(respCode&gt;100 AND respCode&lt;200,"USER_ERROR","SUCCESS")) | search tnx_status=SUCCESS OR tnx_status="SYSTEM_ERROR" | eventstats count AS total | search tnx_status=SUCCESS | stats values(total) AS total count | eval conversion_rate=round(count/total*100,2) | fields conversion_rate</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0.0</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="rangeColors">["0xd93f3c","0x5894C2"]</option>
+        <option name="rangeValues">[90]</option>
+        <option name="trendInterval">auto</option>
+        <option name="linkView">search</option>
+        <option name="drilldown">none</option>
+        <option name="afterLabel">%</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>CONVERSION HISTORY</title>
+      <html>
+                    <div id="heatmap_" class="splunk-view" data-require="app/bLeaf/components/calendarheatmap/calendarheatmap" data-options="{                             &quot;managerid&quot;: &quot;heatmap_success_search&quot;,                             &quot;domain&quot;: &quot;hour&quot;,                             &quot;subDomain&quot;: &quot;min&quot;                         }">
+                    </div>
+                </html>
+    </panel>
+    <panel>
+      <title>TRANSACTION VOLUME</title>
+      <chart>
+        <search>
+          <query>index=main sourcetype="pos:bus"                  | timechart sum(total) AS Transactions                  | eventstats avg(Transactions) AS Average                  | eval upper=Average*1.2                  | eval lower=Average*0.8</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">area</option>
+        <option name="height">500</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.overlayFields">Average,lower,upper</option>
+        <option name="charting.chart.showDataLabels">minmax</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.axisTitleY.text">USD</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>USER ERRORS</title>
+      <single>
+        <search>
+          <query>index=main sourcetype="pos:bus" | eval tnx_status=if(respCode&gt;200,"SYSTEM_ERROR",if(respCode&gt;100 AND respCode&lt;200,"USER_ERROR","SUCCESS"))| search tnx_status=USER_ERROR | stats count</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="rangeColors">["0x5894C2","0x5894C2"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="trendInterval">auto</option>
+        <option name="linkView">search</option>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+    <panel>
+      <title>SYSTEM ERRORS</title>
+      <single>
+        <search>
+          <query>index=main sourcetype="pos:bus" | eval tnx_status=if(respCode&gt;200,"SYSTEM_ERROR",if(respCode&gt;100 AND respCode&lt;200,"USER_ERROR","SUCCESS"))| search tnx_status=SYSTEM_ERROR | stats count</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="numberPrecision">0</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <option name="linkView">search</option>
+        <option name="drilldown">none</option>
+        <option name="rangeColors">["0x3977A7","0xd93f3c"]</option>
+        <option name="rangeValues">[10]</option>
+        <option name="trendInterval">auto</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>TOP 10 USER ERRORS</title>
+      <chart>
+        <search>
+          <query>index=main sourcetype="pos:bus"   | eval tnx_status=if(respCode&gt;200,"SYSTEM_ERROR",if(respCode&gt;100 AND respCode&lt;200,"USER_ERROR","SUCCESS"))  | search tnx_status=USER_ERROR | top limit=10 ERROR_MESSAGE</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleY.visibility">collapsed</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">bar</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.seriesColors">[0x5894C2]</option>
+        <option name="height">500</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>TOP 10 SYSTEM ERRORS</title>
+      <chart>
+        <search>
+          <query>index=main sourcetype="pos:bus"   | eval tnx_status=if(respCode&gt;200,"SYSTEM_ERROR",if(respCode&gt;100 AND respCode&lt;200,"USER_ERROR","SUCCESS"))  | search tnx_status=SYSTEM_ERROR | top limit=10 ERROR_MESSAGE</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleY.visibility">collapsed</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">bar</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.seriesColors">[0xd93f3c]</option>
+        <option name="height">500</option>
+        <drilldown>
+          <link>/app/bLeaf/system_errors_investigation?form.timestamp.earliest=-1h@h&amp;form.timestamp.latest=now</link>
+        </drilldown>
+      </chart>
+    </panel>
+  </row>
+</dashboard>

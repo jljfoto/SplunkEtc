@@ -1,0 +1,207 @@
+sid,search,"splunk_server","_time","is_realtime",provenance,"event_count","exec_time","result_count","savedsearch_name","scan_count",status,"total_run_time","api_et","api_lt","search_et","search_lt","__mv_sid","__mv_search","__mv_splunk_server","__mv__time","__mv_is_realtime","__mv_provenance","__mv_event_count","__mv_exec_time","__mv_result_count","__mv_savedsearch_name","__mv_scan_count","__mv_status","__mv_total_run_time","__mv_api_et","__mv_api_lt","__mv_search_et","__mv_search_lt"
+"rt_md_1537217041.21","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1537217041.332529",1,"UI:Search",0,1537217041,0,,0,failed,"52.969",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search1_1537217063.30","| metasearch
+    [ rest /services/properties/eventtypes/web-traffic/search splunk_server=local
+    | eval search=value]
+| join type=outer sourcetype
+    [ search sourcetype=iis
+        [| metadata type=sourcetypes
+        | search sourcetype=iis
+        | eval latest=lastTime, earliest=latest-180
+        | fields latest earliest
+            ]
+    | head 1
+    | rename host as host2
+    | fields sourcetype host2]
+| eval host=if(isnotnull(host2), host2, host)
+| stats count AS events by host, source
+| search host=*** OR source=***
+| lookup WA_settings source AS source host AS host OUTPUTNEW value AS site
+| eval Configured=site
+| fields host source Configured site events","Jonathons-MacBook-Air.local","1537217063.710577",0,"UI:Dashboard:sites_setup",0,1537217065,0,search1,0,completed,"0.218",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search3_1537217063.31","| inputlookup WA_settings.csv | search key=site | fields value host source | rename value AS Site, host AS Host, source as Source","Jonathons-MacBook-Air.local","1537217063.721735",0,"UI:Dashboard:sites_setup",0,1537217064,0,search3,0,completed,"0.05",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__RMD516e4c269ecc047aa_1537217064.32","| outputlookup WA_settings.csv createinapp=t append=t","Jonathons-MacBook-Air.local","1537217064.927695",0,"UI:Dashboard:sites_setup",0,1537217065,0,"createlookup_settings",0,completed,"0.048",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search2_1537217130.50","|inputlookup WA_settings.csv | search (host!=""*"" OR source!="""") | append [search | stats count | eval key=""site""| eval value=""www.jljfoto.com""| eval host=""*"" | eval source=""""] | fields key value source host | sort key value | outputlookup WA_settings.csv createinapp=t | eval Response=""Site was succesfully saved."" | head 1 | fields Response","Jonathons-MacBook-Air.local","1537217130.414269",0,"UI:Dashboard:sites_setup",0,1537217131,1,search2,0,completed,"0.31",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search2_1537217167.60","|inputlookup WA_settings.csv | search (host!=""*"" OR source!="""") | append [search | stats count | eval key=""site""| eval value=""www.jenkins-tech.com""| eval host=""*"" | eval source=""""] | fields key value source host | sort key value | outputlookup WA_settings.csv createinapp=t | eval Response=""Site was succesfully saved."" | head 1 | fields Response","Jonathons-MacBook-Air.local","1537217167.123499",0,"UI:Dashboard:sites_setup",0,1537217168,1,search2,0,completed,"0.537",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search1_1537217177.69","|inputlookup WA_settings.csv | search key=site | fields value source | dedup value","Jonathons-MacBook-Air.local","1537217177.020168",0,"UI:Dashboard:analytics_center",0,1537217177,1,search1,0,completed,"0.031",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search1_1537217184.70","|inputlookup WA_settings.csv | search key=site | fields value source | dedup value","Jonathons-MacBook-Air.local","1537217184.273551",0,"UI:Dashboard:audience",0,1537217184,1,search1,0,completed,"0.033",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search4_1537217186.71","| tstats summariesonly=t max(Web.http_session_pageviews) FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session | stats sum(max(Web.http_session_pageviews)) AS Count
+
+| eval ImmediatePeriodCompare=1
+| `addTimeCompareWindow`
+| eval site=""*""
+| map search=""
+| tstats summariesonly=t max(Web.http_session_pageviews) FROM datamodel=Web WHERE Web.site=""$site$"" ""Web.eventtype""=pageview earliest=$earliestCompare$ latest=$latestCompare$ GROUPBY Web.http_session
+| stats sum(max(Web.http_session_pageviews)) AS CountCompare
+| eval Count=""$Count$"", window=$window$, windowLength=\""$windowLength$\"", earliestCompare=$earliestCompare$, latestCompare=$latestCompare$, info_min_time=$info_min_time$, info_max_time=$info_max_time$
+""
+| `generateTimeComparison`","Jonathons-MacBook-Air.local","1537217186.080322",0,"UI:Dashboard:audience",0,1537217186,0,search4,0,failed,"0.559","1534575600.000000000","1537217186.000000000","1534575600.000000000","1537217186.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search2_1537217186.72","| makeresults count=1
+| eval site=""*"", span=""span=1d""
+| eval ImmediatePeriodCompare=1
+| `addTimeCompareWindow`
+| map search=""
+| tstats summariesonly=t count AS Count FROM datamodel=Web WHERE Web.site=\""*\"" ""Web.eventtype""=pageview
+(earliest=$earliestCompare$ latest=$latestCompare$) OR (earliest=$info_min_time$ latest=$info_max_time$) GROUPBY _time span=1d,Web.http_session,Web.ua_mobile
+| timechart count AS Count,count(eval(len('Web.ua_mobile')=0)) AS Non-Mobile,sum(eval('Web.ua_mobile'!=\""\"")) AS Mobile span=1d
+| timewrap \""$windowLength$\""
+    | eval window=$window$, windowLength=\""$windowLength$\"", earliestCompare=$earliestCompare$, latestCompare=$latestCompare$, info_min_time=$info_min_time$, info_max_time=$info_max_time$
+    | fields Non* Mobile* *Mobile Count window windowLength earliestCompare latestCompare info_min_time info_max_time $FieldnameCurrentPeriod$ $FieldnameComparePeriod$
+""
+| table _time *latest* Count_latest* Count*_before
+| fields - Count_latest* latestCompare","Jonathons-MacBook-Air.local","1537217186.083430",0,"UI:Dashboard:audience",0,1537217187,0,search2,0,completed,"1.5270000000000001","1534575600.000000000","1537217186.000000000","1534575600.000000000","1537217186.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search3_1537217186.73","| tstats summariesonly=t dc(Web.http_session) AS Count FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview
+| stats sum(Count) AS Count
+| eval ImmediatePeriodCompare=1
+| `addTimeCompareWindow`
+| eval site=""*""
+| map search=""
+| tstats summariesonly=t dc(Web.http_session) AS Count FROM datamodel=Web WHERE Web.site=""$site$"" ""Web.eventtype""=pageview earliest=$earliestCompare$ latest=$latestCompare$
+| stats sum(Count) AS CountCompare
+| eval Count=""$Count$"", window=$window$, windowLength=\""$windowLength$\"", earliestCompare=$earliestCompare$, latestCompare=$latestCompare$, info_min_time=$info_min_time$, info_max_time=$info_max_time$
+""
+| `generateTimeComparison`","Jonathons-MacBook-Air.local","1537217186.086450",0,"UI:Dashboard:audience",0,1537217188,2,search3,0,completed,"0.926","1534575600.000000000","1537217186.000000000","1534575600.000000000","1537217186.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search6_1537217186.74","| tstats summariesonly=t max(Web.http_session_duration) AS http_session_duration FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session
+| stats avg(http_session_duration) AS AvgDuration
+| eval Count=round(AvgDuration, 0)
+| fieldformat Count = strftime(Count, ""%M:%S"")
+| fields Count","Jonathons-MacBook-Air.local","1537217186.088151",0,"UI:Dashboard:audience",0,1537217188,0,search6,0,completed,"0.726","1534575600.000000000","1537217186.000000000","1534575600.000000000","1537217186.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search9_1537217186.75","| tstats summariesonly=t count FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session,Web.ua_family | fields Web.ua_family Web.http_session | dedup Web.http_session | top Web.ua_family countfield=Sessions | eval percent=round(percent, 2) | eval percent=percent.""%"" | rename percent AS ""% Sessions"" | rename Web.ua_family as Browser","Jonathons-MacBook-Air.local","1537217186.094172",0,"UI:Dashboard:audience",0,1537217188,0,search9,0,completed,"0.974","1534575600.000000000","1537217186.000000000","1534575600.000000000","1537217186.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search8_1537217186.76","| tstats summariesonly=t dc(Web.user) AS Count FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview
+
+| eval ImmediatePeriodCompare=1
+| `addTimeCompareWindow`
+| eval site=""*""
+| map search=""
+| tstats summariesonly=t dc(Web.user) AS CountCompare FROM datamodel=Web WHERE Web.site=""$site$"" ""Web.eventtype""=pageview earliest=$earliestCompare$ latest=$latestCompare$
+
+| fields CountCompare
+| eval Count=""$Count$"", window=$window$, windowLength=\""$windowLength$\"", earliestCompare=$earliestCompare$, latestCompare=$latestCompare$, info_min_time=$info_min_time$, info_max_time=$info_max_time$
+""
+| `generateTimeComparison`","Jonathons-MacBook-Air.local","1537217186.096394",0,"UI:Dashboard:audience",0,1537217188,2,search8,0,completed,"0.927","1534575600.000000000","1537217186.000000000","1534575600.000000000","1537217186.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search10_1537217186.77","| tstats summariesonly=t count FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview  Web.ua_mobile!="""" GROUPBY Web.http_session,Web.ua_mobile | dedup Web.http_session  | top Web.ua_mobile countfield=Sessions | eval percent=round(percent, 2) | eval percent=percent.""%"" | rename percent AS ""% Sessions"" | rename Web.ua_mobile AS ""Device""","Jonathons-MacBook-Air.local","1537217186.136420",0,"UI:Dashboard:audience",0,1537217188,0,search10,0,completed,"0.673","1534575600.000000000","1537217186.000000000","1534575600.000000000","1537217186.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search14_1537217186.79","| tstats summariesonly=t count FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session,Web.ua_os_family | dedup Web.http_session  | top Web.ua_os_family countfield=Sessions | eval percent=round(percent, 2) | eval percent=percent.""%"" | rename percent AS ""% Sessions"" | rename Web.ua_os_family AS ""Operating System""","Jonathons-MacBook-Air.local","1537217186.161586",0,"UI:Dashboard:audience",0,1537217188,0,search14,0,completed,"0.988","1534575600.000000000","1537217186.000000000","1534575600.000000000","1537217186.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__base1_1537217186.80","| tstats summariesonly=t max(Web.http_session_pageviews) AS http_session_pageviews FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session","Jonathons-MacBook-Air.local","1537217186.173999",0,"UI:Dashboard:audience",0,1537217188,0,base1,0,completed,"0.908","1534575600.000000000","1537217186.000000000","1534575600.000000000","1537217186.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__base2_1537217186.81","| tstats summariesonly=t count FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session,Web.clientip | iplocation Web.clientip","Jonathons-MacBook-Air.local","1537217186.251660",0,"UI:Dashboard:audience",0,1537217187,0,base2,0,completed,"0.6910000000000001","1534575600.000000000","1537217186.000000000","1534575600.000000000","1537217186.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__TimeComparison_1537217186.82","| makeresults count=1
+    | eval ImmediatePeriodCompare=1
+    |`addTimeCompareWindow`","Jonathons-MacBook-Air.local","1537217186.281209",0,"UI:Dashboard:audience",0,1537217189,1,TimeComparison,0,completed,"0.04","1534575600.000000000","1537217186.000000000","1534575600.000000000","1537217186.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search1_1537217198.97","|inputlookup WA_settings.csv | search key=site | fields value source | dedup value","Jonathons-MacBook-Air.local","1537217198.790816",0,"UI:Dashboard:aquisition",0,1537217198,1,search1,0,completed,"0.028",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search3_1537217199.98","| tstats summariesonly=t prestats=t dc(Web.http_session) AS Sessions FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY _time,Web.http_session_channel span=1d | timechart usenull=f span=1d dc(Web.http_session) AS Sessions by Web.http_session_channel","Jonathons-MacBook-Air.local","1537217199.541130",0,"UI:Dashboard:aquisition",0,1537217199,0,search3,0,completed,"0.337","1534575600.000000000","1537217199.000000000","1534575600.000000000","1537217199.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search5_1537217199.99","| tstats summariesonly=t max(Web.http_session_pageviews) AS http_session_pageviews,max(Web.http_session_duration) AS http_session_duration,first(Web.http_session_channel) AS http_session_channel FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session | stats count(eval(http_session_pageviews=1)) AS Bounces, count(eval(http_session_pageviews>1)) AS NonBounces,avg(http_session_pageviews) AS ""Pages/Session"", avg(http_session_duration) AS ""Avg. Session Duration"", count AS Sessions, sum(http_session_pageviews) AS Pageviews, sum(Duration) AS Duration by http_session_channel | eval Bouncerate=round(100*(Bounces/(Bounces+NonBounces)),2) | fields http_session_channel Bouncerate ""Pages/Session"" ""Avg. Session Duration"" Sessions Pageviews Duration Bounces NonBounces | eval Bouncerate=Bouncerate.""%"" | rename http_session_channel as ""Channel"" | eval ""Pages/Session""=round('Pages/Session',2) | eval ""Avg. Session Duration""=round('Avg. Session Duration',2) | appendpipe [stats sum(Sessions) AS Sessions, sum(Pageviews) as Pageviews, sum(Duration) as Duration, sum(Bounces) as Bounces, sum(NonBounces) as NonBounces |  eval ""Pages/Session""=round(Pageviews/Sessions,2) | eval ""Avg. Session Duration""=round(Duration/Sessions,2)|  eval Bouncerate=round(100*(Bounces/NonBounces),2).""%"" ] | fields - Sessions Pageviews Duration Bounces NonBounces","Jonathons-MacBook-Air.local","1537217199.546821",0,"UI:Dashboard:aquisition",0,1537217199,0,search5,0,completed,"0.33","1534575600.000000000","1537217199.000000000","1534575600.000000000","1537217199.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__base1_1537217199.100","| tstats summariesonly=t first(Web.http_session_channel) AS http_session_channel FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session","Jonathons-MacBook-Air.local","1537217199.578370",0,"UI:Dashboard:aquisition",0,1537217199,0,base1,0,completed,"0.214","1534575600.000000000","1537217199.000000000","1534575600.000000000","1537217199.000000000",,,,,,,,,,,,,,,,,
+"rt_md_1537241549.6345","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1537241549.797450",1,"UI:Search",0,1537241550,0,,0,failed,"36.068",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search1_1537241557.6346","|inputlookup WA_settings.csv | search key=site | fields value source | dedup value","Jonathons-MacBook-Air.local","1537241557.809991",0,"UI:Dashboard:response_times",0,1537241558,1,search1,0,completed,"0.039",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search3_1537241558.6349","| tstats summariesonly=f avg(Web.response_time) AS response_time, count FROM datamodel=Web WHERE Web.site=""*"" GROUPBY _time span=1d 
+| eval response_time=round(response_time/1000,2)
+| timechart avg(response_time) AS ""Response time"", sum(count) AS Requests span=1d","Jonathons-MacBook-Air.local","1537241558.993535",0,"UI:Dashboard:response_times",0,1537241559,0,search3,0,canceled,"2.5020000000000002","1534575600.000000000","1537241558.000000000","1534575600.000000000","1537241558.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search4_1537241559.6350","| tstats summariesonly=f avg(Web.response_time) AS response_time FROM datamodel=Web WHERE Web.site=""*"" GROUPBY Web.uri
+| eval response_time=round(response_time/1000,2)
+| sort - response_time","Jonathons-MacBook-Air.local","1537241559.002981",0,"UI:Dashboard:response_times",0,1537241559,0,search4,0,canceled,"1.817","1534575600.000000000","1537241559.000000000","1534575600.000000000","1537241559.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search5_1537241559.6351","| tstats summariesonly=f avg(Web.response_time) AS response_time FROM datamodel=Web WHERE Web.site=""*"" GROUPBY host _time span=1d 
+| eval response_time=round(response_time/1000,2)
+| timechart avg(response_time) AS response_time span=1d by host","Jonathons-MacBook-Air.local","1537241559.009736",0,"UI:Dashboard:response_times",0,1537241559,0,search5,0,canceled,"1.871","1534575600.000000000","1537241559.000000000","1534575600.000000000","1537241559.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search2_1537241575.6359","| tstats summariesonly=f avg(Web.response_time) AS response_time FROM datamodel=Web WHERE Web.site=""*"" GROUPBY _time span=1d 
+| eval response_time=round(response_time/1000,2)
+| timechart avg(response_time) AS response_time span=1d","Jonathons-MacBook-Air.local","1537241575.218820",0,"UI:Dashboard:response_times",0,1537241575,0,search2,0,completed,"1.07","1537167600.000000000","1537241575.000000000","1537167600.000000000","1537241575.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search4_1537241575.6361","| tstats summariesonly=f avg(Web.response_time) AS response_time FROM datamodel=Web WHERE Web.site=""*"" GROUPBY Web.uri
+| eval response_time=round(response_time/1000,2)
+| sort - response_time","Jonathons-MacBook-Air.local","1537241575.243500",0,"UI:Dashboard:response_times",0,1537241575,0,search4,0,completed,"1.11","1537167600.000000000","1537241575.000000000","1537167600.000000000","1537241575.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search5_1537241575.6362","| tstats summariesonly=f avg(Web.response_time) AS response_time FROM datamodel=Web WHERE Web.site=""*"" GROUPBY host _time span=1d 
+| eval response_time=round(response_time/1000,2)
+| timechart avg(response_time) AS response_time span=1d by host","Jonathons-MacBook-Air.local","1537241575.256180",0,"UI:Dashboard:response_times",0,1537241575,0,search5,0,completed,"1.036","1537167600.000000000","1537241575.000000000","1537167600.000000000","1537241575.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search1_1537241600.6371","|inputlookup WA_settings.csv | search key=site | fields value source | dedup value","Jonathons-MacBook-Air.local","1537241600.746138",0,"UI:Dashboard:audience",0,1537241600,1,search1,0,completed,"0.04",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search2_1537241602.6372","| makeresults count=1
+| eval site=""*"", span=""span=1d""
+| eval ImmediatePeriodCompare=1
+| `addTimeCompareWindow`
+| map search=""
+| tstats summariesonly=t count AS Count FROM datamodel=Web WHERE Web.site=\""*\"" ""Web.eventtype""=pageview
+(earliest=$earliestCompare$ latest=$latestCompare$) OR (earliest=$info_min_time$ latest=$info_max_time$) GROUPBY _time span=1d,Web.http_session,Web.ua_mobile
+| timechart count AS Count,count(eval(len('Web.ua_mobile')=0)) AS Non-Mobile,sum(eval('Web.ua_mobile'!=\""\"")) AS Mobile span=1d
+| timewrap \""$windowLength$\""
+    | eval window=$window$, windowLength=\""$windowLength$\"", earliestCompare=$earliestCompare$, latestCompare=$latestCompare$, info_min_time=$info_min_time$, info_max_time=$info_max_time$
+    | fields Non* Mobile* *Mobile Count window windowLength earliestCompare latestCompare info_min_time info_max_time $FieldnameCurrentPeriod$ $FieldnameComparePeriod$
+""
+| table _time *latest* Count_latest* Count*_before
+| fields - Count_latest* latestCompare","Jonathons-MacBook-Air.local","1537241602.126922",0,"UI:Dashboard:audience",0,1537241602,0,search2,0,completed,"0.883","1534575600.000000000","1537241602.000000000","1534575600.000000000","1537241602.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search3_1537241602.6373","| tstats summariesonly=t dc(Web.http_session) AS Count FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview
+| stats sum(Count) AS Count
+| eval ImmediatePeriodCompare=1
+| `addTimeCompareWindow`
+| eval site=""*""
+| map search=""
+| tstats summariesonly=t dc(Web.http_session) AS Count FROM datamodel=Web WHERE Web.site=""$site$"" ""Web.eventtype""=pageview earliest=$earliestCompare$ latest=$latestCompare$
+| stats sum(Count) AS CountCompare
+| eval Count=""$Count$"", window=$window$, windowLength=\""$windowLength$\"", earliestCompare=$earliestCompare$, latestCompare=$latestCompare$, info_min_time=$info_min_time$, info_max_time=$info_max_time$
+""
+| `generateTimeComparison`","Jonathons-MacBook-Air.local","1537241602.133733",0,"UI:Dashboard:audience",0,1537241602,2,search3,0,completed,"0.8300000000000001","1534575600.000000000","1537241602.000000000","1534575600.000000000","1537241602.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search6_1537241602.6374","| tstats summariesonly=t max(Web.http_session_duration) AS http_session_duration FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session
+| stats avg(http_session_duration) AS AvgDuration
+| eval Count=round(AvgDuration, 0)
+| fieldformat Count = strftime(Count, ""%M:%S"")
+| fields Count","Jonathons-MacBook-Air.local","1537241602.140462",0,"UI:Dashboard:audience",0,1537241602,0,search6,0,completed,"0.604","1534575600.000000000","1537241602.000000000","1534575600.000000000","1537241602.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search4_1537241602.6375","| tstats summariesonly=t max(Web.http_session_pageviews) FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session | stats sum(max(Web.http_session_pageviews)) AS Count
+
+| eval ImmediatePeriodCompare=1
+| `addTimeCompareWindow`
+| eval site=""*""
+| map search=""
+| tstats summariesonly=t max(Web.http_session_pageviews) FROM datamodel=Web WHERE Web.site=""$site$"" ""Web.eventtype""=pageview earliest=$earliestCompare$ latest=$latestCompare$ GROUPBY Web.http_session
+| stats sum(max(Web.http_session_pageviews)) AS CountCompare
+| eval Count=""$Count$"", window=$window$, windowLength=\""$windowLength$\"", earliestCompare=$earliestCompare$, latestCompare=$latestCompare$, info_min_time=$info_min_time$, info_max_time=$info_max_time$
+""
+| `generateTimeComparison`","Jonathons-MacBook-Air.local","1537241602.143588",0,"UI:Dashboard:audience",0,1537241602,0,search4,0,failed,"0.265","1534575600.000000000","1537241602.000000000","1534575600.000000000","1537241602.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search9_1537241602.6377","| tstats summariesonly=t count FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session,Web.ua_family | fields Web.ua_family Web.http_session | dedup Web.http_session | top Web.ua_family countfield=Sessions | eval percent=round(percent, 2) | eval percent=percent.""%"" | rename percent AS ""% Sessions"" | rename Web.ua_family as Browser","Jonathons-MacBook-Air.local","1537241602.162522",0,"UI:Dashboard:audience",0,1537241603,0,search9,0,completed,"0.504","1534575600.000000000","1537241602.000000000","1534575600.000000000","1537241602.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search10_1537241602.6378","| tstats summariesonly=t count FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview  Web.ua_mobile!="""" GROUPBY Web.http_session,Web.ua_mobile | dedup Web.http_session  | top Web.ua_mobile countfield=Sessions | eval percent=round(percent, 2) | eval percent=percent.""%"" | rename percent AS ""% Sessions"" | rename Web.ua_mobile AS ""Device""","Jonathons-MacBook-Air.local","1537241602.193817",0,"UI:Dashboard:audience",0,1537241604,0,search10,0,completed,"0.41500000000000004","1534575600.000000000","1537241602.000000000","1534575600.000000000","1537241602.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search14_1537241602.6379","| tstats summariesonly=t count FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session,Web.ua_os_family | dedup Web.http_session  | top Web.ua_os_family countfield=Sessions | eval percent=round(percent, 2) | eval percent=percent.""%"" | rename percent AS ""% Sessions"" | rename Web.ua_os_family AS ""Operating System""","Jonathons-MacBook-Air.local","1537241602.272109",0,"UI:Dashboard:audience",0,1537241604,0,search14,0,completed,"0.34400000000000003","1534575600.000000000","1537241602.000000000","1534575600.000000000","1537241602.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__base2_1537241602.6381","| tstats summariesonly=t count FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session,Web.clientip | iplocation Web.clientip","Jonathons-MacBook-Air.local","1537241602.288082",0,"UI:Dashboard:audience",0,1537241603,0,base2,0,completed,"0.386","1534575600.000000000","1537241602.000000000","1534575600.000000000","1537241602.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__TimeComparison_1537241602.6382","| makeresults count=1
+    | eval ImmediatePeriodCompare=1
+    |`addTimeCompareWindow`","Jonathons-MacBook-Air.local","1537241602.296289",0,"UI:Dashboard:audience",0,1537241603,1,TimeComparison,0,completed,"0.041","1534575600.000000000","1537241602.000000000","1534575600.000000000","1537241602.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search13_1537241602.6383","| tstats summariesonly=t count FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session,Web.http_locale | rex mode=sed field=Web.http_locale ""s/_/-/"" | eval http_locale=lower('Web.http_locale') | fields http_locale Web.http_session | dedup Web.http_session | top http_locale countfield=Sessions | eval percent=round(percent, 2) | eval percent=percent.""%"" | rename percent AS ""% Sessions"" | rename http_locale as Language","Jonathons-MacBook-Air.local","1537241602.320740",0,"UI:Dashboard:audience",0,1537241604,0,search13,0,completed,"0.333","1534575600.000000000","1537241602.000000000","1534575600.000000000","1537241602.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search1_1537241627.6407","|inputlookup WA_settings.csv | search key=site | fields value source | dedup value","Jonathons-MacBook-Air.local","1537241627.202514",0,"UI:Dashboard:analytics_center",0,1537241627,1,search1,0,completed,"0.021",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search1_1537241680.6424","| metasearch
+    [ rest /services/properties/eventtypes/web-traffic/search splunk_server=local
+    | eval search=value]
+| join type=outer sourcetype
+    [ search sourcetype=iis
+        [| metadata type=sourcetypes
+        | search sourcetype=iis
+        | eval latest=lastTime, earliest=latest-180
+        | fields latest earliest
+            ]
+    | head 1
+    | rename host as host2
+    | fields sourcetype host2]
+| eval host=if(isnotnull(host2), host2, host)
+| stats count AS events by host, source
+| search host=*** OR source=***
+| lookup WA_settings source AS source host AS host OUTPUTNEW value AS site
+| eval Configured=site
+| fields host source Configured site events","Jonathons-MacBook-Air.local","1537241680.195314",0,"UI:Dashboard:sites_setup",0,1537241681,0,search1,0,completed,"0.123",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search3_1537241680.6425","| inputlookup WA_settings.csv | search key=site | fields value host source | rename value AS Site, host AS Host, source as Source","Jonathons-MacBook-Air.local","1537241680.206500",0,"UI:Dashboard:sites_setup",0,1537241680,1,search3,0,completed,"0.036000000000000004",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__RMD516e4c269ecc047aa_1537241681.6426","| outputlookup WA_settings.csv createinapp=t append=t","Jonathons-MacBook-Air.local","1537241681.038811",0,"UI:Dashboard:sites_setup",0,1537241681,0,"createlookup_settings",0,completed,"0.057",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search2_1537241696.6427","|inputlookup WA_settings.csv | search (host!=""*"" OR source!="""") | append [search | stats count | eval key=""site""| eval value=""www.jenkins-tech.com""| eval host=""*"" | eval source=""""] | fields key value source host | sort key value | outputlookup WA_settings.csv createinapp=t | eval Response=""Site was succesfully saved."" | head 1 | fields Response","Jonathons-MacBook-Air.local","1537241696.522866",0,"UI:Dashboard:sites_setup",0,1537241697,1,search2,0,completed,"0.316",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search2_1537241755.6444","|inputlookup WA_settings.csv | search (host!=""*"" OR source!=""jtech"") | append [search | stats count | eval key=""site""| eval value=""www.jenkins-tech.com""| eval host=""*"" | eval source=""jtech""] | fields key value source host | sort key value | outputlookup WA_settings.csv createinapp=t | eval Response=""Site was succesfully saved."" | head 1 | fields Response","Jonathons-MacBook-Air.local","1537241755.150665",0,"UI:Dashboard:sites_setup",0,1537241755,1,search2,0,completed,"0.295",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search1_1537241788.6453","|inputlookup WA_settings.csv | search key=site | fields value source | dedup value","Jonathons-MacBook-Air.local","1537241788.024405",0,"UI:Dashboard:traffic_center",0,1537241788,1,search1,0,completed,"0.038",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search2_1537241788.6454","| tstats summariesonly=t prestats=t count AS Requests FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview OR ""Web.eventtype""=non-pageview GROUPBY ""Web.eventtype"" _time span=1d | search Web.eventtype=pageview OR Web.eventtype=non-pageview | timechart span=1d count by Web.eventtype","Jonathons-MacBook-Air.local","1537241788.780496",0,"UI:Dashboard:traffic_center",0,1537241789,0,search2,0,completed,"0.248","1534575600.000000000","1537241788.000000000","1534575600.000000000","1537241788.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search4_1537241788.6455","| tstats summariesonly=t prestats=t count AS Requests FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=non-pageview GROUPBY ""Web.eventtype"" Web.uri _time span=1d | search Web.eventtype=""direct-referer"" | timechart useother=f span=1d limit=20 count by Web.uri","Jonathons-MacBook-Air.local","1537241788.785786",0,"UI:Dashboard:traffic_center",0,1537241789,0,search4,0,completed,"0.395","1534575600.000000000","1537241788.000000000","1534575600.000000000","1537241788.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search6_1537241788.6458","| tstats summariesonly=t count FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=""direct-referer"" GROUPBY Web.uri Web.clientip | sort -count","Jonathons-MacBook-Air.local","1537241788.813146",0,"UI:Dashboard:traffic_center",0,1537241789,0,search6,0,completed,"0.379","1534575600.000000000","1537241788.000000000","1534575600.000000000","1537241788.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search7_1537241788.6459","| tstats summariesonly=t count AS Requests FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=direct-referer ""Web.eventtype""!=resourceview ""Web.eventtype""!=web-uri-nonpage GROUPBY  Web.uri Web.clientip | eventstats sum(Requests) as Total by Web.uri | sort -Total -Requests | streamstats dc(Web.clientip) as ""clientip_order"" by Web.uri | streamstats dc(Web.uri) as ""uri_order"" | where clientip_order<6 AND uri_order<6 | rename Web.uri AS uri, Web.clientip as clientip, Total AS ""Total Requests for uri"" | iplocation clientip | fields - clientip_order uri_order Region lat lon | table uri ""Total Requests for uri"" clientip Requests Country City","Jonathons-MacBook-Air.local","1537241788.825593",0,"UI:Dashboard:traffic_center",0,1537241789,0,search7,0,completed,"0.492","1534575600.000000000","1537241788.000000000","1534575600.000000000","1537241788.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search1_1537241978.6509","|inputlookup WA_settings.csv | search key=site | fields value source | dedup value","Jonathons-MacBook-Air.local","1537241978.341271",0,"UI:Dashboard:aquisition",0,1537241978,1,search1,0,completed,"0.04",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search5_1537241979.6512","| tstats summariesonly=t max(Web.http_session_pageviews) AS http_session_pageviews,max(Web.http_session_duration) AS http_session_duration,first(Web.http_session_channel) AS http_session_channel FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session | stats count(eval(http_session_pageviews=1)) AS Bounces, count(eval(http_session_pageviews>1)) AS NonBounces,avg(http_session_pageviews) AS ""Pages/Session"", avg(http_session_duration) AS ""Avg. Session Duration"", count AS Sessions, sum(http_session_pageviews) AS Pageviews, sum(Duration) AS Duration by http_session_channel | eval Bouncerate=round(100*(Bounces/(Bounces+NonBounces)),2) | fields http_session_channel Bouncerate ""Pages/Session"" ""Avg. Session Duration"" Sessions Pageviews Duration Bounces NonBounces | eval Bouncerate=Bouncerate.""%"" | rename http_session_channel as ""Channel"" | eval ""Pages/Session""=round('Pages/Session',2) | eval ""Avg. Session Duration""=round('Avg. Session Duration',2) | appendpipe [stats sum(Sessions) AS Sessions, sum(Pageviews) as Pageviews, sum(Duration) as Duration, sum(Bounces) as Bounces, sum(NonBounces) as NonBounces |  eval ""Pages/Session""=round(Pageviews/Sessions,2) | eval ""Avg. Session Duration""=round(Duration/Sessions,2)|  eval Bouncerate=round(100*(Bounces/NonBounces),2).""%"" ] | fields - Sessions Pageviews Duration Bounces NonBounces","Jonathons-MacBook-Air.local","1537241979.454188",0,"UI:Dashboard:aquisition",0,1537241979,0,search5,0,completed,"0.253","1534575600.000000000","1537241979.000000000","1534575600.000000000","1537241979.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__base1_1537241979.6513","| tstats summariesonly=t first(Web.http_session_channel) AS http_session_channel FROM datamodel=Web WHERE Web.site=""*"" ""Web.eventtype""=pageview GROUPBY Web.http_session","Jonathons-MacBook-Air.local","1537241979.460664",0,"UI:Dashboard:aquisition",,,,base1,,failed,,,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search1_1537241993.6527","|inputlookup WA_settings.csv | search key=site | fields value source | dedup value","Jonathons-MacBook-Air.local","1537241993.515813",0,"UI:Dashboard:response_times",0,1537241993,1,search1,0,completed,"0.027",,,,,,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search2_1537241994.6528","| tstats summariesonly=f avg(Web.response_time) AS response_time FROM datamodel=Web WHERE Web.site=""*"" GROUPBY _time span=1d 
+| eval response_time=round(response_time/1000,2)
+| timechart avg(response_time) AS response_time span=1d","Jonathons-MacBook-Air.local","1537241994.108619",0,"UI:Dashboard:response_times",0,1537241994,0,search2,0,completed,"1.795","1534575600.000000000","1537241994.000000000","1534575600.000000000","1537241994.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search3_1537241994.6529","| tstats summariesonly=f avg(Web.response_time) AS response_time, count FROM datamodel=Web WHERE Web.site=""*"" GROUPBY _time span=1d 
+| eval response_time=round(response_time/1000,2)
+| timechart avg(response_time) AS ""Response time"", sum(count) AS Requests span=1d","Jonathons-MacBook-Air.local","1537241994.118573",0,"UI:Dashboard:response_times",0,1537241994,0,search3,0,completed,"1.7770000000000001","1534575600.000000000","1537241994.000000000","1534575600.000000000","1537241994.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search4_1537241994.6530","| tstats summariesonly=f avg(Web.response_time) AS response_time FROM datamodel=Web WHERE Web.site=""*"" GROUPBY Web.uri
+| eval response_time=round(response_time/1000,2)
+| sort - response_time","Jonathons-MacBook-Air.local","1537241994.122351",0,"UI:Dashboard:response_times",0,1537241994,0,search4,0,completed,"1.839","1534575600.000000000","1537241994.000000000","1534575600.000000000","1537241994.000000000",,,,,,,,,,,,,,,,,
+"admin__admin__SplunkAppForWebAnalytics__search5_1537241994.6531","| tstats summariesonly=f avg(Web.response_time) AS response_time FROM datamodel=Web WHERE Web.site=""*"" GROUPBY host _time span=1d 
+| eval response_time=round(response_time/1000,2)
+| timechart avg(response_time) AS response_time span=1d by host","Jonathons-MacBook-Air.local","1537241994.126763",0,"UI:Dashboard:response_times",0,1537241994,0,search5,0,completed,"1.59","1534575600.000000000","1537241994.000000000","1534575600.000000000","1537241994.000000000",,,,,,,,,,,,,,,,,
