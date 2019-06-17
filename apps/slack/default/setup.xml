@@ -1,0 +1,37 @@
+<setup>
+<block title="Configure Slack App for Splunk">
+  <text>
+<![CDATA[
+
+  <p style="font-size:12px;font-weight:bold">  <h3> Modular Inputs </h3>  For both Slack Access Logs and Slack messages, a Slack API token is needed. This token can be found <a href="https://api.slack.com/custom-integrations/legacy-tokens">here</a>
+
+</p>
+
+<p style="font-size:12px;font-weight:bold"> </p> <h3> Slack Access Logs Input </h3>
+ <p> In order to create a Slack Access Logs Input, a Slack API token is needed. This token must have admin privileges. The values needed are: </p>
+  <p> - name - Name of the input </p>
+        <p> - token - Slack API token </p>
+            <p> - max_days - Number of days to look back during first run</p>
+<br>
+<p>  To create the input navigate to <b><i>Settings</i></b> then <b><i>Data Inputs</b></i>. Select <b><i>Add New</i></b> for Slack Access Logs/Slack Messages and enter values</p>
+
+
+   <p style="font-size:12px;font-weight:bold"> </p> <h3> Slack Messages Input </h3>
+ <p>In order to create a Slack Messages input a Slack API token is needed. This token must have channels:history privileges. The values needed upon setup are: </p>
+</p>-  name - Name of the input </p>
+ <p>   -  token - Slack API token </p>
+  <p>  - max_days - Number of days to look back during first run </p>
+
+<br>
+            <p>  To create the input navigate to <b><i>Settings</i></b> then <b><i>Data Inputs</i></b> . Select </i></b>Add New</i></b>  for Slack Access Logs/Salck Messages and enter values</p>
+
+        ]]></text> </block>
+
+<block title="Specify the index to use for  Slack data" endpoint="admin/macros" entity="slack_index">
+    <input field="definition">
+      <label>Specify Index
+</label>
+      <type>index=main</type>
+    </input>
+  </block>
+</setup>

@@ -1,0 +1,5 @@
+<nav color="#2CA38F">
+  <view name="login_activity" default="true"/>
+  <view name="messages"/>
+  <view name="search"/>
+</nav>

@@ -1,0 +1,141 @@
+<form stylesheet="application.css">
+  <label>Messages</label>
+  <fieldset autoRun="true" submitButton="false">
+    <input type="time" searchWhenChanged="true">
+      <default>
+        <earliestTime>-24h</earliestTime>
+        <latestTime>now</latestTime>
+      </default>
+    </input>
+    <input type="dropdown" token="team">
+      <label>Company</label>
+      <search>
+        <query>`slack_index` sourcetype=slack:logins | dedup team_id | table team_id team</query>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </search>
+      <fieldForLabel>team</fieldForLabel>
+      <fieldForValue>team_id</fieldForValue>
+      <choice value="*">*</choice>
+      <initialValue>*</initialValue>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <chart>
+        <title>Activity</title>
+        <search>
+          <query>`slack_index` sourcetype="slack:messages" team_id=$team$ | timechart count by team</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">-45</option>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleY.text">Message Count</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.seriesColors">[#4EC29F,#87D3E0,#EBB538]</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>Top Users</title>
+        <search>
+          <query>`slack_index` sourcetype=slack:messages team_id=$team$ | top user team | sort - count | table user count | rename user as Username count as "Message Count"</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="charting.seriesColors">[#4EC29F,#87D3E0,#EBB538]</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>Top Channels</title>
+        <search>
+          <query>`slack_index` sourcetype=slack:messages team_id=$team$ | top channel team | sort - count | table channel count | rename channel as Channel count as "Message Count"</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="charting.seriesColors">[#4EC29F,#87D3E0,#EBB538]</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>Uploads by Type</title>
+        <search>
+          <query>`slack_index` sourcetype=slack:messages team_id=$team$ subtype=file_share | stats count by fileinfo.mimetype | rename fileinfo.mimetype as "File Type"</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.seriesColors">[#4EC29F,#87D3E0,#EBB538]</option>
+      </chart>
+    </panel>
+    <panel>
+      <table>
+        <title>Largest Files Uploaded</title>
+        <search>
+          <query>`slack_index` sourcetype="slack:messages" team_id=$team$ subtype=file_share | eval filesize_megabytes=round((('fileinfo.size'/1024)/1024),2) | table filesize_megabytes file_name user channel | sort - filesize_megabytes limit=10 | rename filesize_megabytes as "File Size" file_name as "File Name" user as Username channel as Channel</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <format type="number" field="File Size">
+          <option name="unit">MB</option>
+          <option name="useThousandSeparators">false</option>
+        </format>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>Users with Largest Total Uploads</title>
+        <search>
+          <query>`slack_index` sourcetype="slack:messages" team_id=$team$ subtype=file_share | top fileinfo.size by user team | eval  filesize_megabytes=round((('fileinfo.size'/1024)/1024),2)| stats sum(filesize_megabytes) as tot_fsize by user team | table user tot_fsize | sort - tot_fsize | rename user as Username tot_fsize as "File Size"</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleY.text">File Size (MB)</option>
+        <option name="charting.axisY.scale">log</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="charting.seriesColors">[#4EC29F,#87D3E0,#EBB538]</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>Channels with Largest Total Uploads</title>
+        <search>
+          <query>`slack_index` sourcetype="slack:messages" team_id=$team$ subtype=file_share | top fileinfo.size by channel team | eval  filesize_megabytes=round((('fileinfo.size'/1024)/1024),2)| stats sum(filesize_megabytes) as tot_fsize by channel team | table channel tot_fsize | sort - tot_fsize | rename channel as Channel tot_fsize as "File Size"</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleY.text">File Size (MB)</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="charting.seriesColors">[#4EC29F,#87D3E0,#EBB538]</option>
+      </chart>
+    </panel>
+  </row>
+</form>
