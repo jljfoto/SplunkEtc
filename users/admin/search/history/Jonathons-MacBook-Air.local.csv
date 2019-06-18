@@ -1634,4 +1634,4 @@ sid,search,"splunk_server","_time","is_realtime",provenance,"event_count","exec_
 "1560783439.878","| eventcount summarize=false index=* | dedup index | rename index as name | fields name","Jonathons-MacBook-Air.local","1560783439.557323",0,,0,1560783439,15,0,completed,"0.10300000000000001",,,,,,,,,,,,,,,,,,,,,,
 "1560783854.893","| eventcount summarize=false index=* | dedup index | rename index as name | fields name","Jonathons-MacBook-Air.local","1560783854.877114",0,,0,1560783855,15,0,completed,"0.129",,,,,,,,,,,,,,,,,,,,,,
 "1560789063.979","| eventcount summarize=false index=* | dedup index | rename index as name | fields name","Jonathons-MacBook-Air.local","1560789063.271488",0,,0,1560789063,15,0,completed,"0.169",,,,,,,,,,,,,,,,,,,,,,
-"rt_md_1560813209.1359","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1560813209.496085",1,"UI:Search",,,,,,,,,,,,,,,,,,,,,,,,,,,,
+"rt_md_1560813209.1359","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1560813209.496085",1,"UI:Search",0,1560813210,0,0,failed,"3633.8070000000002",,,,,,,,,,,,,,,,,,,,,,
