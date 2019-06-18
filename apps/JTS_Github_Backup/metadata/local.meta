@@ -7,23 +7,26 @@ version = 7.2.5.1
 modtime = 1559449202.343564000
 
 [savedsearches/Git%20Backup%20Heartbeat]
-owner = jonathon
+export = none
+owner = nobody
 version = 7.3.0
-modtime = 1560813142.581558000
+modtime = 1560882335.738455000
 
 [savedsearches/git_backup%20not%20running]
-owner = jonathon
+export = none
+owner = nobody
 version = 7.3.0
-modtime = 1560813166.695144000
+modtime = 1560882356.853523000
 
 [views/git_backup]
-owner = jonathon
-version = 7.2.5.1
-modtime = 1560637823.644197000
+export = none
+owner = nobody
+version = 7.3.0
+modtime = 1560882346.438039000
 
 [props/git_backup/EXTRACT-changes%2Cinserts%2Cdeletes]
 access = read : [ * ], write : [ admin, power ]
 export = none
-owner = jonathon
-version = 7.2.5.1
-modtime = 1559740020.225702000
+owner = nobody
+version = 7.3.0
+modtime = 1560882351.709258000
