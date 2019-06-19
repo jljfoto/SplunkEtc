@@ -1,9 +1,0 @@
-display.visualizations.custom.geo_heatmap_app.geo_heatmap.lat = <float>
-display.visualizations.custom.geo_heatmap_app.geo_heatmap.lng = <float>
-display.visualizations.custom.geo_heatmap_app.geo_heatmap.zoom = <number>
-display.visualizations.custom.geo_heatmap_app.geo_heatmap.tiles = <string>
-display.visualizations.custom.geo_heatmap_app.geo_heatmap.scaleRadius = <boolean>
-display.visualizations.custom.geo_heatmap_app.geo_heatmap.useLocalExtrema = <boolean>
-display.visualizations.custom.geo_heatmap_app.geo_heatmap.minOpacity = <number>
-display.visualizations.custom.geo_heatmap_app.geo_heatmap.maxOpacity = <number>
-display.visualizations.custom.geo_heatmap_app.geo_heatmap.gradientCfg = <string>
