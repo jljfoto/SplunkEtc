@@ -11,8 +11,8 @@ version = 7.0.0
 modtime = 1517197350.892443000
 
 [ui-prefs/dashboards]
-version = 7.1.1
-modtime = 1530404809.588230000
+version = 7.3.0
+modtime = 1562804673.072358000
 
 [ui-prefs/search]
 version = 7.3.0
