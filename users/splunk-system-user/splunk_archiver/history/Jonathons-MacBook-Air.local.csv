@@ -1,6 +1,4 @@
 sid,search,"splunk_server","_time","is_realtime","event_count","exec_time","result_count","scan_count",status,"total_run_time","__mv_sid","__mv_search","__mv_splunk_server","__mv__time","__mv_is_realtime","__mv_event_count","__mv_exec_time","__mv_result_count","__mv_scan_count","__mv_status","__mv_total_run_time"
-"1558267206.13601","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1558267206.236454",0,1,1558267206,1,0,canceled,"0.777",,,,,,,,,,,
-"1558268221.13623","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1558268221.071540",0,1,1558268221,1,0,canceled,"0.588",,,,,,,,,,,
 "1558271821.13677","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1558271821.408133",0,1,1558271821,1,0,canceled,"0.732",,,,,,,,,,,
 "1558275421.13730","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1558275421.467512",0,1,1558275421,1,0,canceled,"0.673",,,,,,,,,,,
 "1558279021.13784","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1558279021.181765",0,1,1558279021,1,0,canceled,"0.583",,,,,,,,,,,
@@ -999,3 +997,5 @@ sid,search,"splunk_server","_time","is_realtime","event_count","exec_time","resu
 "1563054172.5965","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1563054172.363692",0,1,1563054172,1,0,canceled,"1.184",,,,,,,,,,,
 "1563056222.6003","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1563056222.043356",0,1,1563056222,1,0,canceled,"0.5700000000000001",,,,,,,,,,,
 "1563059821.6059","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1563059821.569906",0,1,1563059821,1,0,canceled,"0.594",,,,,,,,,,,
+"1563063421.6116","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1563063421.765882",0,1,1563063421,1,0,canceled,"0.557",,,,,,,,,,,
+"1563067021.6174","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1563067021.183835",0,1,1563067021,1,0,canceled,"0.508",,,,,,,,,,,
