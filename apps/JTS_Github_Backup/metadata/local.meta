@@ -26,10 +26,10 @@ modtime = 1562076853.516007000
 
 [props/git_backup/EXTRACT-changes%2Cinserts%2Cdeletes]
 access = read : [ * ], write : [ admin, power ]
-export = none
+export = system
 owner = admin
 version = 7.3.0
-modtime = 1560946916.102004000
+modtime = 1565031928.822801000
 
 [nav/default]
 export = none
