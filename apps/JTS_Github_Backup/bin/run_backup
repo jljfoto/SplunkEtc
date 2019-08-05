@@ -1,2 +1,2 @@
 #!/bin/bash
-./git_backup >> /opt/logs/git_backup.log  2>&1
+$SPLUNK_HOME/etc/apps/JTS_Github_Backup/bin/git_backup >> /opt/logs/git_backup.log  2>&1
