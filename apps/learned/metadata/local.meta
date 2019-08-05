@@ -307,3 +307,13 @@ modtime = 1565008280.310727000
 owner = admin
 version = 7.3.0
 modtime = 1565009283.620555000
+
+[props/2___git_out-too_small]
+owner = admin
+version = 7.3.0
+modtime = 1565026899.236798000
+
+[props/git_backup-too_small]
+owner = admin
+version = 7.3.0
+modtime = 1565027278.267362000
