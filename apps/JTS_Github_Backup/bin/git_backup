@@ -4,6 +4,7 @@ dte=`/bin/date "+%Y-%m-%d %T"`
 
 cd /opt/splunk/etc
 
+echo "${dte} Backup of ${HOSTNAME} - ${SPLUNK_HOME}/etc"
 /usr/bin/git add .
 /usr/bin/git commit -a -m "Automated backup of mb-air /home/splunk/etc - ${dte}"
 /usr/bin/git pull && /usr/bin/git push
