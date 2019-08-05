@@ -1,8 +1,4 @@
 sid,search,"splunk_server","_time","is_realtime",provenance,"event_count","exec_time","result_count","scan_count",status,"total_run_time","api_et","api_lt","search_et","search_lt","savedsearch_name","__mv_sid","__mv_search","__mv_splunk_server","__mv__time","__mv_is_realtime","__mv_provenance","__mv_event_count","__mv_exec_time","__mv_result_count","__mv_scan_count","__mv_status","__mv_total_run_time","__mv_api_et","__mv_api_lt","__mv_search_et","__mv_search_lt","__mv_savedsearch_name"
-"admin__admin__search__search6_1537587265.66751","search index=blood_sugar sourcetype=""blood_sugar"" glucose=*
-| streamstats median(glucose) as medianGC,avg(glucose) as avgGC
-| eval low_glucose=70, high_glucose=140
-| table _time  glucose low_glucose high_glucose","Jonathons-MacBook-Air.local","1537587265.756109",0,"UI:Dashboard:blood_glucose",104,1537587266,104,105,completed,"0.136","1537513200.000000000","1537587265.000000000","1537513200.000000000","1537587265.000000000",search6,,,,,,,,,,,,,,,,,
 "admin__admin__search__search8_1537587265.66753","search index=blood_sugar sourcetype=""blood_sugar"" glucose=*
 | streamstats median(glucose) as medianGC
 | eventstats avg(glucose) as avgGC
@@ -1634,4 +1630,5 @@ sid,search,"splunk_server","_time","is_realtime",provenance,"event_count","exec_
 "1565026655.9","search index=os sourcetype=git*","Jonathons-MacBook-Air.local","1565026655.804215",0,"UI:Search",6,1565026655,6,6,completed,"0.425","1565026535.000000000","1565026655.000000000","1565026535.000000000","1565026655.000000000",,,,,,,,,,,,,,,,,,
 "1565027930.2","search index=os sourcetype=git*","Jonathons-MacBook-Air.local","1565027930.791477",0,"UI:Search",1,1565027931,1,1,completed,"0.529","1565027810.000000000","1565027930.000000000","1565027810.000000000","1565027930.000000000",,,,,,,,,,,,,,,,,,
 "1565027955.6","search index=os sourcetype=git*","Jonathons-MacBook-Air.local","1565027955.735978",0,"UI:Search",4,1565027955,4,4,completed,"0.395","1565027835.000000000","1565027955.000000000","1565027835.000000000","1565027955.000000000",,,,,,,,,,,,,,,,,,
-"1565028286.19","search index=os sourcetype=git*","Jonathons-MacBook-Air.local","1565028286.514937",0,"UI:Search",,,,,,,,,,,,,,,,,,,,,,,,,,,,
+"1565028286.19","search index=os sourcetype=git*","Jonathons-MacBook-Air.local","1565028286.514937",0,"UI:Search",0,1565028287,0,0,completed,"0.28800000000000003","1565028166.000000000","1565028286.000000000","1565028166.000000000","1565028286.000000000",,,,,,,,,,,,,,,,,,
+"1565028298.20","search index=os sourcetype=git*","Jonathons-MacBook-Air.local","1565028298.506616",0,"UI:Search",2,1565028298,2,2,completed,"0.446","1565028178.000000000","1565028298.000000000","1565028178.000000000","1565028298.000000000",,,,,,,,,,,,,,,,,,
