@@ -998,4 +998,4 @@ sid,search,"splunk_server","_time","is_realtime","event_count","exec_time","resu
 "1565018221.122","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1565018221.662056",0,1,1565018221,1,0,canceled,"0.708",,,,,,,,,,,
 "1565021821.184","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1565021821.147022",0,1,1565021821,1,0,canceled,"0.578",,,,,,,,,,,
 "1565025421.241","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1565025421.250892",0,1,1565025421,1,0,canceled,"0.557",,,,,,,,,,,
-"1565029020.5","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1565029020.763762",0,,,,,,,,,,,,,,,,,
+"1565029020.5","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1565029020.763762",0,1,1565029020,1,0,canceled,"0.658",,,,,,,,,,,
