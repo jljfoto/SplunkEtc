@@ -1,0 +1,7 @@
+
+IMPORTANT CONFIGURATIONS
+=========================
+
+1.  In the create_event.py script, there is a "url" and "proxy" setting that needs to the set depending upon the working environement.
+2.  The inputs.conf reads the snow_ticket.log. The "index" and "sourcetype" settings will need to be set in inputs.conf
+
