@@ -1,3 +1,9 @@
+###################################################################
+##
+## Imports
+##
+###################################################################
+
 import splunk.Intersplunk as si
 import datetime
 import json
@@ -5,6 +11,20 @@ import logging
 import requests
 import socket
 import time
+
+
+###################################################################
+## - Variables
+## 	- Proxy host
+## 	- Splunk Index
+## 	- HEC token
+## 	- HEC URL
+## 	- Splunk Search Head
+## 	- Log Path
+##   - SerivceNow URL
+##   - Number of retries before Alert
+## 	- Debug Level
+###################################################################
 
 DEBUG = 0
 SEND_SNOW = True
@@ -28,6 +48,60 @@ LOG_PATH = "/home/splunk/etc/apps/TA_send_to_snow/logs/send_to_snow.log"
 
 RETRIES = 3
 RETRY_SLEEP_SECONDS = 1
+
+
+###################################################################
+##
+## - Proxy
+## 	- Verify that the proxy server is avaialble
+## 	- Can we connect to ServiceNow?
+##
+## - Splunk
+## 	- Is the Splunk Index available?
+## 	- Is the HEC avaialble?
+## 	- Is the Splunk Search Head available?
+##
+## - Log Path
+## 	- Can we write to the log?
+##
+###################################################################
+
+def check_port(HOST,PORT):
+	# Create a TCP socket
+	try:
+		s = socket.socket()
+		if DEBUG:
+			print datetime.datetime.now(),"SUCCESS: Socket opened to Splunk"
+			logger("SUCCESS: Socket opened to Splunk")
+	except Exception as ex:
+		print datetime.datetime.now(),"FAIL: Attempting to open a socket to Splunk.  Reason: ",ex
+		logger("FAIL: Attempting to open a socket to Splunk.  Reason: ",ex)
+
+	try:
+		s.connect((HOST, PORT))
+		if DEBUG:
+        		print datetime.datetime.now()," SUCCESS: Connected to %s on port %s" % (HOST, PORT)
+			logger("SUCCESS: Connected to %s on port %s" % (HOST, PORT))
+	except Exception as ex:
+        	print datetime.datetime.now()," FAIL: Connection to %s on port %s failed: %s" % (HOST, PORT, ex)
+		logger("FAIL: Connection to %s on port %s failed: %s" % (HOST, PORT, ex))
+
+
+
+def verify_log_path(LOG_PATH):
+	if DEBUG:
+		print datetime.datetime.now(),"Checking log file:",LOG_PATH
+		logger("Checking log file:" + LOG_PATH)
+	try:
+		f = open(LOG_PATH,"a+")
+		if DEBUG:
+			print datetime.datetime.now()," SUCCESS: Log file %s opened for writing" % LOG_PATH
+			logger("SUCCESS: Log file %s opened for writing" % LOG_PATH)
+	except Exception as ex:
+		print datetime.datetime.now()," FAIL: Attempt to open file %s failed with error %s " % (LOG_PATH,ex)
+		logger("FAIL: Attempt to open file %s failed with error %s " % (LOG_PATH,ex))
+
+
 
 def logger(event):
 
@@ -172,6 +246,12 @@ def send_to_snow(event):
 
 
 def main():
+
+	check_port(PROXY_HOST,PROXY_PORT)
+	check_port(SNOW_HOST,SNOW_PORT)
+	check_port(HEC_HOST,HEC_PORT)
+	check_port(SPLUNK_INDEX,SPLUNK_INDEX_PORT)
+	verify_log_path(LOG_PATH)
 
 	if DEBUG:
         	logger("MAIN: Start of Run")
