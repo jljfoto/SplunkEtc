@@ -1,0 +1,3 @@
+#!/bin/bash
+
+$SPLUNK_HOME/bin/splunk search 'index=os source=git_backup* changes=* earliest=-24h | table changes inserts deletes' -auth admin:F0glight

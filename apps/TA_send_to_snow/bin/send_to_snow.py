@@ -29,6 +29,12 @@ import time
 DEBUG = 0
 SEND_SNOW = True
 
+PROXY_HOST = "vsproxyNPGS.frbnpgs.com"
+PROXY_PORT = 8080
+
+SPLUNK_INDEX = "jljfoto"
+SPLUNK_INDEX_PORT = 9997
+
 HEC_Token = "F01849B7-147B-44A9-971C-181D11EA8770"
 HEC_HOST = "jljfoto"
 HEC_PORT = 8088
@@ -44,7 +50,7 @@ SNOW_PW = "integrate123!"
 SNOW_AUTH = "auth=(" + SNOW_USER + "," + SNOW_PW + ")"
 SNOW_Header = {"Content-Type":"application/json","Accept":"application/json"}
 
-LOG_PATH = "/home/splunk/etc/apps/TA_send_to_snow/logs/send_to_snow.log"
+LOG_PATH = "/opt/splunk/etc/apps/TA_send_to_snow/logs/send_to_snow.log"
 
 RETRIES = 3
 RETRY_SLEEP_SECONDS = 1
@@ -67,6 +73,8 @@ RETRY_SLEEP_SECONDS = 1
 ###################################################################
 
 def check_port(HOST,PORT):
+	if DEBUG:
+		logger("check port")
 	# Create a TCP socket
 	try:
 		s = socket.socket()
@@ -90,6 +98,7 @@ def check_port(HOST,PORT):
 
 def verify_log_path(LOG_PATH):
 	if DEBUG:
+		logger("verify logfile")
 		print datetime.datetime.now(),"Checking log file:",LOG_PATH
 		logger("Checking log file:" + LOG_PATH)
 	try:
@@ -104,7 +113,6 @@ def verify_log_path(LOG_PATH):
 
 
 def logger(event):
-
         if DEBUG:
                 print datetime.datetime.now(),"In Logger with event: ",event
                 print datetime.datetime.now(),"In Logger with str(event): ",str(event)
@@ -176,8 +184,10 @@ def logger(event):
                 except Exception as ex:
                         print datetime.datetime.now()," FAIL: Attempt to open file %s failed with error %s " % (LOG_PATH,ex)
 
-def send_to_snow(event):
 
+def send_to_snow(event):
+	if DEBUG:
+		logger("send to snow")
 	SNOW_Event = str(event)
 
 	tries = 1
@@ -201,7 +211,6 @@ def send_to_snow(event):
 			tries = tries + 1
 		else:
 			#print datetime.datetime.now(),"SNOW:  Data successfully sent to ServiceNow "
-			#logger("INC successfully written to ServiceNow. " + str(r.text))
 			success = 1
 			key, value = r.json().popitem()
 			SNOW_Response = value
@@ -220,7 +229,6 @@ def send_to_snow(event):
 				if k == "description":
 					SNOW_description = v
 
-			print "Output"
 			print datetime.datetime.now(),"SNOW:  INCIDENT:",SNOW_INCident,"created.   Sys_id:",SNOW_sys_id,"   Short_Description:",SNOW_short_description
 			logger("INCIDENT: " + SNOW_INCident + " created.   Sys_id: " + SNOW_sys_id + "   Short_Description: " + SNOW_short_description)
 			if DEBUG:
@@ -246,6 +254,8 @@ def send_to_snow(event):
 
 
 def main():
+	if DEBUG:
+		logger("main")
 
 	check_port(PROXY_HOST,PROXY_PORT)
 	check_port(SNOW_HOST,SNOW_PORT)

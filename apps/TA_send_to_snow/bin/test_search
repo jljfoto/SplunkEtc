@@ -1,0 +1,3 @@
+#!/bin/bash
+
+$SPLUNK_HOME/bin/splunk search 'index=os source=git_backup* changes=* earliest=-24h |  eval short_description="git_backup heartbeat", description=_time." changes=".changes." inserts=".inserts." deletes=".deletes, caller_id="Jonathon Jenkins", urgency="4", impact="1", assignment_group="Splunk Support",cmdb_ci=host,category="Software",business_service="IT Services", contact_type="Phone",watch_list="Jonathon Jenkins",notify="Jonathon Jenkins" | table description short_description cmdb_ci caller_id urgency impact assignment_group category business_service contact_type notify watch_list | send2snow' -auth admin:F0glight
