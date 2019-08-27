@@ -105,3 +105,18 @@ export = system
 owner = admin
 version = 7.1.2
 modtime = 1535838301.950492000
+
+[props/timekeeper%3Astats]
+owner = admin
+version = 7.3.0
+modtime = 1566933392.282900000
+
+[props/timekeeper%3Ajson]
+owner = admin
+version = 7.3.0
+modtime = 1566934409.646340000
+
+[inputs/monitor%3A%2F%2F%2Ftmp%2Ftimekeeper.json]
+owner = admin
+version = 7.3.0
+modtime = 1566934414.300326000

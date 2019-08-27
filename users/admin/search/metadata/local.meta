@@ -16,7 +16,7 @@ modtime = 1562804673.072358000
 
 [ui-prefs/search]
 version = 7.3.0
-modtime = 1565791963.750027000
+modtime = 1566938287.989006000
 
 [ui-tour/adddata-tour%3Aenterprise]
 version = 7.0.0
@@ -42,3 +42,8 @@ modtime = 1527780279.994067000
 owner = admin
 version = 7.1.2
 modtime = 1537716740.705526000
+
+[props/timekeeper%3Astats/EXTRACT-timestamp%2Coffset%2Craw_offset%2Cclock_correction_factor%2Cgps1%2Cgps2%2Cinternal2%2Ctimestamp_type%2Cnetwork_delay%2Craw_network_delay%2Ctime_source%2Cideal_clock_correction%2Cmodel_error%2Csource_traceability%2Creported_upstream]
+owner = admin
+version = 7.3.0
+modtime = 1566937564.909790000
