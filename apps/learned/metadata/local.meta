@@ -327,3 +327,8 @@ modtime = 1566933204.837881000
 owner = admin
 version = 7.3.0
 modtime = 1566933441.857473000
+
+[props/alerts-too_small]
+owner = admin
+version = 7.3.0
+modtime = 1566940410.645888000

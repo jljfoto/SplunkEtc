@@ -120,3 +120,19 @@ modtime = 1566934409.646340000
 owner = admin
 version = 7.3.0
 modtime = 1566934414.300326000
+
+[props/timekeeper%3Aalerts]
+owner = admin
+version = 7.3.0
+modtime = 1566940567.105130000
+
+[inputs/monitor%3A%2F%2F%2Ftmp%2Ftimekeeper.alerts]
+owner = admin
+version = 7.3.0
+modtime = 1566940582.457727000
+
+[props/timekeeper%3Aalerts/EXTRACT-alert_time%2Calert_message]
+access = read : [ * ], write : [ admin ]
+owner = admin
+version = 7.3.0
+modtime = 1566941727.943591000
