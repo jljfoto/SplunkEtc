@@ -1,73 +1,4 @@
 sid,search,"splunk_server","_time","is_realtime",provenance,"event_count","exec_time","result_count","scan_count",status,"total_run_time","api_et","api_lt","search_et","search_lt","savedsearch_name","__mv_sid","__mv_search","__mv_splunk_server","__mv__time","__mv_is_realtime","__mv_provenance","__mv_event_count","__mv_exec_time","__mv_result_count","__mv_scan_count","__mv_status","__mv_total_run_time","__mv_api_et","__mv_api_lt","__mv_search_et","__mv_search_lt","__mv_savedsearch_name"
-"admin__admin__search__search54_1537722713.68409","search index=blood_sugar sourcetype=""blood_sugar"" glucose=*
-| streamstats median(glucose) as medianGC
-| eventstats avg(glucose) as avgGC
-| eval low_glucose=70, high_glucose=140
-| table _time  glucose medianGC avgGC low_glucose high_glucose","Jonathons-MacBook-Air.local","1537722713.183478",0,"UI:Dashboard:blood_glucose",36,1537722715,36,37,completed,"0.248","1537686000.000000000","1537722713.000000000","1537686000.000000000","1537722713.000000000",search54,,,,,,,,,,,,,,,,,
-"admin__admin__search__search55_1537722713.68414","search index=blood_sugar sourcetype=""blood_sugar"" note=*
-            | eval note=if(note=""Befoe Meal"",""Before Meal"",note)
-            | eval annotation_label = note
-            | eval annotation_category = note","Jonathons-MacBook-Air.local","1537722713.214714",0,"UI:Dashboard:blood_glucose",2,1537722715,2,37,completed,"0.18","1537686000.000000000","1537722713.000000000","1537686000.000000000","1537722713.000000000",search55,,,,,,,,,,,,,,,,,
-"admin__admin__search__search59_1537722713.68415","search index=blood_sugar sourcetype=""blood_sugar"" glucose>140 OR glucose<70 
-| eval severity=if(glucose>155,""Very High"", if(glucose>140,""High"",if(glucose<55,""Very Low"",if(glucose<70,""Low"",""Normal""))))","Jonathons-MacBook-Air.local","1537722713.331826",0,"UI:Dashboard:blood_glucose",0,1537722716,0,37,completed,"0.10200000000000001","1537686000.000000000","1537722713.000000000","1537686000.000000000","1537722713.000000000",search59,,,,,,,,,,,,,,,,,
-"admin__admin__search__search60_1537722837.68416","search index=blood_sugar sourcetype=blood_sugar glucose=*
-| eval reading= if(glucose>155,""Very High"",if(glucose > 140, ""High"",if(glucose < 50,""Low"",if(glucose < 70,""Very Low"",""Normal""))))
-| stats count by reading
-| sort - count","Jonathons-MacBook-Air.local","1537722837.089921",0,"UI:Dashboard:blood_glucose",36,1537722839,1,36,completed,"0.326","1537686000.000000000","1537722837.000000000","1537686000.000000000","1537722837.000000000",search60,,,,,,,,,,,,,,,,,
-"admin__admin__search__search67_1537722837.68423","search index=blood_sugar sourcetype=""blood_sugar"" note=*
-            | eval note=if(note=""Befoe Meal"",""Before Meal"",note)
-            | eval annotation_label = note
-            | eval annotation_category = note","Jonathons-MacBook-Air.local","1537722837.206037",0,"UI:Dashboard:blood_glucose",2,1537722839,2,37,completed,"0.20700000000000002","1537686000.000000000","1537722837.000000000","1537686000.000000000","1537722837.000000000",search67,,,,,,,,,,,,,,,,,
-"admin__admin__search__search68_1537722837.68424","search index=blood_sugar sourcetype=""blood_sugar""  
-| streamstats avg(glucose) as average_blood_glucose
-| eval a1c = round((46.7 + average_blood_glucose) / 28.7,1)
-| timechart  span=1d  max(a1c) as a1c","Jonathons-MacBook-Air.local","1537722837.234766",0,"UI:Dashboard:blood_glucose",4275,1537722839,40,4275,completed,"1.099",,,,,search68,,,,,,,,,,,,,,,,,
-"admin__admin__search__search70_1537722837.68426","search index=blood_sugar sourcetype=""blood_sugar"" glucose>140 OR glucose<70 
-| eval severity=if(glucose>155,""Very High"", if(glucose>140,""High"",if(glucose<55,""Very Low"",if(glucose<70,""Low"",""Normal""))))
-| table _time severity glucose","Jonathons-MacBook-Air.local","1537722837.272239",0,"UI:Dashboard:blood_glucose",0,1537722840,0,0,completed,"0.14","1537686000.000000000","1537722837.000000000","1537686000.000000000","1537722837.000000000",search70,,,,,,,,,,,,,,,,,
-"admin__admin__search__search73_1537722887.68429","search index=blood_sugar sourcetype=""blood_sugar"" glucose > 140 | stats count","Jonathons-MacBook-Air.local","1537722887.752083",0,"UI:Dashboard:blood_glucose",,,,,failed,,,,,,search73,,,,,,,,,,,,,,,,,
-"admin__admin__search__search78_1537722887.68434","search index=blood_sugar sourcetype=""blood_sugar"" glucose=*
-| streamstats median(glucose) as medianGC
-| eventstats avg(glucose) as avgGC
-| eval low_glucose=70, high_glucose=140
-| table _time  glucose medianGC avgGC low_glucose high_glucose","Jonathons-MacBook-Air.local","1537722887.794073",0,"UI:Dashboard:blood_glucose",,,,,failed,,,,,,search78,,,,,,,,,,,,,,,,,
-"admin__admin__search__search81_1537722887.68436","search index=blood_sugar sourcetype=""blood_sugar"" | eval danger=300, normal=140,low=70 | timechart  span=1m values(glucose) as glucose,   | timewrap 1week","Jonathons-MacBook-Air.local","1537722887.861162",0,"UI:Dashboard:blood_glucose",,,,,failed,,,,,,search81,,,,,,,,,,,,,,,,,
-"admin__admin__search__search83_1537722887.68439","search index=blood_sugar sourcetype=""blood_sugar"" glucose>140 OR glucose<70 
-| eval severity=if(glucose>155,""Very High"", if(glucose>140,""High"",if(glucose<55,""Very Low"",if(glucose<70,""Low"",""Normal""))))","Jonathons-MacBook-Air.local","1537722887.954727",0,"UI:Dashboard:blood_glucose",0,1537722891,0,37,completed,"0.095","1537686000.000000000","1537722887.000000000","1537686000.000000000","1537722887.000000000",search83,,,,,,,,,,,,,,,,,
-"admin__admin__search__search88_1537723270.68451","search index=blood_sugar sourcetype=""blood_sugar"" glucose<70 | stats min(glucose)","Jonathons-MacBook-Air.local","1537723270.066443",0,"UI:Dashboard:blood_glucose",0,1537723272,0,0,completed,"0.249","1537686000.000000000","1537723270.000000000","1537686000.000000000","1537723270.000000000",search88,,,,,,,,,,,,,,,,,
-"admin__admin__search__search84_1537723270.68453","search index=blood_sugar sourcetype=blood_sugar glucose=*
-| eval reading= if(glucose>155,""Very High"",if(glucose > 140, ""High"",if(glucose < 50,""Low"",if(glucose < 70,""Very Low"",""Normal""))))
-| stats count by reading
-| sort - count","Jonathons-MacBook-Air.local","1537723270.106308",0,"UI:Dashboard:blood_glucose",36,1537723272,1,36,completed,"0.192","1537686000.000000000","1537723270.000000000","1537686000.000000000","1537723270.000000000",search84,,,,,,,,,,,,,,,,,
-"admin__admin__search__search90_1537723270.68454","search index=blood_sugar sourcetype=""blood_sugar"" glucose=*
-| streamstats median(glucose) as medianGC
-| eventstats avg(glucose) as avgGC
-| eval low_glucose=70, high_glucose=140
-| table _time  glucose medianGC avgGC low_glucose high_glucose","Jonathons-MacBook-Air.local","1537723270.140292",0,"UI:Dashboard:blood_glucose",36,1537723272,36,37,completed,"0.163","1537686000.000000000","1537723270.000000000","1537686000.000000000","1537723270.000000000",search90,,,,,,,,,,,,,,,,,
-"admin__admin__search__search92_1537723270.68455","search index=blood_sugar sourcetype=""blood_sugar""  
-| streamstats avg(glucose) as average_blood_glucose
-| eval a1c = round((46.7 + average_blood_glucose) / 28.7,1)
-| timechart  span=1d  max(a1c) as a1c","Jonathons-MacBook-Air.local","1537723270.219267",0,"UI:Dashboard:blood_glucose",4275,1537723272,40,4275,completed,"1.05",,,,,search92,,,,,,,,,,,,,,,,,
-"admin__admin__search__search95_1537723270.68459","search index=blood_sugar sourcetype=""blood_sugar"" glucose>140 OR glucose<70 
-| eval severity=if(glucose>155,""Very High"", if(glucose>140,""High"",if(glucose<55,""Very Low"",if(glucose<70,""Low"",""Normal""))))","Jonathons-MacBook-Air.local","1537723270.294755",0,"UI:Dashboard:blood_glucose",0,1537723273,0,37,completed,"0.14200000000000002","1537686000.000000000","1537723270.000000000","1537686000.000000000","1537723270.000000000",search95,,,,,,,,,,,,,,,,,
-"admin__admin__search__search86_1537723281.68461","search index=blood_sugar sourcetype=""blood_sugar"" glucose>140 | stats max(glucose)","Jonathons-MacBook-Air.local","1537723281.202313",0,"UI:Dashboard:blood_glucose",6,1537723282,1,6,completed,"0.111","1537599600.000000000","1537686000.000000000","1537599600.000000000","1537686000.000000000",search86,,,,,,,,,,,,,,,,,
-"admin__admin__search__search88_1537723281.68464","search index=blood_sugar sourcetype=""blood_sugar"" glucose<70 | stats min(glucose)","Jonathons-MacBook-Air.local","1537723281.231471",0,"UI:Dashboard:blood_glucose",2,1537723282,1,2,completed,"0.262","1537599600.000000000","1537686000.000000000","1537599600.000000000","1537686000.000000000",search88,,,,,,,,,,,,,,,,,
-"admin__admin__search__search89_1537723281.68465","search index=blood_sugar sourcetype=""blood_sugar"" glucose=*
-| streamstats median(glucose) as medianGC,avg(glucose) as avgGC
-| eval low_glucose=70, high_glucose=140
-| table _time  glucose low_glucose high_glucose","Jonathons-MacBook-Air.local","1537723281.291637",0,"UI:Dashboard:blood_glucose",123,1537723282,123,123,completed,"0.281","1537599600.000000000","1537686000.000000000","1537599600.000000000","1537686000.000000000",search89,,,,,,,,,,,,,,,,,
-"admin__admin__search__search90_1537723281.68467","search index=blood_sugar sourcetype=""blood_sugar"" glucose=*
-| streamstats median(glucose) as medianGC
-| eventstats avg(glucose) as avgGC
-| eval low_glucose=70, high_glucose=140
-| table _time  glucose medianGC avgGC low_glucose high_glucose","Jonathons-MacBook-Air.local","1537723281.351855",0,"UI:Dashboard:blood_glucose",123,1537723282,123,123,completed,"0.17200000000000001","1537599600.000000000","1537686000.000000000","1537599600.000000000","1537686000.000000000",search90,,,,,,,,,,,,,,,,,
-"admin__admin__search__search95_1537723281.68469","search index=blood_sugar sourcetype=""blood_sugar"" glucose>140 OR glucose<70 
-| eval severity=if(glucose>155,""Very High"", if(glucose>140,""High"",if(glucose<55,""Very Low"",if(glucose<70,""Low"",""Normal""))))","Jonathons-MacBook-Air.local","1537723281.507206",0,"UI:Dashboard:blood_glucose",8,1537723282,8,123,completed,"0.19","1537599600.000000000","1537686000.000000000","1537599600.000000000","1537686000.000000000",search95,,,,,,,,,,,,,,,,,
-"admin__admin__search__search84_1537723343.68470","search index=blood_sugar sourcetype=blood_sugar glucose=*
-| eval reading= if(glucose>155,""Very High"",if(glucose > 140, ""High"",if(glucose < 50,""Low"",if(glucose < 70,""Very Low"",""Normal""))))
-| stats count by reading
-| sort - count","Jonathons-MacBook-Air.local","1537723343.244361",0,"UI:Dashboard:blood_glucose",36,1537723344,1,36,completed,"0.313","1537686000.000000000","1537723343.000000000","1537686000.000000000","1537723343.000000000",search84,,,,,,,,,,,,,,,,,
-"admin__admin__search__search86_1537723343.68472","search index=blood_sugar sourcetype=""blood_sugar"" glucose>140 | stats max(glucose)","Jonathons-MacBook-Air.local","1537723343.293626",0,"UI:Dashboard:blood_glucose",0,1537723344,0,0,completed,"0.253","1537686000.000000000","1537723343.000000000","1537686000.000000000","1537723343.000000000",search86,,,,,,,,,,,,,,,,,
 "admin__admin__search__search89_1537723343.68475","search index=blood_sugar sourcetype=""blood_sugar"" glucose=*
 | streamstats median(glucose) as medianGC,avg(glucose) as avgGC
 | eval low_glucose=70, high_glucose=140
@@ -1456,3 +1387,26 @@ sid,search,"splunk_server","_time","is_realtime",provenance,"event_count","exec_
 "1567181701.6","search index=main sourcetype=timekeeper:status | table _time source IPs{}.image","Jonathons-MacBook-Air.local","1567181701.796625",0,"UI:Search",6,1567181702,6,6,completed,"0.459","1567178100.000000000","1567181701.000000000","1567178100.000000000","1567181701.000000000",,,,,,,,,,,,,,,,,,
 "1567181731.22","search index=_internal sourcetype=splunkd *timekeeper*","Jonathons-MacBook-Air.local","1567181731.833198",0,"UI:Search",24,1567181731,24,14260,completed,"0.858","1567178100.000000000","1567181731.000000000","1567178100.000000000","1567181731.000000000",,,,,,,,,,,,,,,,,,
 "1567181739.27","search index=_internal sourcetype=splunkd *timekeeper* NOT metrics","Jonathons-MacBook-Air.local","1567181739.724964",0,"UI:Search",20,1567181739,20,3447,completed,"0.463","1567178100.000000000","1567181739.000000000","1567178100.000000000","1567181739.000000000",,,,,,,,,,,,,,,,,,
+"1567181874.2","search index=_internal sourcetype=splunkd *timekeeper* NOT metrics","Jonathons-MacBook-Air.local","1567181874.335308",0,"UI:Search",7,1567181874,7,1815,completed,"0.417","1567180974.000000000","1567181874.000000000","1567180974.000000000","1567181874.000000000",,,,,,,,,,,,,,,,,,
+"1567181886.3","search index=main sourcetype=timekeeper:status | table _time source IPs{}.image","Jonathons-MacBook-Air.local","1567181886.646194",0,"UI:Search",6,1567181886,6,6,completed,"0.323","1567178280.000000000","1567181886.000000000","1567178280.000000000","1567181886.000000000",,,,,,,,,,,,,,,,,,
+"1567181903.7","search index=main sourcetype=timekeeper:status","Jonathons-MacBook-Air.local","1567181903.049438",0,"UI:Search",6,1567181903,6,6,completed,"0.32","1567178280.000000000","1567181903.000000000","1567178280.000000000","1567181903.000000000",,,,,,,,,,,,,,,,,,
+"1567181915.8","search index=_internal sourcetype=splunkd *timekeeper* NOT metrics","Jonathons-MacBook-Air.local","1567181915.953993",0,"UI:Search",7,1567181916,7,1995,completed,"0.458","1567181015.000000000","1567181915.000000000","1567181015.000000000","1567181915.000000000",,,,,,,,,,,,,,,,,,
+"1567182042.14","search index=_internal sourcetype=splunkd *timekeeper* NOT metrics","Jonathons-MacBook-Air.local","1567182042.611577",0,"UI:Search",7,1567182042,7,2001,completed,"0.511","1567181142.000000000","1567182042.000000000","1567181142.000000000","1567182042.000000000",,,,,,,,,,,,,,,,,,
+"1567182052.15","search index=_internal sourcetype=splunkd *timekeeper* NOT metrics","Jonathons-MacBook-Air.local","1567182052.710611",0,"UI:Search",7,1567182052,7,1993,completed,"0.481","1567181152.000000000","1567182052.000000000","1567181152.000000000","1567182052.000000000",,,,,,,,,,,,,,,,,,
+"1567182060.16","search index=_internal sourcetype=splunkd *timekeeper* NOT metrics","Jonathons-MacBook-Air.local","1567182060.424836",0,"UI:Search",7,1567182060,7,1993,completed,"0.41300000000000003","1567181160.000000000","1567182060.000000000","1567181160.000000000","1567182060.000000000",,,,,,,,,,,,,,,,,,
+"1567182067.17","search index=main sourcetype=timekeeper:status","Jonathons-MacBook-Air.local","1567182067.475692",0,"UI:Search",6,1567182067,6,6,completed,"0.406","1567178460.000000000","1567182067.000000000","1567178460.000000000","1567182067.000000000",,,,,,,,,,,,,,,,,,
+"1567182098.18","search index=_internal sourcetype=splunkd *timekeeper* NOT metrics","Jonathons-MacBook-Air.local","1567182098.430487",0,"UI:Search",7,1567182098,7,1965,completed,"0.374","1567181198.000000000","1567182098.000000000","1567181198.000000000","1567182098.000000000",,,,,,,,,,,,,,,,,,
+"1567182120.19","search index=_internal sourcetype=splunkd *timekeeper* NOT metrics","Jonathons-MacBook-Air.local","1567182120.076836",0,"UI:Search",8,1567182120,8,1961,completed,"0.457","1567181220.000000000","1567182120.000000000","1567181220.000000000","1567182120.000000000",,,,,,,,,,,,,,,,,,
+"1567182125.20","search index=main sourcetype=timekeeper:status","Jonathons-MacBook-Air.local","1567182125.329422",0,"UI:Search",7,1567182125,7,7,completed,"0.481","1567178520.000000000","1567182125.000000000","1567178520.000000000","1567182125.000000000",,,,,,,,,,,,,,,,,,
+"1567182150.21","search index=main sourcetype=timekeeper:status","Jonathons-MacBook-Air.local","1567182150.870318",0,"UI:Search",8,1567182150,8,8,completed,"0.53","1567178520.000000000","1567182150.000000000","1567178520.000000000","1567182150.000000000",,,,,,,,,,,,,,,,,,
+"1567182174.22","search index=main sourcetype=timekeeper:status | table IP.IP","Jonathons-MacBook-Air.local","1567182174.464728",0,"UI:Search",8,1567182174,0,8,completed,"0.307","1567178520.000000000","1567182174.000000000","1567178520.000000000","1567182174.000000000",,,,,,,,,,,,,,,,,,
+"1567182189.23","search index=main sourcetype=timekeeper:status | table _time IP{}.IP","Jonathons-MacBook-Air.local","1567182189.211404",0,"UI:Search",8,1567182189,8,8,completed,"0.265","1567178580.000000000","1567182189.000000000","1567178580.000000000","1567182189.000000000",,,,,,,,,,,,,,,,,,
+"1567182194.24","search index=main sourcetype=timekeeper:status | table _time IP[].IP","Jonathons-MacBook-Air.local","1567182194.471686",0,"UI:Search",8,1567182194,8,8,completed,"0.367","1567178580.000000000","1567182194.000000000","1567178580.000000000","1567182194.000000000",,,,,,,,,,,,,,,,,,
+"1567182206.26","search index=main sourcetype=timekeeper:status","Jonathons-MacBook-Air.local","1567182206.799097",0,"UI:Search",8,1567182206,8,8,completed,"0.388","1567178580.000000000","1567182206.000000000","1567178580.000000000","1567182206.000000000",,,,,,,,,,,,,,,,,,
+"1567182218.27","search index=main sourcetype=timekeeper:status | table _time IPs[].IP","Jonathons-MacBook-Air.local","1567182218.656944",0,"UI:Search",8,1567182218,8,8,completed,"0.371","1567178580.000000000","1567182218.000000000","1567178580.000000000","1567182218.000000000",,,,,,,,,,,,,,,,,,
+"1567182265.28","search index=main sourcetype=timekeeper:status | table _time IPs{}.IP","Jonathons-MacBook-Air.local","1567182265.966215",0,"UI:Search",8,1567182266,8,8,completed,"0.359","1567178640.000000000","1567182265.000000000","1567178640.000000000","1567182265.000000000",,,,,,,,,,,,,,,,,,
+"1567182292.29","search index=main sourcetype=timekeeper:status | table _time IPs{}.IP","Jonathons-MacBook-Air.local","1567182292.229612",0,"UI:Search",8,1567182292,8,8,completed,"0.377","1567178640.000000000","1567182292.000000000","1567178640.000000000","1567182292.000000000",,,,,,,,,,,,,,,,,,
+"1567182301.30","search index=main sourcetype=timekeeper:status","Jonathons-MacBook-Air.local","1567182301.379777",0,"UI:Search",8,1567182301,8,8,completed,"0.452","1567178700.000000000","1567182301.000000000","1567178700.000000000","1567182301.000000000",,,,,,,,,,,,,,,,,,
+"1567182332.31","search index=main sourcetype=timekeeper:status","Jonathons-MacBook-Air.local","1567182332.027279",0,"UI:Search",8,1567182332,8,8,completed,"0.28400000000000003","1567178700.000000000","1567182332.000000000","1567178700.000000000","1567182332.000000000",,,,,,,,,,,,,,,,,,
+"1567182335.32","search index=main sourcetype=timekeeper:status","Jonathons-MacBook-Air.local","1567182335.881909",0,"UI:Search",8,1567182335,8,8,completed,"0.316","1567178700.000000000","1567182335.000000000","1567178700.000000000","1567182335.000000000",,,,,,,,,,,,,,,,,,
+"1567182352.33","search index=main sourcetype=timekeeper:status","Jonathons-MacBook-Air.local","1567182352.235191",0,"UI:Search",9,1567182352,9,9,completed,"0.382","1567178700.000000000","1567182352.000000000","1567178700.000000000","1567182352.000000000",,,,,,,,,,,,,,,,,,
