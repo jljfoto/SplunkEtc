@@ -12,3 +12,8 @@ modtime = 1523762271.762426000
 owner = admin
 version = 7.1.1
 modtime = 1530395319.185761000
+
+[indexes/chicago]
+owner = admin
+version = 7.3.0
+modtime = 1569466268.796097000

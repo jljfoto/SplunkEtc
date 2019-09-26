@@ -136,3 +136,13 @@ access = read : [ * ], write : [ admin ]
 owner = admin
 version = 7.3.0
 modtime = 1566941727.943591000
+
+[props/netgear%3Arouter]
+owner = admin
+version = 7.3.0
+modtime = 1569466236.633062000
+
+[inputs/monitor%3A%2F%2F%2FUsers%2Fjonathon%2Fchicago_router.log]
+owner = admin
+version = 7.3.0
+modtime = 1569466272.544709000
