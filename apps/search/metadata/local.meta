@@ -146,3 +146,10 @@ modtime = 1569466236.633062000
 owner = admin
 version = 7.3.0
 modtime = 1569466272.544709000
+
+[views/netgear_chicago_router]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 7.3.0
+modtime = 1569647332.377763000
