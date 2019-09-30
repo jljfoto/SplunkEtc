@@ -153,3 +153,8 @@ export = none
 owner = admin
 version = 7.3.0
 modtime = 1569647332.377763000
+
+[views/test]
+owner = admin
+version = 7.3.0
+modtime = 1569806018.698728000
