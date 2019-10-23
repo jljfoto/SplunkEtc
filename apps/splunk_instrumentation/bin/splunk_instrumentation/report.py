@@ -1,8 +1,10 @@
+from __future__ import print_function
+from __future__ import absolute_import
 import json
 import os
-from constants import INST_MODE
+from splunk_instrumentation.constants import INST_MODE
 import time
-from datetime_util import date_to_timestamp, json_serial, utcNow
+from splunk_instrumentation.datetime_util import date_to_timestamp, json_serial, utcNow
 
 
 class Report(object):
@@ -59,7 +61,7 @@ class Report(object):
             value['time'] = self.start_profiling() - start
         nested_set(self.log, name, value)
         if not INST_MODE == "INPUT":
-            print "report::" + name + '=' + json.dumps(value, default=json_serial)
+            print("report::" + name + '=' + json.dumps(value, default=json_serial))
         return value
 
     def start_profiling(self):
@@ -77,7 +79,7 @@ class Report(object):
         runs of the instrumentation.py script.
         """
         self.log.setdefault('timestamp', date_to_timestamp(utcNow()))
-        print json.dumps(self.log, default=json_serial)
+        print(json.dumps(self.log, default=json_serial))
 
     def get(self, path):
         """

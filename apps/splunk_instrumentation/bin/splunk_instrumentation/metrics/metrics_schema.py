@@ -1,7 +1,8 @@
+from builtins import map
 import json
 
 
-class MetricsSchemaDataPoint:
+class MetricsSchemaDataPoint(object):
     def __init__(self, dataPointSchema):
         self.dataPointSchema = dataPointSchema
 
@@ -10,7 +11,7 @@ class MetricsSchemaDataPoint:
         return self.dataPointSchema['type']
 
 
-class MetricsSchemaClass:
+class MetricsSchemaClass(object):
 
     def __init__(self, classSchema):
         self.classSchema = classSchema
@@ -59,7 +60,7 @@ class MetricsSchemaClass:
         return roles
 
 
-class MetricsDelivery:
+class MetricsDelivery(object):
     def __init__(self, delivery):
         self.delivery = delivery
 
@@ -76,7 +77,7 @@ class MetricsDelivery:
         return self.delivery.get('version')
 
 
-class MetricsSchema:
+class MetricsSchema(object):
 
     def __init__(self, schema, visibility=None):
         self.schema = schema

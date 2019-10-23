@@ -10,6 +10,7 @@ import urllib
 import sys
 import splunk.Intersplunk
 
+from builtins import chr, range
 from splunk.mining.DateParser import _validateDate, _validateTime
 from splunk.clilib.bundle_paths import make_splunkhome_path
 

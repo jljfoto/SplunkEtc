@@ -5,7 +5,7 @@ define(
 		'underscore',
 		'splunk_monitoring_console/models/Asset',
 		'collections/SplunkDsBase'
-	], 
+	],
 	function(
 		$,
 		_,

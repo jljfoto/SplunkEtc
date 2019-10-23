@@ -1,8 +1,9 @@
 import sys
 import json
-from urllib import urlencode
-import urllib2
-
+from future.moves.urllib.parse import urlencode
+from future.moves.urllib.request import urlopen, Request
+from future.moves.urllib.error import HTTPError, URLError
+from splunk.util import unicode
 
 def log_event(settings, event, source, sourcetype, host, index):
     if event is None:
@@ -14,17 +15,17 @@ def log_event(settings, event, source, sourcetype, host, index):
     url = '%s/services/receivers/simple?%s' % (settings.get('server_uri'), urlencode(query))
     try:
         encoded_body = unicode(event).encode('utf-8')
-        req = urllib2.Request(url, encoded_body, {'Authorization': 'Splunk %s' % settings.get('session_key')})
-        res = urllib2.urlopen(req)
+        req = Request(url, encoded_body, {'Authorization': 'Splunk %s' % settings.get('session_key')})
+        res = urlopen(req)
         if 200 <= res.code < 300:
             sys.stderr.write("DEBUG receiver endpoint responded with HTTP status=%d\n" % res.code)
             return True
         else:
             sys.stderr.write("ERROR receiver endpoint responded with HTTP status=%d\n" % res.code)
             return False
-    except urllib2.HTTPError as e:
+    except HTTPError as e:
         sys.stderr.write("ERROR Error sending receiver request: %s\n" % e)
-    except urllib2.URLError as e:
+    except URLError as e:
         sys.stderr.write("ERROR Error sending receiver request: %s\n" % e)
     except Exception as e:
         sys.stderr.write("ERROR Error %s\n" % e)

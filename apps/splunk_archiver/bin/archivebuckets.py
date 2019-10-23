@@ -16,6 +16,7 @@ import time
 import itertools
 import logging
 import erp_launcher_duplicate as erp_launcher
+from builtins import range, map
 from splunk.mining.dcutils import LOGGING_FORMAT
 from splunk.mining.dcutils import LoggingFormatterWithTimeZoneOffset
 
@@ -57,7 +58,7 @@ ERRMSGS_ENABLED = True
 
 def filterRollProviders(vixes, providers):
     rollProviders = {}
-    for k,indexMap in vixes.iteritems():
+    for k,indexMap in vixes.items():
         p = indexMap['provider']
         if p not in rollProviders and p in providers:
             rollProviders[p] = providers[p]

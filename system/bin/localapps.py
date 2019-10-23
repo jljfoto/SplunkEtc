@@ -5,7 +5,7 @@ import splunk.appbuilder as appbuilder
 import re
 import os
 import json
-import splunk.appserver.mrsparkle.lib.i18n as i18n
+import splunk.bundle as bundle
 from splunk.clilib.bundle_paths import make_splunkhome_path
 
 HTTP_POST_TEMPLATE   = "template"
@@ -18,7 +18,8 @@ HTTP_POST_VERSION    = "version"
 
 ACTION_PACKAGE = "package"
 ACTION_DEPENDENCIES = "dependencies"
-LOCAL_APPS_CAP_EXPR = "admin_all_objects or edit_local_apps"
+EDIT_LOCAL_APPS_CAP_EXPR = "edit_local_apps"
+AAO_OR_EDIT_LOCAL_APPS_CAP_EXPR = "admin_all_objects or edit_local_apps"
 
 DEFAULT_TEMPLATE = "barebones"
 
@@ -38,7 +39,14 @@ class LocalAppsHandler(admin.MConfigHandler):
             self.supportedArgs.addOptArg('*')
 
         if self.customAction == ACTION_PACKAGE:
-            self.customActionCap = LOCAL_APPS_CAP_EXPR
+            limits_conf = bundle.getConf('limits', sessionKey=self.getSessionKey())
+            enableInstallApps = limits_conf['auth']['enable_install_apps']
+            if ('enable_install_apps' in limits_conf['auth'] and
+                splunk.util.normalizeBoolean(enableInstallApps)):
+                self.customActionCap = EDIT_LOCAL_APPS_CAP_EXPR
+            else:
+                self.customActionCap = AAO_OR_EDIT_LOCAL_APPS_CAP_EXPR
+
 
     '''
     Create a new application
@@ -49,13 +57,13 @@ class LocalAppsHandler(admin.MConfigHandler):
         # Sanity checking for app ID: no special chars and shorter than 100 chars
         appName = self.callerArgs.id
         if not appName or len(appName) == 0:
-            raise admin.ArgValidationException(_('App folder name is not set.'))
+            raise admin.ArgValidationException('App folder name is not set.')
         
         if re.search('[^A-Za-z0-9._-]', appName):
-            raise admin.ArgValidationException(_('App folder name cannot contain spaces or special characters.'))
+            raise admin.ArgValidationException('App folder name cannot contain spaces or special characters.')
             
         if len(appName) > 100:
-            raise admin.ArgValidationException(_('App folder name cannot be longer than 100 characters.'))
+            raise admin.ArgValidationException('App folder name cannot be longer than 100 characters.')
 
         kwargs = {
             'label'       : _getFieldValue(args, HTTP_POST_LABEL, appName, maxLen=100),
@@ -68,7 +76,7 @@ class LocalAppsHandler(admin.MConfigHandler):
         template = _getFieldValue(args, HTTP_POST_TEMPLATE, DEFAULT_TEMPLATE)
 
         if re.match("^\d{1,3}\.\d{1,3}\.\d{1,3}(\s?\w[\w\d]{,9})?$", kwargs['version']) is None:
-            raise admin.ArgValidationException(_("Version '%s' is invalid. Use the version format 'major.minor.patch', for example '1.0.0'.") % kwargs['version'])
+            raise admin.ArgValidationException("Version '%s' is invalid. Use the version format 'major.minor.patch', for example '1.0.0'." % kwargs['version'])
         
         try:    
             url = appbuilder.createApp(appName, template, **kwargs)
@@ -135,6 +143,7 @@ class LocalAppsHandler(admin.MConfigHandler):
 
         # read app manifest chopping possible comments (that start with '#')
         manifest = ''.join([line.split('#')[0] for line in open(manifestFile, 'r').readlines()])
+
         # parse manifest, possible errors will bubble to REST reply
         manifest = json.loads(manifest)
 
@@ -142,19 +151,18 @@ class LocalAppsHandler(admin.MConfigHandler):
         if dependencies is None:
             confInfo.addInfoMsg("Application manifest doesn't include dependencies.")
             return
-
+   
         # construct reply
         reply = confInfo[app]
-        for dependency, properties in dependencies.iteritems():
-            reply[dependency] = properties.get("version")
-
+        for dependency, properties in dependencies.items():
+            # Convert properties to STR as it returns unicode           
+            reply[dependency] = str(properties.get("version"))
 
 def _getFieldValue(args, fieldName, defaultVal=None, maxLen=None):
     value = args[fieldName][0] or defaultVal if fieldName in args else defaultVal
     if value and maxLen and len(value) > maxLen:
-        raise admin.ArgValidationException(i18n.ungettext('App %(fieldName)s cannot be longer than %(maxLen)s character.', 
-                                                          'App %(fieldName)s cannot be longer than %(maxLen)s characters.',
-                                                          maxLen) % {'fieldName' : fieldName, 'maxLen' : maxLen} )
+        raise admin.ArgValidationException('App %(fieldName)s cannot be longer than %(maxLen)s characters.'
+                % {'fieldName' : fieldName, 'maxLen' : maxLen} )
     return value 
         
 # initialize the handler, and add the actions it supports.    

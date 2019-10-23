@@ -1,11 +1,15 @@
 import json
 import xml.dom.minidom as dom
-from urllib import urlencode
+if sys.version_info >= (3, 0):
+    from urllib.parse import urlencode
+else:
+    from urllib import urlencode
+
 from splunk_instrumentation.report import report
 
 from splunk_instrumentation.constants import SPLUNKRC, INST_KV_OWNER, INST_KV_APP, KV_STORE_ENDPOINT, COLLECTION_NAME
 
-from base_class import BaseClass
+from splunk_instrumentation.indexing.base_class import BaseClass
 
 
 class KvStore(BaseClass):

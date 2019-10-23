@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import sys
 import json
 import re
@@ -79,7 +78,7 @@ class MakeJsonCommand(StreamingCommand):
     def get_json(self, data):
         res = {}
 
-        for k, v in data.iteritems():
+        for k, v in data.items():
             field_type, force_array = self.get_field_type(k)
             if field_type:
                 dotpath = k.split(".")
@@ -183,4 +182,4 @@ class MakeJsonCommand(StreamingCommand):
                         found_results) + " events)")
 
 
-dispatch(MakeJsonCommand, sys.argv, sys.stdin, sys.stdout, __name__)
+dispatch(command_class=MakeJsonCommand, argv=sys.argv, module_name= __name__)

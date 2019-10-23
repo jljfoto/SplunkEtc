@@ -1,12 +1,10 @@
-from urlparse import urlparse 
-
 import sys
 import lxml.etree as et
 import logging
-import urllib
 import time
 import json
-import cStringIO
+from io import BytesIO
+from future.moves.urllib.parse import unquote
 import re
 
 import splunk
@@ -18,7 +16,7 @@ import splunk.models.dashboard_panel as sm_dashboard_panel
 import splunk.models.saved_search as sm_saved_search
 import splunk.search
 import splunk.search.searchUtils
-from splunk.util import normalizeBoolean
+from splunk.util import normalizeBoolean, toDefaultStrings
 
 import splunk.pdf.pdfgen_views as pv
 import splunk.pdf.pdfgen_utils as pu
@@ -26,6 +24,8 @@ import splunk.pdf.pdfgen_chart as pc
 import splunk.pdf.pdfgen_table as pt
 
 import splunk.pdf.pdfrenderer as pdfrenderer
+from builtins import range, filter
+from gettext import gettext as _
 
 logger = pu.getLogger()
 
@@ -42,7 +42,7 @@ import splunk.lockdownlxmlparsing
 
 class ArgError(Exception):
     def __init__(self, message):
-        self.message = message
+        super(ArgError, self).__init__(message)
     def __str__(self):
         return repr(self.value)
 
@@ -198,7 +198,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
             self._handlePresetSearchIDs()
             
             # instantiate the pdfRenderer object with a file-like object
-            self._pdfBuffer = cStringIO.StringIO()
+            self._pdfBuffer = BytesIO()
             self._pdfRenderer = pdfrenderer.PDFRenderer(namespace=self._namespace, title=self._title,
                                                         description=self._description, outputFile=self._pdfBuffer,
                                                         paperSize=self._paperSize, timestamp=self._timestampStr,
@@ -208,7 +208,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
             return True
         except ArgError as e:
             self.response.setStatus(400)
-            self.response.write(e.message)
+            self.response.write(e.args[0])
         except Exception as e:
             errorMsg = "Bailing out of Integrated PDF Generation. Exception raised while preparing to render \"%s\" to PDF. %s" % (self._title, e)
             pu.logErrorAndTrace(errorMsg)
@@ -264,7 +264,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
             errorMsg.append("Exception raised while trying to render \"%s\" to PDF." % (self._title))
 
             # SPL-80872 - [PDF] Cannot render PDF report of A5 size if the table is too big
-            if "too large on page" in e.message:
+            if "too large on page" in e.args[0]:
                 errorMsg.append("Please try using a larger paper size than %s." % (self._paperSize))
 
             errorMsg.append("%s" % (e))
@@ -277,7 +277,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
     def _respond(self):
         # save and write out the file
         try:
-            self.response.write(self._pdfBuffer.getvalue())
+            self.response.write(self._pdfBuffer.getvalue().decode('ISO 8859-1'))
             self.response.setHeader('content-type', 'application/pdf')
             # override normal cache-control header to fix problem on ie6-ie8 (see SPL-50739)
             self.response.setHeader('cache-control', 'max-age=0, must-revalidate')
@@ -290,7 +290,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
             self._pdfBuffer.close()
         except Exception as e:
             errorMsg = "Exception raised while trying to respond. Bailing out of Integrated PDF Generation. Rendering \"%s\" to PDF. %s" % (self._title, e)
-            logger.error(errorMsg)
+            pu.logErrorAndTrace(errorMsg)
             self._outputError([errorMsg])
             return False
         return True
@@ -340,7 +340,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
         # initialize view type
         # the order matters, check dashboard xml first
         if self.ARG_INPUT_DASHBOARD_XML in self.args:
-            self._dashboardXml = urllib.unquote(self.args.get(self.ARG_INPUT_DASHBOARD_XML))
+            self._dashboardXml = unquote(self.args.get(self.ARG_INPUT_DASHBOARD_XML))
             self._viewType = self.VIEW_TYPE_DASHBOARD
             self._dashboardName = self.args.get(self.ARG_INPUT_DASHBOARD)
             logger.debug("pdfgen/render xml=%s" % self._dashboardXml)
@@ -441,7 +441,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
         self._locale = self.args.get(self.ARG_INPUT_LOCALE)
         logger.info("pdf-init locale=%s" % self._locale)
 
-        self._server_zoneinfo = rest.simpleRequest('/services/search/timeparser/tz', sessionKey=self.sessionKey)[1]
+        self._server_zoneinfo = toDefaultStrings(rest.simpleRequest('/services/search/timeparser/tz', sessionKey=self.sessionKey)[1])
         logger.info("pdf-init server_zoneinfo=%s" % self._server_zoneinfo)
 
     def _initTimeOfReport(self):
@@ -490,7 +490,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
             self._fileNamePattern = settings.get('reportFileName')            
 
             # retrieve pdf settings
-            for k, v in settings.iteritems():
+            for k, v in settings.items():
                 if k.startswith(pdfrenderer.SETTING_PREFIX):
                     self._pdfSettings[k] = v
                     keyNoPrefix = k[len(pdfrenderer.SETTING_PREFIX):len(k)]
@@ -653,6 +653,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
                         logger.warning("PDFGenHandler::_renderView> No render option for type = '%s'" % type)
             except Exception as e:
                 content = str(e)
+                pu.logErrorAndTrace(e)
                 pdfRenderer.renderText(content)
 
         if not lastView:
@@ -827,14 +828,14 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
         """ render a SingleValue display """
         optionsDict = view.getOptions()
         logger.debug("_renderSingle optionsDict='%s'" % optionsDict)
-        props = {"exportMode":"true"}
-        props = dict(props.items() + view.getSingleValueProps().items())
+        props = {"exportMode":"true"}        
+        props.update(view.getSingleValueProps())
         self._renderSvgBasedViz(pdfRenderer, view, props, mode="single")
 
     def _renderChart(self, pdfRenderer, view):
         """ render a chart from the results """
-        props = {"exportMode":"true","enableChartClick":"false","enableLegendClick":"false"}
-        props = dict(props.items() + view.getChartProps().items())
+        props = {"exportMode":"true","enableChartClick":"false","enableLegendClick":"false"}        
+        props.update(view.getChartProps())
 
         self._renderSvgBasedViz(pdfRenderer, view, props, mode="chart")
 
@@ -906,7 +907,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
         if 'data.count' in props:
             feedCount = props['data.count']
 
-        feed = view.getSearchJobFeed(feedCount=feedCount)
+        feed = toDefaultStrings(view.getSearchJobFeed(feedCount=feedCount))
         logger.debug("_renderSvgBasedViz> feed: " + str(feed) + ", " + str(type(feed)))
         
         if feed is None or len(feed.strip()) == 0:
@@ -930,7 +931,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
         if mode == "chart":
             # SPL-118166 - remove 'None' values from the '_time' column.
             if len(fields) and fields[0].get('name') == '_time':
-                data[0] = filter(None, data[0])
+                data[0] = list(filter(lambda x: x is not None, data[0]))
             svgBasedViz = pc.Chart(data, fields, props, self._locale, server_zoneinfo=self._server_zoneinfo)
         elif mode == "map":
             svgBasedViz = pc.Map(data, fields, props, self._locale, server_zoneinfo=self._server_zoneinfo)

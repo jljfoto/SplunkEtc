@@ -1,6 +1,7 @@
 #   Version 4.0
 import os, sys, time, random
 import splunk.Intersplunk, splunk.mining.dcutils as dcu
+from splunk.util import format_local_tzoffset
 from xml.sax import saxutils
 from stat import *
 
@@ -129,6 +130,7 @@ rss_footer ="""    </channel>
 </rss>
 """ 
 
+correct_tz_time = time.strftime("%a, %d %b %Y %H:%M:%S ") + format_local_tzoffset()
 item = """        <item>
             <title>%s</title>
             <link>%s</link>
@@ -138,7 +140,7 @@ item = """        <item>
 """ % (        saxutils.escape(name),        # <item><title>
                 saxutils.escape(link),        # <item><link>
                 saxutils.escape(desc),        # <item><desc>
-                time.strftime("%a, %d %b %Y %H:%M:%S %z")) # <item><pubDate>
+                correct_tz_time) # <item><pubDate>
 
 if len(link) == 0:
    item = ''

@@ -1,5 +1,6 @@
 import json
 import logging
+import sys
 
 from splunk_instrumentation.splunkd import Splunkd
 from splunk_instrumentation.constants import SPLUNKRC
@@ -30,7 +31,7 @@ class EventWriter(object):
                 self._index = self._splunkd.get_index(index_name)
             else:
                 logging.error('ERROR: INDEX IS NOT AVAILABLE')
-                raise(Exception("ERROR INDEX UNAVAILABLE"))
+                raise Exception("ERROR INDEX UNAVAILABLE")
 
     def submit(self, event, host=None, source=None, sourcetype=INSTRUMENTATION_SOURCETYPE):
         # Note: We used to use the ordinary index.submit method from splunklib,
@@ -75,6 +76,8 @@ class EventWriter(object):
         Marshals the given event into a json string, suitable for passing
         to an open receivers/stream socket.
         '''
-        if not isinstance(event, str):
+        if not isinstance(event, (str, bytes)):
             event = json.dumps(event, default=json_serial)
+        if isinstance(event, str) and sys.version_info >= (3, 0):
+            event = event.encode()
         return event

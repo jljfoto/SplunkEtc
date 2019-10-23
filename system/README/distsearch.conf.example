@@ -1,4 +1,4 @@
-#   Version 7.3.0
+#   Version 8.0.0
 #
 # These are example configurations for distsearch.conf. Use this file to
 # configure distributed search.  For all available attribute/value pairs, see
@@ -38,9 +38,9 @@ allConf = *.conf
 # the attributes necessary to implement mounted bundles.
 
 # On a search head whose Splunk server name is "searcher01":
-[distributedSearch]
+[replicationSettings]
 ...
-shareBundles = false
+replicationPolicy = mounted
 
 # On each search peer:
 [searchhead:searcher01]

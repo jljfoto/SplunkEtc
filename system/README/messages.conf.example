@@ -1,11 +1,11 @@
-#   Version 7.3.0
+#   Version 8.0.0
 #
 # This file contains an example messages.conf of attribute/value pairs for 
 # configuring externalized strings.
 #
 # There is a messages.conf in $SPLUNK_HOME/etc/system/default/.  To set custom
 # configurations, place a messages.conf in $SPLUNK_HOME/etc/system/local/. You
-# must restart Splunk to enable configurations.
+# must restart the instance to enable configurations.
 #
 # To learn more about configuration files (including precedence) please see the
 # documentation located at

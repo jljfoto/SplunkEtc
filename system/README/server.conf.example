@@ -1,4 +1,4 @@
-#   Version 7.3.0
+#   Version 8.0.0
 #
 # This file contains an example server.conf.  Use this file to configure SSL
 # and HTTP server options.
@@ -43,6 +43,17 @@ no_proxy = localhost, 127.0.0.1, ::1
 # authentication
 [general]
 trustedIP = 127.0.0.1
+
+####### Cascading Replication Example ######
+[cascading_replication]
+pass4SymmKey = someSecret
+max_replication_threads = auto
+max_replication_jobs = 5
+cascade_replication_plan_reap_interval = 1h
+cascade_replication_plan_age = 8h
+cascade_replication_plan_fanout = auto
+cascade_replication_plan_topology = size_balanced
+cascade_replication_plan_select_policy = random
 
 
 ############################################################################
@@ -101,3 +112,12 @@ master_uri=https://SplunkMaster02.example.com:8089
 [httpServerListener:127.0.0.1:8090]
 ssl = false
 
+[dfs]
+disabled = false
+dfc_ip_address = 192.0.2.0
+port = 9000
+extra_kryo_registered_classes = com.splunk.df.search.compute.objects._String,java.lang.Number
+spark_master_host = 192.0.2.0
+spark_master_webui_port = 8080
+connection_timeout = 180
+connection_retries = 5

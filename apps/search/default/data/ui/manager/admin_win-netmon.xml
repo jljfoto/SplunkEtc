@@ -21,8 +21,8 @@
       <view name="edit"/>
       <view name="create"/>
       <key name="processValueList">', '.join(sorted(value, key=str.lower)) if isinstance(value, list) and len(value)>0 else 'None'</key>
-      <key name="submitValueAdd">';'.join([key[12:] for key in form_data if key.startswith('spl-ctrl_af_') and form_data[key] == '1'])</key>
-      <key name="submitValueEdit">';'.join([key[12:] for key in form_data if key.startswith('spl-ctrl_af_') and form_data[key] == '1'])</key>
+      <key name="submitValueAdd">';'.join([key[12:] for key, value in form_data.items() if key.startswith('spl-ctrl_af_') and value == '1'])</key>
+      <key name="submitValueEdit">';'.join([key[12:] for key, value in form_data.items() if key.startswith('spl-ctrl_af_') and value == '1'])</key>
     </element>
     
     <element name="addressFamily_types" type="fieldset">
@@ -57,8 +57,8 @@
       <view name="edit"/>
       <view name="create"/>
       <key name="processValueList">', '.join(sorted(value, key=str.lower)) if isinstance(value, list) and len(value)>0 else 'None'</key>
-      <key name="submitValueAdd">';'.join([key[12:] for key in form_data if key.startswith('spl-ctrl_pt_') and form_data[key] == '1'])</key>
-      <key name="submitValueEdit">';'.join([key[12:] for key in form_data if key.startswith('spl-ctrl_pt_') and form_data[key] == '1'])</key>
+      <key name="submitValueAdd">';'.join([key[12:] for key, value in form_data.items() if key.startswith('spl-ctrl_pt_') and value == '1'])</key>
+      <key name="submitValueEdit">';'.join([key[12:] for key, value in form_data.items() if key.startswith('spl-ctrl_pt_') and value == '1'])</key>
     </element>
     
     <element name="packetTypes" type="fieldset">
@@ -100,8 +100,8 @@
       <view name="edit"/>
       <view name="create"/>
       <key name="processValueList">', '.join(sorted(value, key=str.lower)) if isinstance(value, list) and len(value)>0 else 'None'</key>
-      <key name="submitValueAdd">';'.join([key[12:] for key in form_data if key.startswith('spl-ctrl_dr_') and form_data[key] == '1'])</key>
-      <key name="submitValueEdit">';'.join([key[12:] for key in form_data if key.startswith('spl-ctrl_dr_') and form_data[key] == '1'])</key>
+      <key name="submitValueAdd">';'.join([key[12:] for key, value in form_data.items() if key.startswith('spl-ctrl_dr_') and value == '1'])</key>
+      <key name="submitValueEdit">';'.join([key[12:] for key, value in form_data.items() if key.startswith('spl-ctrl_dr_') and value == '1'])</key>
     </element>
     
     <element name="direction_types" type="fieldset">
@@ -135,8 +135,8 @@
       <view name="edit"/>
       <view name="create"/>
       <key name="processValueList">', '.join(sorted(value, key=str.lower)) if isinstance(value, list) and len(value)>0 else 'None'</key>
-      <key name="submitValueAdd">';'.join([key[12:] for key in form_data if key.startswith('spl-ctrl_pr_') and form_data[key] == '1'])</key>
-      <key name="submitValueEdit">';'.join([key[12:] for key in form_data if key.startswith('spl-ctrl_pr_') and form_data[key] == '1'])</key>
+      <key name="submitValueAdd">';'.join([key[12:] for key, value in form_data.items() if key.startswith('spl-ctrl_pr_') and value == '1'])</key>
+      <key name="submitValueEdit">';'.join([key[12:] for key, value in form_data.items() if key.startswith('spl-ctrl_pr_') and value == '1'])</key>
     </element>
     
     <element name="protocol_types" type="fieldset">

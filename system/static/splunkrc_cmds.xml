@@ -1024,6 +1024,7 @@ The package might be referenced either via a url or a local path.]]>
                 </examples>
             </help>
             <type>edit</type>
+            <post_only/>
         </cmd>
 
         <cmd name="disable">
@@ -1035,6 +1036,7 @@ The package might be referenced either via a url or a local path.]]>
                 </examples>
             </help>
             <type>edit</type>
+            <post_only/>
         </cmd>
     </item>
 
@@ -1215,11 +1217,22 @@ The package might be referenced either via a url or a local path.]]>
                 <syntax><![CDATA[add workload-rule <rule_name> [-parameter <value>] ...]]></syntax>
                 <required>
                     <arg name="rule_name"><![CDATA[the name of the workload-rule to create]]></arg>
-                    <arg name="predicate"><![CDATA[the logical expression of workload-rule with predicate as <type>=<value>. eg: role=admin, app=search AND (NOT index=_internal). Possible values of type are: app, role, user, index]]></arg>
-                    <arg name="workload_pool"><![CDATA[the name of the workload-pool to associate the rule with, the workload-pool must be defined earlier]]></arg>
+                    <arg name="predicate"><![CDATA[the logical expression of workload-rule with predicate as <type>=<value>. eg: role=admin, app=search AND (NOT index=_internal), runtime>10. Possible values of type are: app, role, user, index, runtime, search_type, search_mode, search_time_range]]></arg>
                 </required>
+                <optional>
+                    <arg name="workload_pool"><![CDATA[the name of the workload-pool to associate the rule with, the workload-pool must be defined earlier]]></arg>
+                    <arg name="action"><![CDATA[the monitoring action to perform. Possible values of type are: abort, move, alert]]></arg>
+                    <arg name="schedule"><![CDATA[the schedule of the workload-rule. Possible values are: always_on, time_range, every_day, every_week, every_month]]></arg>
+                    <arg name="start_date"><![CDATA[the start date of the validation period]]></arg>
+                    <arg name="start_time"><![CDATA[the start time of the validation period]]></arg>
+                    <arg name="end_date"><![CDATA[the end date of the validation period]]></arg>
+                    <arg name="end_time"><![CDATA[the end time of the validation period]]></arg>
+                    <arg name="every_week_days"><![CDATA[the recurring days in a week]]></arg>
+                    <arg name="every_month_days"><![CDATA[the recurring days in a month]]></arg>
+                </optional>
                 <examples>
-                    <ex><![CDATA[./splunk add workload-rule "my_role_rule" -predicate "role=admin OR app=search" -workload_pool "pool_a"]]></ex>
+                    <ex><![CDATA[./splunk add workload-rule "my_role_rule" -predicate "role=admin OR app=search" -workload_pool "pool_a" -schedule "always_on"]]></ex>
+                    <ex><![CDATA[./splunk add workload-rule "my_role_rule" -predicate "runtime>20" -action abort -schedule "every_week" -start_time "10:00" -end_time "15:00" -every_week_days "0,4,6"]]></ex>
                 </examples>
             </help>
         </cmd>
@@ -1245,9 +1258,17 @@ The package might be referenced either via a url or a local path.]]>
                     <arg name="rule_name"><![CDATA[the name of the workload-rule to edit]]></arg>
                 </required>
                 <optional>
-                    <arg name="predicate"><![CDATA[the workload-rule in type=key format eg: app=search, role=admin. Possible values of type are: app, role]]></arg>
+                    <arg name="predicate"><![CDATA[the workload-rule in type=key format eg: app=search, role=admin. Possible values of type are: app, role, user, index, runtime, search_type, search_mode, search_time_range]]></arg>
                     <arg name="workload_pool"><![CDATA[the name of the workload-pool to associate the rule with]]></arg>
                     <arg name="order"><![CDATA[the order of the workload-rule within the total set of rules]]></arg>
+                    <arg name="action"><![CDATA[the monitoring action to perform. Possible values of type are: abort, move, alert]]></arg>
+                    <arg name="schedule"><![CDATA[the schedule of the workload-rule. Possible values are: always_on, time_range, every_day, every_week, every_month]]></arg>
+                    <arg name="start_date"><![CDATA[the start date of the validation period]]></arg>
+                    <arg name="start_time"><![CDATA[the start time of the validation period]]></arg>
+                    <arg name="end_date"><![CDATA[the end date of the validation period]]></arg>
+                    <arg name="end_time"><![CDATA[the end time of the validation period]]></arg>
+                    <arg name="every_week_days"><![CDATA[the recurring days in a week]]></arg>
+                    <arg name="every_month_days"><![CDATA[the recurring days in a month]]></arg>
                 </optional>
             </help>
             <eai_id>{rule_name}</eai_id>
@@ -1275,8 +1296,92 @@ The package might be referenced either via a url or a local path.]]>
                 <title><![CDATA[View status of workload management.]]></title>
                 <syntax><![CDATA[show workload-management-status]]></syntax>
                 <required/>
+                <optional>
+                    <arg name="--verbose"><![CDATA[get advanced information on the status of the workload management.]]></arg>
+                </optional>
                 <examples>
                     <ex><![CDATA['./splunk show workload-management-status']]></ex>
+                    <ex><![CDATA['./splunk show workload-management-status --verbose']]></ex>
+                </examples>
+            </help>
+            <type>list</type>
+        </cmd>
+    </item>
+
+    <!-- list cascade-plans -->
+    <item obj="cascade-plans">
+        <cmd name="list">
+            <implied_arg_name><![CDATA[name]]></implied_arg_name>
+            <uri><![CDATA[/replication/cascading/plans]]></uri>
+            <eai_id>{name}</eai_id>
+            <default>
+                <arg name="name" value="" />
+                <arg name="count" value="-1" />
+            </default>
+            <help>
+                <title><![CDATA[List available cascading replication plans]]></title>
+                <syntax><![CDATA[list cascade-plans [plan_id]]]></syntax>
+                <required/>
+                <optional>
+                    <arg name="name"><![CDATA[The plan id of the cascading plan]]></arg>
+                </optional>
+                <examples>
+                    <ex><![CDATA[./splunk list cascade-plans]]></ex>
+                    <ex><![CDATA[./splunk list cascade-plans 9ADCF249-3130-4976-B89D-A6CD6B86426F]]></ex>
+                </examples>
+            </help>
+            <type>list</type>
+        </cmd>
+    </item>
+
+    <!-- show cascade-plan-status -->
+    <item obj="cascade-plan-status">
+        <cmd name="show">
+            <implied_arg_name><![CDATA[plan_id]]></implied_arg_name>
+            <uri><![CDATA[/replication/cascading/plans/{plan_id}/status]]></uri>
+            <help>
+                <title><![CDATA[View status of cascading plan]]></title>
+                <required>
+                   <arg name="plan_id"><![CDATA[The plan id of the cascading plan]]></arg>
+                </required>
+                <syntax><![CDATA[show cascade-plan-status <plan_id>]]></syntax>
+                <examples>
+                    <ex><![CDATA['./splunk show cascade-plan-status 9ADCF249-3130-4976-B89D-A6CD6B86426F']]></ex>
+                </examples>
+            </help>
+            <type>list</type>
+        </cmd>
+    </item>
+
+    <!-- show bundle-replication-status -->
+    <item obj="bundle-replication-status">
+        <cmd name="show">
+            <uri><![CDATA[/search/distributed/bundle/replication/cycles]]></uri>
+            <help>
+                <title><![CDATA[View status of knowledge bundle replication]]></title>
+                <syntax><![CDATA[show bundle-replication-status]]></syntax>
+                <required/>
+                <examples>
+                    <ex><![CDATA['./splunk show bundle-replication-status']]></ex>
+                </examples>
+            </help>
+            <default>
+                <arg name="latest" value="true" />
+            </default>
+            <type>list</type>
+        </cmd>
+    </item>
+
+    <!-- show bundle-replication-config -->
+    <item obj="bundle-replication-config">
+        <cmd name="show">
+            <uri><![CDATA[/search/distributed/bundle/replication/config]]></uri>
+            <help>
+                <title><![CDATA[View configuration of knowledge bundle replication]]></title>
+                <syntax><![CDATA[show bundle-replication-config]]></syntax>
+                <required/>
+                <examples>
+                    <ex><![CDATA['./splunk show bundle-replication-config']]></ex>
                 </examples>
             </help>
             <type>list</type>
@@ -1367,6 +1472,7 @@ The package might be referenced either via a url or a local path.]]>
                     <arg name="manual_detention"><![CDATA[Sets the peers in manual detention]]></arg>
                     <arg name="re_add_on_bucket_request_error"><![CDATA[specify whether slave should re-add itself to master if master returns an error for a bucket request.]]></arg>
                     <arg name="max_peers_to_download_bundle"><![CDATA[specifies maximum number of peers that can download newly available cluster master bundle.]]></arg>
+                    <arg name="auto_rebalance_primaries"><![CDATA[specifies if the master should automatically rebalance bucket primaries on certain triggers.]]></arg>
                 </optional>
                 <examples>
                     <ex><![CDATA[./splunk edit cluster-config -mode slave -replication_port 4535]]></ex>
@@ -5347,21 +5453,14 @@ Examples:
         <common>
             <help>
                 <header><![CDATA[  Start and stop Splunk server processes, or show process status.
-
-Objects:
-
-        splunkd      The Splunk server daemon
-        splunkweb    Splunk's Web interface process
-
                     ]]></header>
+    <syntax><![CDATA[start
 
-    <syntax><![CDATA[start [splunkd|splunkweb]
+        stop
 
-        stop [splunkd|splunkweb]
+        restart [splunkweb]
 
-        restart [splunkd|splunkweb]
-
-        status [splunkd|splunkweb] ]]></syntax>
+        status ]]></syntax>
                 <optional>
                     <arg name="--accept-license"><![CDATA[(FOR START ONLY) For a first-time Splunk start, automatically accept the license without prompt.]]></arg>
                     <arg name="--answer-yes"><![CDATA[(FOR START ONLY) Answer yes to prompts at installation and upgrade.]]></arg>
@@ -5375,9 +5474,9 @@ Objects:
                                                                 IMPORTANT: Be careful using this flag; because the password will be printed to stdout.]]></arg>
                 </optional>
            <examples>
-                <ex><![CDATA[start splunkd --accept-license]]></ex>
-                <ex><![CDATA[start splunk --seed-passwd 'A5tr0nGp@sS']]></ex>
-                <ex><![CDATA[start splunk --no-prompt --gen-and-print-passwd]]></ex>
+                <ex><![CDATA[start --accept-license]]></ex>
+                <ex><![CDATA[start --seed-passwd 'A5tr0nGp@sS']]></ex>
+                <ex><![CDATA[start --no-prompt --gen-and-print-passwd]]></ex>
                 <ex><![CDATA[restart splunkweb -auth gwb:d3cidr]]></ex>
                 <ex><![CDATA[status]]></ex>
                 </examples>
@@ -5423,16 +5522,10 @@ Show the status of Splunk's processes.
 
 Objects:
 
-        splunkd     shows splunkd's status and reports process ID
-
-        splunkweb   shows Splunk Web's status and reports process ID
-
-        NONE        (default) shows both splunkd and Splunk Web status
-                    (If Splunk software is in Legacy Mode, where Splunk Web runs separately)
-
+        NONE        shows splunkd's status and reports process ID
 ]]>
                 </header>
-                <syntax><![CDATA[status [object]]]></syntax>
+                <syntax><![CDATA[status]]></syntax>
             </help>
         </common>
     </item>

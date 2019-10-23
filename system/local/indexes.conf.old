@@ -1,46 +1,62 @@
 [default]
 
 [_audit]
-selfStorageThreads = 
-compressRawdata = 1
-enableDataIntegrityControl = 0
-maxTotalDataSizeMB = 100
-minHotIdleSecsBeforeForceRoll = 0
 syncMeta = 1
-suspendHotRollByDeleteQuery = 0
-enableTsidxReduction = 0
-rtRouterQueueSize = 
-bucketRebuildMemoryHint = 0
-rtRouterThreads = 
 enableOnlineBucketRepair = 1
+enableDataIntegrityControl = 0
+suspendHotRollByDeleteQuery = 0
+minHotIdleSecsBeforeForceRoll = 0
+selfStorageThreads = 
+rtRouterThreads = 
+bucketRebuildMemoryHint = 0
+compressRawdata = 1
+enableTsidxReduction = 0
+maxTotalDataSizeMB = 100
+rtRouterQueueSize = 
 
 [_internal]
-compressRawdata = 1
-enableDataIntegrityControl = 0
-maxTotalDataSizeMB = 100
-minHotIdleSecsBeforeForceRoll = 0
 syncMeta = 1
-suspendHotRollByDeleteQuery = 0
-enableTsidxReduction = 0
-rtRouterQueueSize = 
-bucketRebuildMemoryHint = 0
-rtRouterThreads = 
 enableOnlineBucketRepair = 1
-archiver.enableDataArchive = 0
 maxDataSize = 100
+enableDataIntegrityControl = 0
+suspendHotRollByDeleteQuery = 0
+minHotIdleSecsBeforeForceRoll = 0
 selfStorageThreads = 
+rtRouterThreads = 
+bucketRebuildMemoryHint = 0
+compressRawdata = 1
+enableTsidxReduction = 0
+maxTotalDataSizeMB = 100
 tsidxWritingLevel = 
+archiver.enableDataArchive = 0
+rtRouterQueueSize = 
 
 [_introspection]
+syncMeta = 1
+enableOnlineBucketRepair = 1
+enableDataIntegrityControl = 0
+suspendHotRollByDeleteQuery = 0
+minHotIdleSecsBeforeForceRoll = 0
+rtRouterThreads = 
+bucketRebuildMemoryHint = 0
+compressRawdata = 1
+enableTsidxReduction = 0
+maxTotalDataSizeMB = 1024
+rtRouterQueueSize = 
+
+[main]
+archiver.enableDataArchive = 0
+bucketRebuildMemoryHint = 0
 compressRawdata = 1
 enableDataIntegrityControl = 0
+enableOnlineBucketRepair = 1
+enableTsidxReduction = 0
 maxTotalDataSizeMB = 1024
 minHotIdleSecsBeforeForceRoll = 0
-syncMeta = 1
-suspendHotRollByDeleteQuery = 0
-enableTsidxReduction = 0
 rtRouterQueueSize = 
-bucketRebuildMemoryHint = 0
 rtRouterThreads = 
-enableOnlineBucketRepair = 1
+selfStorageThreads = 
+suspendHotRollByDeleteQuery = 0
+syncMeta = 1
+tsidxWritingLevel = 
 

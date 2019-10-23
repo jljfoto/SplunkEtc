@@ -1,4 +1,4 @@
-#   Version 7.3.0
+#   Version 8.0.0
 #
 # This file contains example saved searches and alerts.
 #
@@ -31,3 +31,6 @@ rollup.0.rollupIndex = myTargetMetricIndex_0
 rollup.0.span = 1h
 rollup.1.rollupIndex = myTargetMetricIndex_1
 rollup.1.span = 1d
+# Exclude metric_1 and metric_2 during rollup
+metricList = metric_1, metric_2
+metricListType = excluded

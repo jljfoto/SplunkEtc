@@ -3,6 +3,9 @@
 access = read : [ * ], write : [ admin ]
 export = none
 
+[views/analytics_workspace]
+export = system
+
 [views/analysis_workspace]
 export = system
 

@@ -1,5 +1,6 @@
 <nav color="#3C444D">
   <view name="monitoringconsole_overview" default="true" />
+  <view name="monitoringconsole_landing" />
   <view name="monitoringconsole_check" />
   <view name="monitoringconsole_instances" />
   <collection label="Indexing">
@@ -64,6 +65,10 @@
     <collection label="KV Store">
       <view name="kv_store_instance" />
       <view name="kv_store_deployment" />
+    </collection>
+    <collection label="Knowledge Bundle Replication">
+      <view name="bundle_replication" />
+      <view name="cascading_replication" />
     </collection>
   </collection>
   <collection label="Resource Usage">

@@ -1,14 +1,15 @@
 from splunk_instrumentation.indexing.instrumentation_index import InstrumentationIndex
-from send_log import SendLog
-from send_data import SendData
+from splunk_instrumentation.packager.send_log import SendLog
+from splunk_instrumentation.packager.send_data import SendData
 import random
 import logging
+from logging.handlers import RotatingFileHandler
 from datetime import datetime, timedelta, time
-from splunk_instrumentation.datetime_util import local, utc, utcNow
+from splunk_instrumentation.datetime_util import local, utc, utcNow, json_serial
 from splunk_instrumentation.metrics.instance_profile import get_instance_profile
 import splunk_instrumentation.metrics.metrics_schema as metrics_schema
 from splunk_instrumentation.constants import INST_SCHEMA_FILE, INST_EXECUTION_START_TIME
-from quick_draw import get_quick_draw
+from splunk_instrumentation.packager.quick_draw import get_quick_draw
 from splunk_instrumentation.report import report
 from splunk_instrumentation.metrics.metrics_transforms import transform_object
 from splunk_instrumentation.dataPoints.data_point import dataPointFactory
@@ -16,8 +17,20 @@ from splunk_instrumentation.dataPoints.spl_data_point import SPLDataPoint  # noq
 from splunk_instrumentation.dataPoints.report_data_point import ReportDataPoint  # noqa
 from splunk_instrumentation.splunklib import binding
 from splunk_instrumentation.constants import INTROSPECTION_INDEX_NAME
+import os
+import json
 
 logger = logging.getLogger(__name__)
+
+dataLogger = logging.getLogger('TelemetryCloudData')
+dataLogger.setLevel(logging.INFO)
+handler = RotatingFileHandler(os.path.join(os.environ.get('SPLUNK_HOME'), 'var',
+                              'log', 'splunk', 'splunk_instrumentation_cloud.log'),
+                              mode='a', maxBytes=5000000, backupCount=5)
+formatter = logging.Formatter('{"datetime": "%(asctime)s", "log_level": "%(levelname)s", '
+                              '"component": "%(name)s", "data": %(message)s}')
+handler.setFormatter(formatter)
+dataLogger.addHandler(handler)
 
 
 class Packager(object):
@@ -66,6 +79,7 @@ class Packager(object):
             self.sl = send_log
 
         self.result = None
+        self.is_cloud = self.instance_profile.server_is_cloud
 
     def package_send(self, dateRange, index_name=INTROSPECTION_INDEX_NAME):
         """Auto send and log data.
@@ -179,6 +193,7 @@ class Packager(object):
         """Sending package and log it.
 
         If offline (or quickdraw not available), log failed to the index.
+        If on cloud, log events to splunk_instrumentation_cloud.log, instead of sending to quickdraw
         events = events from index
         start = from datetime picker
         stop = from datetime picker
@@ -190,13 +205,18 @@ class Packager(object):
         count = len(events)
         self.sl.send_attempted(start, stop, visibility=visibility, time_range=time_range, method=method, count=count)
         try:
-            if self.deliverySchema.url:
-                events = self._mark_visibility(events, visibility, method)
-                self.sd.send_data(events)
-                self.sl.send_completed(start, stop, visibility=visibility, time_range=time_range, method=method,
-                                       count=count)
+            events = self._mark_visibility(events, visibility, method)
+            if self.is_cloud:
+                self.sd.bundle_DTOs(events)
+                for event in events:
+                    dataLogger.info(json.dumps(event, default=json_serial))
             else:
-                raise Exception('Quickdraw is not available')
+                if self.deliverySchema.url:
+                    self.sd.send_data(events)
+                else:
+                    raise Exception('Quickdraw is not available')
+            self.sl.send_completed(start, stop, visibility=visibility, time_range=time_range, method=method,
+                                   count=count)
         except binding.HTTPError as e:
             logger.error(e)
             self.sl.send_failed(start, stop, visibility=visibility, time_range=time_range, method=method, count=None)

@@ -1,7 +1,10 @@
+from __future__ import absolute_import
+from past.builtins import basestring
+from builtins import object
 import json
 from datetime import datetime
 
-from metrics_transforms import transform_object, hash_specific_value_by_key
+from splunk_instrumentation.metrics.metrics_transforms import transform_object, hash_specific_value_by_key
 from splunk_instrumentation.constants import INST_EXECUTION_ID
 from splunk_instrumentation.datetime_util import date_to_timestamp, utcNow, str_to_date
 from splunk_instrumentation.report import report
@@ -12,7 +15,7 @@ from splunk_instrumentation.service_bundle import ServiceBundle
 from splunk_instrumentation.constants import SPLUNKRC
 
 
-class MetricsCollectionManager:
+class MetricsCollectionManager(object):
     def __init__(self, metricSchema, dataPointFactory, splunkrc=None, phase=1):
         self.metricSchema = metricSchema
         self.dataPointFactory = dataPointFactory

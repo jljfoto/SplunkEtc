@@ -68,11 +68,11 @@ precheckSendLicenseUsage = true|false
 
 precheckSendAnonymizedUsage = true|false
 * Default value for sending anonymized usage in opt in modal
-* Defaults to false
+* Defaults to true
 
 precheckSendSupportUsage = true|false
 * Default value for sending support usage in opt in modal
-* Defaults to false
+* Defaults to true
 
 showOptInModal = true|false
 * DEPRECATED - see optInVersion and optInVersionAcknowledged settings
@@ -122,3 +122,7 @@ reportStartDate = <string>
 bufferFlushTimeout = <number>
 * Timeout for buffer flush, number in seconds
 * Defaults to 600s
+
+onCloudInstance = true|false
+* Whether the instance is on cloud or on prem
+* Defaults to false

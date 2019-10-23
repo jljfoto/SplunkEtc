@@ -1,5 +1,4 @@
 var path = require('path');
-var _ = require('lodash');
 
 var BUILD_TOOLS = path.join(process.env.SPLUNK_SOURCE, 'web', 'build_tools');
 var mergeConfigs = require(path.join(BUILD_TOOLS, 'util', 'mergeConfigs'));

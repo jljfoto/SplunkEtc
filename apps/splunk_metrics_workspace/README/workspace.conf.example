@@ -26,6 +26,14 @@ max_dimensions = 5000
 [features]
 data-alerts = 0
 
+# The following example disables the scheduled alert sub-type.
+[features]
+data-alerts-scheduled = 0
+
+# The following example disables the streaming alert sub-type.
+[features]
+data-alerts-streaming = 1
+
 # The following example disable the analysis-related-events
 [features]
 analysis-related-events = 0
@@ -65,6 +73,14 @@ state-restore = 0
 # The following example disable the chart-blocking-load
 [features]
 chart-blocking-load = 0
+
+# The following example enables reference lines on charts
+[features]
+reference-lines = 1
+
+# The following example enables category charts
+[features]
+category-charts = 1
 
 # The following example disables the datasets data type.
 [features]

@@ -1,4 +1,4 @@
-#   Version 7.3.0
+#   Version 8.0.0
 #
 # This file contains an example indexes.conf.  Use this file to configure
 # indexing properties.
@@ -225,7 +225,8 @@ maxHotBuckets = 10
 
 [volume:s3]
 storageType = remote
-path = s3://example-s3-bucket/remote_volume
+path = s3://remote_volume
+remote.s3.bucket_name = example-s3-bucket
 remote.s3.access_key = S3_ACCESS_KEY
 remote.s3.secret_key = S3_SECRET_KEY
 

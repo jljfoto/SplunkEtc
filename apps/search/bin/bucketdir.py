@@ -1,5 +1,6 @@
 #   Version 4.0
 import re,sys,os,math
+from functools import cmp_to_key
 import splunk.Intersplunk as si
 import logging as logger
 
@@ -131,7 +132,7 @@ def getFileGroungs(results):
             #print("score: %s\tpath: %s " % (score, mypath))
 
         # SORT PATHS BY SCORE
-        pathsAndScores.sort(floatSort)
+        pathsAndScores.sort(key = cmp_to_key(floatSort))
         dirs = []
         # FOR EACH PATH, FROM BEST-TO-CUT TO WORST, CUT UNTIL FEW ENOUGH RESULTS
         for i, pathinfo in enumerate(pathsAndScores):

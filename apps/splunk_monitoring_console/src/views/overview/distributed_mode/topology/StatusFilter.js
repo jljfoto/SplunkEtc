@@ -58,7 +58,7 @@ define(
                         e.stopPropagation();
                         return;
                     }
-                    
+
                     this.clickHandler(e, range);
                 }
             },
@@ -161,7 +161,7 @@ define(
                     );
                 }
             },
-            
+
             _formatCount: function(count) {
                 if (!_.isNumber(count)) {
                     return 0; // right now absence means 0
@@ -173,7 +173,7 @@ define(
                     return (count / 1000000).toFixed(1) + 'M';
                 }
                 if (count > 1000000000) {
-                    return _('...').t();
+                    return '...';
                 }
                 return count;
             },

@@ -16,8 +16,7 @@ def stats(r):
     tot = sum(r)
     avg = tot/len(r)
     sdsq = sum([(i-avg)**2 for i in r])
-    s = list(r)
-    s.sort()
+    s = sorted(r)
     return s[len(s)//2], avg, (sdsq/(len(r)-1 or 1))**.5, min(r), max(r)
 
 # return stats on width

@@ -12,7 +12,7 @@
   </fieldset>
   <search id="confOpSearch">
     <query>
-`dmc_set_index_internal` sourcetype=splunkd_conf search_group="$group$" component=ConfOp data.task=addCommit
+`dmc_set_index_internal` sourcetype=splunkd_conf search_group="$group$" component=ConfOp data.task=*addCommit
 | stats count by _time, host, optype_desc, object_name, object_type, app, owner
     </query>
     <earliest>$time.earliest$</earliest>

@@ -1,5 +1,6 @@
 """InstanceProfile class."""
 
+from builtins import object
 from splunk_instrumentation.report import report
 from splunk_instrumentation.splunklib import data as spldata
 from splunk_instrumentation.constants import SPLUNKRC, VISIBILITY_FIELDS_BY_NAME
@@ -138,6 +139,10 @@ class InstanceProfile(object):
     def server_info(self):
         return self.server_info_service.content
 
+    @property
+    def server_is_cloud(self):
+        return int(self.telemetry_conf_service.content.get('onCloudInstance') or 0)
+
     def retry_transaction(self):
         self.telemetry_conf_service.retry_cluster_master_sync_transaction()
 
@@ -152,7 +157,7 @@ class InstanceProfile(object):
 
     def _get_visibility(self):
         self.visibility = []
-        for name, field in VISIBILITY_FIELDS_BY_NAME.iteritems():
+        for name, field in VISIBILITY_FIELDS_BY_NAME.items():
             if int(self.telemetry_conf_service.content.get(field) or 0):
                 self.visibility.append(name)
 

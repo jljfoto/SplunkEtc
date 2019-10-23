@@ -13,6 +13,7 @@ from splunk_instrumentation.diag.diag_task import DiagTask  # noqa
 from splunk_instrumentation.splunkd import Splunkd  # noqa
 from splunk_instrumentation.diag.diag_service import DiagService  # noqa
 
+
 configurationStr = sys.stdin.read()
 
 configuration = json.loads(configurationStr)

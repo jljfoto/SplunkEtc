@@ -1,4 +1,4 @@
-#   Version 7.3.0
+#   Version 8.0.0
 #
 # This is an example commands.conf.  Use this file to configure settings
 # for external search commands.
@@ -43,26 +43,11 @@ filename = diff.py
 [gentimes]
 filename = gentimes.py
 
-[head]
-filename = head.py
-
-[loglady]
-filename = loglady.py
-
-[marklar]
-filename = marklar.py
-
 [runshellscript]
 filename = runshellscript.py
 
 [sendemail]
 filename = sendemail.py
-
-[translate]
-filename = translate.py
-
-[transpose]
-filename = transpose.py
 
 [uniq]
 filename = uniq.py

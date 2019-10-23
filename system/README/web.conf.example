@@ -1,4 +1,4 @@
-#   Version 7.3.0
+#   Version 8.0.0
 #
 # This is an example web.conf.  Use this file to configure data web
 # settings.
@@ -28,3 +28,8 @@ serverCert = /home/user/certs/mycacert.pem
 
 # First party apps:
 splunk_dashboard_app_name = splunk-dashboard-app
+
+# Allowing embedabble content in dashboards
+# Embed tags will appear as is in the dashboard source
+dashboard_html_allow_embeddable_content = true
+dashboard_html_wrap_embed = false

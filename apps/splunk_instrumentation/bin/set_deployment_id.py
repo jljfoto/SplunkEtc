@@ -25,6 +25,7 @@ Expectations:
 
   SPLUNK_USER must have edit_telemetry_settings capability (the default for admin).
 '''
+from __future__ import print_function
 
-print "set_deployment_id.py - This script is deprecated. Please remove any dependencies on it."
+print("set_deployment_id.py - This script is deprecated. Please remove any dependencies on it.")
 exit(0)

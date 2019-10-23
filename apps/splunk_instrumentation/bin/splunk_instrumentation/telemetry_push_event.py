@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-import sha
+import hashlib
 import uuid
 import time
 from datetime import datetime
@@ -9,6 +9,15 @@ from datetime import datetime
 from splunk.persistconn.application import PersistentServerConnectionApplication
 import splunk.rest as rest
 import splunk.auth
+
+if sys.version_info >= (3, 0):
+    string_type = (str, bytes)
+    unicode = str
+else:
+    import __builtin__
+    string_type = __builtin__.basestring
+    unicode = unicode
+
 
 
 if sys.platform == "win32":
@@ -113,7 +122,7 @@ class EventHandler(PersistentServerConnectionApplication):
 
     def checkFieldType(self, event):
         violation = []
-        for key, values in self.FIELD_TYPE.iteritems():
+        for key, values in list(self.FIELD_TYPE.items()):
             if key in event:
                 if type(event[key]) not in values:
                     violation.append("{key} field must be a {name}".format(key=key, name=self.FIELD_NAME[values[0]]))
@@ -138,7 +147,10 @@ class EventHandler(PersistentServerConnectionApplication):
 
     def getUserID(self, event):
         if not self.userID:
-            self.userID = sha.sha(self.deploymentID + splunk.auth.getCurrentUser()['name']).hexdigest()
+            hash_key = self.deploymentID + splunk.auth.getCurrentUser()['name']
+            if sys.version_info >= (3, 0):
+                hash_key = hash_key.encode()
+            self.userID = hashlib.sha1(hash_key).hexdigest()
         return self.userID
 
     def normalizePayload(self, arg):

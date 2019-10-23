@@ -175,7 +175,7 @@ class OutputTelemetryCommand(ReportingCommand):
                     error if error is not None else "submitted"
             }
 
-        for err in error_counts:
+        for err , mes in error_counts.items():
             if error_counts[err] > 0:
                 self.write_error(err + " (" + str(error_counts[err]) +
                                  " of " + str(found_results) + " events)")
@@ -197,7 +197,9 @@ class OutputTelemetryCommand(ReportingCommand):
     def format_error_message(self, http_error):
         if http_error.status in HTTP_ERRORS:
             return HTTP_ERRORS[http_error.status]
-        return http_error.message
+        if hasattr(http_error,'message'):
+            return http_error.message
+        return str(http_error)
 
     def make_telemetry_request(self, event_str):
         self.service.request(

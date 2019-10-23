@@ -1,6 +1,10 @@
 #   Version 4.0
 import splunk.Intersplunk as si
-import StringIO
+import sys
+if sys.version_info >= (3, 0):
+    from io import StringIO
+else:
+    from StringIO import StringIO
 from lxml import etree
 import lxml
 import defusedxml.lxml as safe_lxml
@@ -35,7 +39,7 @@ if __name__ == '__main__':
                 # make event value valid xml
                 myxml = "<data>%s</data>" % myxml
                 try:
-                    et = safe_lxml.parse(StringIO.StringIO(myxml))
+                    et = safe_lxml.parse(StringIO(myxml))
                     nodes = et.xpath(path)
                     values = [tostr(node) for node in nodes]
                     result[outfield] = values

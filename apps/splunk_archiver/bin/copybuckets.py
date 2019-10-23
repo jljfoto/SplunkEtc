@@ -6,6 +6,7 @@ import sys, json
 import erp_launcher_duplicate as erp_launcher
 import vixutils_duplicate as vixutils
 import splunk.Intersplunk as isp
+from builtins import map
 
 def splitCommaList(commaSeparatedList):
     return map(lambda x: x.strip(), commaSeparatedList.split(','))
@@ -17,7 +18,7 @@ def keepRollingIndexes(indexes, vixes):
         if rollKey in vixMap and vixMap[rollKey]:
             indexesToKeep.update(set(splitCommaList(vixMap[rollKey])))
 
-    return {k : v for k, v in indexes.iteritems() if k in indexesToKeep}
+    return {k : v for k, v in indexes.items() if k in indexesToKeep}
 
 def getProvidersAndVixesFromStdIn():
     # Ghetto parsing since splunk's parsing doesn't care about quote escaping

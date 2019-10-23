@@ -10,11 +10,7 @@ access = read : [ * ], write : [ admin, power ]
 access = read : [ * ], write : [ admin ]
 export = system
 
-### QUICKSTART RECIPES
 
-[quickstart]
-access = read : [ * ], write : [ admin ]
-export = system
 
 
 ### VIEWS
@@ -95,6 +91,9 @@ export = system
 export = system
 
 [views/data_models]
+export = system
+
+[views/show_sources]
 export = system
 
 [views/data_model_explorer]

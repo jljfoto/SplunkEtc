@@ -7,7 +7,6 @@ define([
         'backbone',
         'module',
         'views/Base',
-
         'splunkjs/mvc/searchmanager',
         'splunkjs/mvc/tableview',
         'splunkjs/mvc/utils',

@@ -1,8 +1,7 @@
 #   Version 4.0
-import csv
 import sys
 import splunk.Intersplunk
-import string
+from builtins import range
 
 (isgetinfo, sys.argv) = splunk.Intersplunk.isGetInfo(sys.argv)
 
@@ -21,7 +20,7 @@ while i<len(sys.argv):
     pos = arg.find('(')
     if (pos < 1) or arg[-1] != ')':
         splunk.Intersplunk.parseError("Invalid argument '%s'" % arg)
-        
+
     name = arg[0:pos]
     field = arg[pos+1:len(arg)-1]
     if len(field) == 0 or field[0:2] == '__':
@@ -41,9 +40,9 @@ while i<len(sys.argv):
 
     if trendtype is None:
         splunk.Intersplunk.parseError("Invalid trend type for argument '%s'" % arg)
-                
-    newname = arg;
-    if (i+2<len(sys.argv)) and (string.lower(sys.argv[i+1]) == "as"):
+
+    newname = arg
+    if (i+2<len(sys.argv)) and (sys.argv[i+1].lower() == "as"):
         newname = sys.argv[i+2]
         i += 3
     else:
@@ -56,7 +55,7 @@ while i<len(sys.argv):
 
 if isgetinfo:
     splunk.Intersplunk.outputInfo(False, False, True, False, None, True)
-    # outputInfo automatically calls sys.exit()    
+    # outputInfo automatically calls sys.exit()
 
 
 results = splunk.Intersplunk.readResults(None, None, False)
@@ -69,7 +68,7 @@ for res in results:
                 ti['vals'].append(float(res[ti['field']]))
             except ValueError:
                 pass # ignore non-numeric values
-            
+
         if len(ti['vals']) > ti['period']:
             ti['vals'].pop(0)
         elif len(ti['vals']) < ti['period']:
@@ -93,9 +92,9 @@ for res in results:
             else:
                 alpha = float(2.0 / (ti['period'] + 1.0))
                 newval = (alpha * ti['vals'][-1]) + (1 - alpha) * ti['last']
-                    
+
         ti['last'] = newval
         res[ti['newname']] = str(newval)
 
-        
+
 splunk.Intersplunk.outputResults(results)

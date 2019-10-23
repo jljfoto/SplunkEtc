@@ -1,6 +1,5 @@
 var fs = require('fs');
 var path = require('path');
-var _ = require('lodash');
 
 var BUILD_TOOLS = path.join(process.env.SPLUNK_SOURCE, 'web', 'build_tools');
 var mergeConfigs = require(path.join(BUILD_TOOLS, 'util', 'mergeConfigs'));
@@ -10,7 +9,7 @@ var postcssConfig = require(path.join(BUILD_TOOLS, 'profiles', 'common', 'postcs
 var SplunkNameModuleIdsPlugin = require(path.join(BUILD_TOOLS, 'plugins', 'SplunkNameModuleIdsPlugin'));
 var DashboardExtensionOutputPlugin = require(path.join(BUILD_TOOLS, 'plugins', 'SplunkDashboardExtensionOutputPlugin'));
 var appDir = path.join(__dirname, '..');
-var appName = _.last(appDir.split(path.sep));
+var appName = path.basename(appDir);
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = function(options) {

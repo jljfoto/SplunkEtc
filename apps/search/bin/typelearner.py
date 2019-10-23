@@ -3,9 +3,10 @@
 #secrets and confidential material of Splunk Inc., and its use or disclosure in
 #whole or in part without the express written permission of Splunk Inc. is prohibited.
 
-import os,re,sys,time
+import os,re,sys,time,operator
 import splunk.Intersplunk as si
 import splunk.searchhelp.utils as sutils
+from builtins import range
 
 
 RAW_FIELD = "_raw"
@@ -273,8 +274,8 @@ class Bucket:
     def getEventTypes(self, root, types, keywords, parentStr = "", value = "", depth = 0):
       if self.pivot != None:
         # get eventtypes from all children, in order from most populous to least
-        countBuckets = [(value,subBucket, subBucket.count) for value,subBucket in self.subBuckets.items()]
-        countBuckets.sort(lambda x, y: y[2] - x[2])
+        countBuckets = [(value,subBucket, subBucket.count) for value,subBucket in self.subBuckets.items()]        
+        countBuckets.sort(key=operator.itemgetter(2), reverse=True)
         for value, subBucket, count in countBuckets:
         #for value, subBucket in self.subBuckets.items():
           kvStr = self.pivot.getKVStr(value)
@@ -397,10 +398,10 @@ def discover(results, keywords, maxtypes, ignore_covered, useraw):
         eventtypes = filteredEventTypes
 
     # get N largest clusters
-    eventtypes.sort(lambda x, y: y['_count'] - x['_count'])
+    eventtypes.sort(key=operator.methodcaller('get', '_count'), reverse=True)
     eventtypes = eventtypes[:maxtypes]
     # resort by position for understandable tree view
-    eventtypes.sort(lambda x, y: x['_pos'] - y['_pos'])
+    eventtypes.sort(key=operator.methodcaller('get', '_pos'))
     
     #print(root)
     #print("EVENTTYPES: %s" % eventtypes)

@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
-<view template="splunk_metrics_workspace:/templates/base-page.html" type="html" isDashboard="false">
-	<label>Metrics</label>
+<view isDashboard="false" type="redirect" target="analytics_workspace">
+	<label>Analytics</label>
 </view>

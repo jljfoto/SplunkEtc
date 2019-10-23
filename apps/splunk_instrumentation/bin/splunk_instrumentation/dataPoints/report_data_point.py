@@ -1,5 +1,6 @@
-from data_point import DataPoint
-from data_point import registerDataPoint
+from __future__ import absolute_import
+from splunk_instrumentation.dataPoints.data_point import DataPoint
+from splunk_instrumentation.dataPoints.data_point import registerDataPoint
 from splunk_instrumentation.datetime_util import localNow
 from splunk_instrumentation.report import report
 

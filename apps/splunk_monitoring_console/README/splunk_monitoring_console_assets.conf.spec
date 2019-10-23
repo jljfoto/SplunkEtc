@@ -62,3 +62,24 @@ searchHeadClusters\[] = <list of search head clusters>
 	* Should be overridden for Search Head Cluster Deployers
 
 
+# ---- Deployment Metrics ----
+# Which deployment metrics to show to the user on the landing page.
+[metric:*]
+display_name = <string>
+* The name of the deployment metric.
+
+description = <string>
+* A description of the deployment metric.
+
+search = <string>
+* The default search string for the deployment metric.
+
+disabled = [0|1]
+* Determines whether the metric is displayed on the landing page.
+* 1 = not displayed, 0 = displayed
+* Default: 1 (not displayed)
+
+recommended = [0|1]
+* Determines whether the metric is in the recommended list.
+* 1 = true, 0 = false
+* Default: 0 (not recommended)

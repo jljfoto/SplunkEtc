@@ -4,7 +4,6 @@ import os
 import sys
 import json
 import datetime
-import StringIO
 from zipfile import ZipFile, ZIP_DEFLATED
 from string import Template
 import base64
@@ -12,6 +11,11 @@ from splunk.persistconn.application import PersistentServerConnectionApplication
 import splunk.rest
 import splunk.auth
 import splunk.entity as en
+
+if sys.version_info >= (3, 0):
+    from io import BytesIO as ZipIO
+else:
+    from cStringIO import StringIO as ZipIO
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(levelname)s [%(name)s:%(lineno)d] %(message)s',
@@ -168,6 +172,9 @@ class InstrumentationRestHandler(PersistentServerConnectionApplication):
 
         # Need to do base64 encoding, since zip files are a binary format.
         base64_payload = base64.b64encode(usage_data.payload())
+        if sys.version_info > (3, 0):
+            base64_payload = base64_payload.decode()
+            
         return {
             'payload_base64': base64_payload,
             'headers': {
@@ -326,7 +333,7 @@ class UsageData(object):
         return [filename.substitute(filename=ft) for ft in file_type]
 
     def zip_compress(self, json_file_name, value):
-        temp = StringIO.StringIO()
+        temp = ZipIO()
         with ZipFile(temp, 'w', ZIP_DEFLATED) as myzip:
             myzip.writestr(json_file_name, value)
         return temp.getvalue()

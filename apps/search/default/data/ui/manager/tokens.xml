@@ -7,6 +7,7 @@
      <label>Tokens</label>
      <url>/manager/%(namespace)s/authorization/tokens</url>
      <order>80</order>
+     <description>Create new authentication tokens and manage token settings.</description>
      <id>tokens</id>
    </menu>
 </endpoint>

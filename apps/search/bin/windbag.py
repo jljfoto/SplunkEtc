@@ -17,6 +17,7 @@ import os, sys, time, datetime
 import splunk.util as util
 import splunk.Intersplunk as isp
 import logging as logger
+from builtins import range
 
 DEFAULT_ARGS = {
 

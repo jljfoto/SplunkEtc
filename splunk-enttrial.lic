@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <license>
-  <signature>kbLWoBbDhs8mZP3POCnrMuZm3op8Jmk73DCfW5mNPAs5MgtmSZc1KpKK6rYyBUJMhTfpqIur6TjRkXVB7WDHrt2w5147CCIZ5CVFukAD3eZNUr+Loz8iRQGC2gFWejWm2Av3mFCRxnUtQbQqdguZdWjxTd1XZySpNpFgCe/WVw2wLP5o8iuE/8SWHxDD/jnkOnPdYG2yH5aPhMEv+Sqmvn0Kvg1B1esyQhW4pO8CM1V6j4tyHOTBFY836naGdCFFihO1KUAPR7nDTi68n5dyLpkbcosos8q6/YkUecWqygBYJG7i6XdK7jAhuCiKtsNFQMngGLoXXMdJwgHQJjv9zw==</signature>
+  <signature>lChGUR9W9BbUFa/m1W8vA0Nz+ctDovI+SfvaD7YNr1ZOv004Xpl3/YcQ7632q9QJdk5AVWrx0pbxrLlcaYss6IfX0h7EAkXw/ALe5Yh/nTRCh1/IxhvuEFFOELvgCLi10HrKnbWSG3krC7oPZSJbbK2EQuKiVcXX9WZTGY356MIHSq+n/H99NS05hPVj84YzwMTdB4hAfK47QLbjMd5QrP9E2Rm5wnbUFfrc1zPSeVJ35yiTzr0U/cfnk45IdU3PtFAMNHVqI/3AM+TB9uDLrtDRKCKfJh+VGZ5x3C4ISu7skXMQZv9fuWI6tdC+LhmvKvQusWKDOZzC2bXiYxYNDQ==</signature>
   <payload>
     <type>download-trial</type>
     <group_id>Trial</group_id>
     <quota>524288000</quota>
     <max_violations>5</max_violations>
     <window_period>30</window_period>
-    <creation_time>1549324890</creation_time>
+    <creation_time>1571036400</creation_time>
     <label>Splunk Enterprise Download Trial</label>
     <relative_expiration_interval>5184000</relative_expiration_interval>
-    <absolute_expiration_time>1580860890</absolute_expiration_time>
+    <absolute_expiration_time>1886741999</absolute_expiration_time>
     <features>
       <feature>Auth</feature>
       <feature>FwdData</feature>
@@ -28,6 +28,6 @@
       <feature>AllowDuplicateKeys</feature>
     </features>
     <sourcetypes/>
-    <guid>55D3EDFA-BFE2-4351-9FBC-CF05C6B67CA3</guid>
+    <guid>94A09918-A881-4B75-8D29-C5609888466C</guid>
   </payload>
 </license>

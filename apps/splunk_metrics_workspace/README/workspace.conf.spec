@@ -1,5 +1,5 @@
 # This file contains possible attribute/value pairs for configuring the Metrics Workspace
-    
+
 # workspace.conf is used for:
 # * Enabling/Disabling feature flags
 # * Limiting the amount of metric names and dimensions the app loads.
@@ -25,6 +25,14 @@ max_dimensions = <int>
 data-alerts = <bool>
 * Disables/enables the data source for the alert.
 * Default: 1
+
+data-alerts-scheduled = <bool>
+* Disables/enables the scheduled alert service.
+* Default: 1
+
+data-alerts-streaming = <bool>
+* Disables/enables the streaming alert service.
+* Default: 0
 
 analysis-related-events = <bool>
 * Toggle the related events functionality
@@ -64,6 +72,14 @@ state-restore = <bool>
 
 chart-blocking-load = <bool>
 * Enables/disables chart loading body on data refresh
+* Default: 0
+
+reference-lines = <bool>
+* Enables/disables reference lines on charts
+* Default: 0
+
+category-charts = <bool>
+* Enables/disables category chart modes in chart settings panel
 * Default: 0
 
 data-datasets = <bool>

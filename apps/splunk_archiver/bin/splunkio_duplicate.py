@@ -1,10 +1,14 @@
 #
 # THIS FILE IS A COPY OF $SPLUNK_SOURCE/python-site/splunk/vix/splunkio.py
 #
-
+import functools
 import sys
 import csv
-import cStringIO
+if sys.version_info >= (3, 0):
+    from io import StringIO
+else:
+    from cStringIO import StringIO
+from builtins import zip, map
 
 # Unsure if this matters or not, but using 6.2.0 for now.
 splunkVersion = '6.2.0'
@@ -18,7 +22,7 @@ def _getTransportString(sio):
     return _getTransportHeader(body) + body
 
 def _makeWriterIO(header):
-    sio = cStringIO.StringIO()
+    sio = StringIO()
     writer = csv.DictWriter(sio, header, extrasaction='ignore')
     writer.writerow(dict(zip(header, header)))
     return writer, sio
@@ -29,7 +33,7 @@ def _yieldSplunkStrings(maps, buffersize):
     if len(maps) is 0:
         yield _getTransportHeader('')
     else:
-        header = list(set(reduce(lambda acc,x: acc + x, map(lambda m: m.keys(), maps), [])))
+        header = list(set(functools.reduce(lambda acc, x: acc + x, map(lambda m: list(m), maps), [])))
         writer, sio = _makeWriterIO(header)
         hasrows = False
         for m in maps:

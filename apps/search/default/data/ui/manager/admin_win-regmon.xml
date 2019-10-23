@@ -45,8 +45,8 @@
       <view name="edit"/>
       <view name="create"/>
       <key name="processValueList">', '.join(value) if isinstance(value, list) and len(value)>0 else 'None'</key>
-      <key name="submitValueAdd">'|'.join([key[14:] for key in form_data if key.startswith('spl-ctrl_type_') and form_data[key] == '1']) if len([key for key in form_data if key.startswith('spl-ctrl_type_') and form_data[key] == '1'])>0 else None</key>
-      <key name="submitValueEdit">'|'.join([key[14:] for key in form_data if key.startswith('spl-ctrl_type_') and form_data[key] == '1']) if len([key for key in form_data if key.startswith('spl-ctrl_type_') and form_data[key] == '1'])>0 else None</key>
+      <key name="submitValueAdd">'|'.join([key[14:] for key, value in form_data.items() if key.startswith('spl-ctrl_type_') and value == '1']) if len([key for key, value in form_data.items() if key.startswith('spl-ctrl_type_') and value == '1'])>0 else None</key>
+      <key name="submitValueEdit">'|'.join([key[14:] for key, value in form_data.items() if key.startswith('spl-ctrl_type_') and value == '1']) if len([key for key, value in form_data.items() if key.startswith('spl-ctrl_type_') and value == '1'])>0 else None</key>
     </element>
     
     <element name="evt_types" type="fieldset">

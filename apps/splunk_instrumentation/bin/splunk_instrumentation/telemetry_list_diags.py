@@ -73,6 +73,8 @@ class ListDiagsHandler(PersistentServerConnectionApplication):
             else:
                 body = splunkd.get('/services/diag/status').get('body').read()
 
+            if sys.version_info >= (3, 0):
+                body = body.decode()
             return {'payload': body,
                     'status': 200}
         except Exception:

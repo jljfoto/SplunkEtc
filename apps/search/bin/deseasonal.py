@@ -1,7 +1,7 @@
 import csv
 import sys
 import splunk.Intersplunk
-import string
+from builtins import range
 
 from splunk.stats_util.x11 import *
 
@@ -19,17 +19,17 @@ maxPeriod = 10000
 i = 1
 period = 0
 while i<len(sys.argv):
-    # expect argument in format: [<type>][<period>](<fieldname>) [as <newname>] 
+    # expect argument in format: [<type>][<period>](<fieldname>) [as <newname>]
     # or simply: <fieldname> [as <newname>]
     arg = sys.argv[i]
     pos = arg.find('(')
     if pos >= 0:
         if arg[-1] != ')':
-            splunk.Intersplunk.parseError("Invalid argument '%s': missing closing )" % arg)        
+            splunk.Intersplunk.parseError("Invalid argument '%s': missing closing )" % arg)
         field = arg[pos+1:len(arg)-1]
     else:
         if arg[-1] == ')':
-            splunk.Intersplunk.parseError("Invalid argument '%s': missing openning (" % arg)        
+            splunk.Intersplunk.parseError("Invalid argument '%s': missing openning (" % arg)
         field = arg
     if len(field) == 0 or field[0:2] == '__':
         splunk.Intersplunk.parseError("Invalid or empty field '%s'" % field)
@@ -52,12 +52,12 @@ while i<len(sys.argv):
                     splunk.Intersplunk.parseError("Invalid x11 period for argument '%s': period can't be smaller than 5 or larger than %d" %(arg,maxPeriod))
             except ValueError:
                 splunk.Intersplunk.parseError("Invalid x11 period or type for argument '%s'" % arg)
-                
+
     if x11type is None:
         x11type = 'mult' # default type
-                
+
     newname = arg;
-    if (i+2<len(sys.argv)) and (string.lower(sys.argv[i+1]) == "as"):
+    if i + 2 < len(sys.argv) and sys.argv[i+1].lower() == "as":
         newname = sys.argv[i+2]
         i += 3
     else:
@@ -70,7 +70,7 @@ while i<len(sys.argv):
 
 if isgetinfo:
     splunk.Intersplunk.outputInfo(False, False, True, False, None, True)
-    # outputInfo automatically calls sys.exit()    
+    # outputInfo automatically calls sys.exit()
 
 
 results = splunk.Intersplunk.readResults(None, None, False)
@@ -94,17 +94,17 @@ if len(vals) == 0:
 if period == 0:
     ti['period'] = findPeriod(vals)
     if ti['period'] < 5: ti['period'] = 5
-if ti['period'] > 0 and len(vals) > 7*ti['period']: # number of values must be at least 7 times period, otherwise errors will happen 
+if ti['period'] > 0 and len(vals) > 7*ti['period']: # number of values must be at least 7 times period, otherwise errors will happen
     ts = TS.fromlist (vals)
     ts.setPeriod (ti['period'])
     if x11type == "mult":
         x11 = X11(ts, "MULT")
     else:
         x11 = X11(ts,"ADD")
-        
+
     sa = x11.seasonal_adjust()
-    
-    for i in range(min(len(results),len(ts))): 
+
+    for i in range(min(len(results),len(ts))):
         results[i][ti['newname']] = str(sa[i])
 else: # not enough values to do x11, so output original values
     for i in range(len(results)):

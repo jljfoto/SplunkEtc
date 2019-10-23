@@ -1,5 +1,10 @@
 import time
-from Queue import Queue
+import sys
+if sys.version_info >= (3, 0):
+    from queue import Queue
+else:
+    from Queue import Queue
+
 from threading import Thread
 from splunk_instrumentation.diag import make_uuid
 

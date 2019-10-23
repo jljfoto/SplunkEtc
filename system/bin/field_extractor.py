@@ -4,8 +4,6 @@ import splunk.rest
 import splunk.field_extractor.mgr as mgr
 from splunk.field_extractor.RegexBuilder import  FXData, TableUINewRule, TableUIExistingRule, TableUIEvents
 from copy import deepcopy
-from urlparse import urlparse
-
 
 def check(args, kwargs, required=True):
     for rarg, (rtype, rvals) in args.items():

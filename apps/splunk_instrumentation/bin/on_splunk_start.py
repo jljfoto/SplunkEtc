@@ -114,6 +114,7 @@ class OnSplunkStart(object):
         settings = {}
 
         current_opt_in_version = services.telemetry_conf_service.content.get('optInVersion')
+        swa_endpoint_url = '/splunkd/__raw/servicesNS/nobody/splunk_instrumentation/telemetry-metric'
 
         # Being explicit about all opt-ins. Licensing's default
         # is changing to True for on-prem. Need to make sure it
@@ -122,7 +123,9 @@ class OnSplunkStart(object):
             'optInVersionAcknowledged': current_opt_in_version,
             'sendAnonymizedWebAnalytics': True,
             'sendAnonymizedUsage': False,
-            'sendLicenseUsage': False
+            'sendLicenseUsage': False,
+            'onCloudInstance': True,
+            'swaEndpoint': swa_endpoint_url
         })
 
         services.telemetry_conf_service.update(settings)

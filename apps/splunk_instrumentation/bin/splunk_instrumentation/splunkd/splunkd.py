@@ -1,6 +1,6 @@
 import json
 import splunk_instrumentation.splunklib.client as splunklib
-from urlparse import urlsplit
+from future.moves.urllib import parse as urllib_parse
 
 
 class Splunkd(object):
@@ -27,7 +27,7 @@ class Splunkd(object):
         elif kwargs.get('token'):
             # Connection by token
             if kwargs.get('server_uri'):
-                splunkd = urlsplit(kwargs.get('server_uri'), allow_fragments=False)
+                splunkd = urllib_parse.urlsplit(kwargs.get('server_uri'), allow_fragments=False)
                 kwargs['scheme'] = splunkd.scheme
                 kwargs['host'] = splunkd.hostname
                 kwargs['port'] = splunkd.port

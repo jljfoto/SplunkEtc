@@ -1,4 +1,5 @@
 import hashlib
+import sys
 import splunk.Intersplunk as si
 
 if __name__ == '__main__':
@@ -12,6 +13,8 @@ if __name__ == '__main__':
 
         for result in results:
                 eventSignature = '-=XXX=-'.join([result.get(field,'') for field in keywords])
+                if sys.version_info >= (3, 0):
+                    eventSignature = eventSignature.encode('utf-8')
                 sigHash = hashlib.sha1(eventSignature).hexdigest()
                 result['_icon'] = sigHash
         si.outputResults(results)

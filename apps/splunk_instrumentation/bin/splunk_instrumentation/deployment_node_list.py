@@ -83,7 +83,7 @@ class NodeList(object):
         Adds SHC members to the node list result
         """
         try:
-            shc_member_entries = self.service.get_json('/services/shcluster/member/members')['entry']
+            shc_member_entries = self.service.get_json('/services/shcluster/member/members', count=-1)['entry']
 
             # print SHC_members_info
             for member in shc_member_entries:
@@ -134,7 +134,7 @@ class NodeList(object):
         Adds search peers to the node list result
         """
         try:
-            search_peer_entries = self.service.get_json('/services/search/distributed/peers')['entry']
+            search_peer_entries = self.service.get_json('/services/search/distributed/peers', count=-1)['entry']
             for peer in search_peer_entries:
 
                 uri = "{scheme}://{host_port}".format(

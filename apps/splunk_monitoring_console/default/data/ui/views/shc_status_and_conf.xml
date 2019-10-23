@@ -152,7 +152,7 @@
         <div class="dmc-kpi-item">
           <div class="alert alert-warning">
             <i class="icon-alert"></i>
-            <h5>$common_baseline_text_unhealthy$ <a class="scroll" href="#members_table">click to see more details.</a> <a href="/help?location=learnmore.shc.confreplication" target="_blank" class="external">Learn More</a></h5>
+            <h5>$common_baseline_text_unhealthy$ Scroll down to see member status. <a href="/help?location=learnmore.shc.confreplication" target="_blank" class="external">Learn More</a></h5>
           </div>
         </div>
       </html>
@@ -476,7 +476,7 @@
   <row>
     <panel rejects="$historical$">
       <title>Status</title>
-      <table id="members_table">
+      <table>
         <title>$totalCountOfMembers$ Members</title>
         <search base="membersSnapshotSearch">
           <query>

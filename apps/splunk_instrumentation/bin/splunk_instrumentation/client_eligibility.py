@@ -26,6 +26,8 @@ ServerRoles.cpp to be certain.
 '''
 
 
+import sys
+
 def get_eligibility(services, opt_in_version=None, username=None):
     '''
     Gathers eligibility data describing the instrumentation actions that
@@ -144,7 +146,9 @@ def get_eligibility(services, opt_in_version=None, username=None):
     # validate that the user has the requisite capabilities.
     if services.server_info_service.content.get('isFree', '0') != '1' and username:
         capabilities = (
-            services.splunkd.get_json('/services/authentication/users/%s' % username)
+            services.splunkd.get_json(
+                '/services/authentication/users/%s' % (username if sys.version_info >= (3, 0) else username.encode('utf-8'))
+            )
             ['entry'][0]['content']['capabilities']
         )
         if ('edit_telemetry_settings' not in capabilities):

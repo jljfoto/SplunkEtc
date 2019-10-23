@@ -40,7 +40,7 @@
               | eval ingest_pool=if(category=="ingest" and default_category_pool=="1",(if(isNull('title'), "Not Configured", 'title')),NULL)
               | stats values(eval(if(title!="general",title,NULL))) as pools values(default_pool) AS default_pool values(ingest_pool) AS ingest_pool by splunk_server]
           | fields splunk_server, roles, default_pool, ingest_pool, pools
-          | rename splunk_server AS "Instance", roles AS Roles, default_pool AS "Default Pool", ingest_pool AS "Ingest Pool" pools AS "All Pools"
+          | rename splunk_server AS "Instance", roles AS Roles, default_pool AS "Default Search Pool", ingest_pool AS "Default Ingest Pool" pools AS "All Pools"
         </searchString>
       </table>
     </panel>

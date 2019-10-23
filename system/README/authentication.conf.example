@@ -1,4 +1,4 @@
-#   Version 7.3.0
+#   Version 8.0.0
 #
 # This is an example authentication.conf. authentication.conf is used to
 # configure LDAP, Scripted, SAML and Proxy SSO authentication in addition 

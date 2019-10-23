@@ -1,10 +1,11 @@
+from __future__ import absolute_import
 import random
 
 import os
 import sys
 import json
 import splunk.rest as rest
-from datetime_util import utcNow
+from splunk_instrumentation.datetime_util import utcNow
 
 LAST_READ_TIME_FILE = '.last_read'
 
@@ -96,8 +97,8 @@ sys.path.append(path)
 # loads dev setup
 if INST_MODE == "DEV":
     if not os.environ.get("SPLUNK_DB"):
-        os.environ['SPLUNK_DB'] = os.environ.get('SPLUNK_HOME') + '/var/lib/splunk'
+        os.environ['SPLUNK_DB'] = os.path.join(os.environ.get('SPLUNK_HOME') + 'var', 'lib', 'splunk')
     INST_PRE_EXECUTE_SLEEP = 1
     if not os.environ.get('INST_KEY'):
-        rc_file = os.path.dirname(os.path.realpath(__file__)) + '/splunkrc.json'
+        rc_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'splunkrc.json')
         SPLUNKRC = json.loads(open(rc_file, 'r').read())

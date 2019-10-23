@@ -1,25 +1,30 @@
 import copy
-import cStringIO
+import sys
+if sys.version_info >= (3, 0):
+    from io import (BytesIO, TextIOWrapper)
+    import urllib.parse as urllib
+else:
+    from cStringIO import StringIO
+    BytesIO = StringIO
+    import urllib
+from functools import cmp_to_key
+from email import encoders, utils
 import csv
 import json
 import defusedxml.lxml as safe_lxml
 import re
 import socket
 import time
-import urllib
 from mako import template
 import mako.filters as filters
+from builtins import range
 
-from email import Encoders
-from email import Utils
 from email.mime.application import MIMEApplication
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.image import MIMEImage
 from email.header import Header
 
-import base64
 import splunk.entity as entity
 import splunk.Intersplunk
 import splunk.mining.dcutils as dcu
@@ -29,7 +34,7 @@ import splunk.secure_smtplib as secure_smtplib
 import splunk.ssl_context as ssl_context
 from splunk.rest import simpleRequest
 from splunk.saved import savedSearchJSONIsAlert
-from splunk.util import normalizeBoolean
+from splunk.util import normalizeBoolean, unicode
 
 PDF_REPORT_SERVER_TIMEOUT = 600
 PDFGEN_SIMPLE_REQUEST_TIMEOUT = 3600
@@ -149,6 +154,7 @@ def sendEmail(results, settings, keywords, argvals):
     sid             = settings['sid']
     ssname          = argvals.get('ssname')
     isScheduledView = False
+    is_stream_malert = normalizeBoolean(argvals.get('is_stream_malert'))
 
     if ssname: 
         # populate content with savedsearch
@@ -165,13 +171,14 @@ def sendEmail(results, settings, keywords, argvals):
             )
             isScheduledView = True
 
-        else: 
+        else:
+            if is_stream_malert:
+                entityClass = ['alerts', 'metric_alerts']
+            else:
+                entityClass = ['saved', 'searches']
+            entityClass.append(ssname)
             uri = entity.buildEndpoint(
-                [
-                    'saved', 
-                    'searches', 
-                    ssname
-                ], 
+                entityClass,
                 namespace=namespace, 
                 owner=owner
             )
@@ -184,7 +191,7 @@ def sendEmail(results, settings, keywords, argvals):
         # set type of saved search
         if isScheduledView: 
             ssContent['type']  = 'view'
-        elif savedSearchJSONIsAlert(savedSearch):
+        elif is_stream_malert or savedSearchJSONIsAlert(savedSearch):
             ssContent['type']  = 'alert'
         else:
             ssContent['type']  = 'report'
@@ -219,7 +226,13 @@ def sendEmail(results, settings, keywords, argvals):
             if '@go' in split_results_path:
                 useGoLink = True
             if ssType == 'alert':
-                if useGoLink:
+                if is_stream_malert:
+                    # SPL-174186
+                    # Note: this will generate link like this:  http://<host:webport>/en-US/app/search/analysis_workspace?s=/servicesNS/<user>/<app>/alerts/metric_alerts/<alert_name>
+                    # but the current MAW working link is this: http://<host:webport>/en-US/app/search/analysis_workspace?s=/servicesNS/<user>/<app>/saved/searches/<alert_name>
+                    # If MAW UI can create new links for stream alert, this python code will work out of the box. Otherwise, we need to fix it at here.
+                    ssContent['view_link'] = view_path + 'analytics_workspace?' + urllib.urlencode({'s': savedSearch['entry'][0]['links'].get('alternate')})
+                elif useGoLink:
                     ssContent['view_link'] = view_path + '@go?' + urllib.urlencode({'s': savedSearch['entry'][0]['links'].get('alternate'), 'dispatch_view': 'alert'})
                 else:
                     ssContent['view_link'] = view_path + 'alert?' + urllib.urlencode({'s': savedSearch['entry'][0]['links'].get('alternate')})
@@ -233,13 +246,14 @@ def sendEmail(results, settings, keywords, argvals):
             else:
                 ssContent['view_link'] = view_path + 'search'
     else:
+        if is_stream_malert:
+            entityClass = ['alerts', 'metric_alerts']
+        else:
+            entityClass = ['saved', 'searches']
+        entityClass.append('_new')
         #assumes that if no ssname then called from searchbar or test email
         uri = entity.buildEndpoint(
-                [
-                    'saved',
-                    'searches',
-                    '_new'
-                ],
+                entityClass,
                 namespace=namespace,
                 owner=owner
             )
@@ -273,8 +287,6 @@ def sendEmail(results, settings, keywords, argvals):
             ssContent['trigger_timeHMS'] = time.strftime("%H:%M:%S %Z", triggerSeconds)
         except Exception as e:
             logger.error(e)
-
-    logger.debug('SENDEMAIL argvals %s' % argvals)
 
     # layer in arg vals
     if argvals.get('to'):
@@ -340,7 +352,7 @@ def sendEmail(results, settings, keywords, argvals):
     ssContent['graceful'] = normalizeBoolean(argvals.get('graceful', 0))
 
     #if there is no results_link then do not incude it
-    if not normalizeBoolean(ssContent.get('results_link')):
+    if is_stream_malert or not normalizeBoolean(ssContent.get('results_link')):
         ssContent['action.email.include.results_link'] = False
 
     #need for backwards compatibility
@@ -462,18 +474,18 @@ def sendEmail(results, settings, keywords, argvals):
 def buildSafeMergedValues(ssContent, results, serverInfoContent, jobContent, viewContent, results_file):
     mergedObject = {}
      #namespace the keys
-    for key, value in jobContent.iteritems():
+    for key, value in jobContent.items():
         mergedObject['token.job.'+key] = value
     mergedObject['token.search_id'] = jobContent.get('sid')
 
-    for key, value in ssContent.iteritems():
+    for key, value in ssContent.items():
         mergedObject['token.'+key] = value
 
     mergedObject['token.name'] = ssContent.get('name')
     mergedObject['token.app'] = ssContent.get('app')
     mergedObject['token.owner'] = ssContent.get('owner')
 
-    for key, value in serverInfoContent.iteritems():
+    for key, value in serverInfoContent.items():
         mergedObject['token.server.'+key] = value
 
     if viewContent:
@@ -532,7 +544,7 @@ def realize(valuesForTemplate, ssContent, sessionKey, namespace, owner, argvals)
     postargs['output_mode'] = 'json'
     postargs['conf.recurse'] = 0
     try:
-        for key, value in stringsForPost.iteritems():
+        for key, value in stringsForPost.items():
             if len(value.strip()) == 0:
                 logger.warning('Token substitution may fail due to key:%s contains only whitespaces' % key)
             postargs['name'] = value
@@ -594,7 +606,7 @@ def buildHeaders(argvals, ssContent, email, sid, serverInfoContent):
     if bcc:
         email['Bcc'] = bcc
 
-    email['Date'] = Utils.formatdate(localtime=True)
+    email['Date'] = utils.formatdate(localtime=True)
 
     if priority:
         # look up better name
@@ -1002,8 +1014,7 @@ def getSortedColumns(results, width_sort_columns):
     colsAndCounts = []
     # sort columns iff asked to
     if width_sort_columns:
-       colsAndCounts = columnMaxLens.items()
-       colsAndCounts.sort(numsort)
+       colsAndCounts = sorted(columnMaxLens.items(), key=cmp_to_key(numsort))
     else:
        for k,v in results[0].items():
           if k in columnMaxLens:
@@ -1166,10 +1177,13 @@ def buildAttachments(settings, ssContent, results, email, jobCount):
     # (type == searchCommand and sendresults and not inline) needed for backwards compatibility
     # (sendresults and not(sendcsv or sendpdf or inline) and inlineFormat == 'csv') 
     #       needed for backwards compatibility when we did not have sendcsv pre 6.1 SPL-79561
-    if sendcsv or (type == 'searchCommand' and sendresults and not inline) or (sendresults and not(sendcsv or sendpdf or inline) and inlineFormat == 'csv'):
+    # SPL-169899 skip the attachment if there are no results.
+    if len(results) == 0:
+        logger.info("buildAttachments: not attaching csv as there are no results")
+    elif (sendcsv or (type == 'searchCommand' and sendresults and not inline) or (sendresults and not(sendcsv or sendpdf or inline) and inlineFormat == 'csv')):
         csvAttachment = MIMEBase("text", "csv")
         csvAttachment.set_payload(generateCSVResults(results))
-        Encoders.encode_base64(csvAttachment)
+        encoders.encode_base64(csvAttachment)
         props = {
             "owner": owner or 'nobody',
             "app": namespace,
@@ -1194,8 +1208,12 @@ def generateCSVResults(results):
         return ''
     
     header = []
-    s      = cStringIO.StringIO()
-    w      = csv.writer(s)
+    s = BytesIO()
+    if sys.version_info >= (3, 0):
+        t = TextIOWrapper(s, write_through = True, encoding='utf-8')
+        w = csv.writer(t)
+    else:
+        w = csv.writer(s)    
     
     
     if "_time" in results[0] : header.append("_time")
@@ -1271,8 +1289,6 @@ def generatePDF(serverURL, subject, sid, settings, pdfViewID, ssName, paperSize,
         else:
             parameters['paper-size'] = paperSize
 
-    pdfViewID_filename = pdfViewID and pdfViewID.strip(' .:;|><\'"')
-    datestamp = time.strftime('%Y-%m-%d')
 
     # determine if we should set an effective dispatch "now" time for this job
     scheduledJobEffectiveTime = getEffectiveTimeOfScheduledJob(settings.get("sid", ""))
@@ -1345,11 +1361,11 @@ def sendHealthAlertEmail(results, settings):
 
     if not results or len(results) < 1:
         logger.error("There is no email content specified.")
-        return;
+        return
 
     if not settings.get('to') and not settings.get('cc') and not settings.get('bcc'):
         logger.error("There are no recipients specified")
-        return;
+        return
 
     sessionKey = ""
     alertConfig = {}
@@ -1389,10 +1405,19 @@ def sendHealthAlertEmail(results, settings):
 results, dummyresults, settings = splunk.Intersplunk.getOrganizedResults()
 try:
     keywords, argvals = splunk.Intersplunk.getKeywordsAndOptions(CHARSET)
-    if 'is_health_alert' in argvals: 
+
+    logger.debug('SENDEMAIL argvals %s' % argvals)
+
+    if 'is_health_alert' in argvals:
         results = sendHealthAlertEmail(results, settings)
-    else: 
-        results = sendEmail(results, settings, keywords, argvals)
+    else:
+        if results or 'ssname' in argvals:
+            results = sendEmail(results, settings, keywords, argvals)
+        elif 'sendtestemail' in argvals:
+            if normalizeBoolean(argvals.get('sendtestemail')):
+                results = sendEmail(results, settings, keywords, argvals)
+        else:
+            logger.warn("search results is empty, no email will be sent")
 except Exception as e:
-    logger.error(e)
+    logger.exception(e)
 splunk.Intersplunk.outputResults(results)

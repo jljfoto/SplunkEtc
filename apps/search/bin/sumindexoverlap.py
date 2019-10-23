@@ -3,6 +3,9 @@ import sys,splunk.Intersplunk
 import re
 import urllib
 import time
+from builtins import range, filter
+from splunk.util import cmp
+from functools import cmp_to_key
 
 """ 
     This script looks for query ids that overlap in time or have time gaps between.
@@ -34,7 +37,7 @@ def fToStr(x):
         return "inf"
     
     str = "%.4f" % x
-    str = str.rstrip('0');
+    str = str.rstrip('0')
     if str.endswith('.'): str = str[0:len(str)-1]
     return str
 
@@ -47,7 +50,7 @@ def result_compare(x, y):
         if   x_min == y_min : return cmp(x[query_id_key], y[query_id_key])
         elif x_min <  y_min : return -1
         else                : return  1
-    return ret;
+    return ret
 
 def valid_result(x):
     return min_time_key in x and max_time_key in x and query_id_key in x and search_name_key in x
@@ -71,21 +74,19 @@ def gapsOverlaps(results, findGaps):
         #         (2) keep only results with unique query ids
         results = filter(valid_result, results)
        
-        if len(results) == 0:
-            toReturn = splunk.Intersplunk.generateErrorResults("Invalid events. Events should contain fields: %s, %s, %s and %s" % (min_time_key, max_time_key, query_id_key, search_name_key))
-            return toReturn
-            
         uniq_qid = {}
         for r in results:
-            if not (r[query_id_key] in uniq_qid ):
+            if r[query_id_key] not in uniq_qid:
                uniq_qid[r[query_id_key]] = r
         results = uniq_qid.values()
-        uniq_qid.clear()
-    
+
+        if len(results) == 0:
+            return splunk.Intersplunk.generateErrorResults("Invalid events. Events should contain fields: %s, %s, %s and %s" % (min_time_key, max_time_key, query_id_key, search_name_key))
+
         #### algo start ####
         
         #1. sort the results by min_time
-        results.sort(result_compare)
+        results = sorted(results, key = cmp_to_key(result_compare))
         
         results_cnt = len(results)
     
@@ -99,12 +100,12 @@ def gapsOverlaps(results, findGaps):
             
             # look for (1)  all overlaps and (2) the first gap (in events with same search name)
             # need the for loop to find *all* overlaps
-            k = 0;
+            k = 0
             for j in range(i+1, results_cnt):
                 c     = results[j] 
                 
                 if p_name != c[search_name_key]:
-                    break;
+                    break
 
                 c_qid = c[query_id_key]                 
                 c_min = parse_float(c[min_time_key])
@@ -129,7 +130,7 @@ def gapsOverlaps(results, findGaps):
                     r["_time"]        = p_max
                     r["_raw"]         = "Found gap in saved search '%s' between search ids: '%s' and '%s' from '%s' to '%s'" % (p_name, p_qid, c_qid, r["gap_earliest"], r["gap_latest"])
                 else: 
-                    break;
+                    break
                      
                 if len(r) > 0:
                    r["_orig_sid1"] = p_qid
@@ -144,7 +145,7 @@ def gapsOverlaps(results, findGaps):
                 k += 1  
                 
         # reverse order latest -> earliest 
-        toReturn.sort(cmp=lambda x,y: int(x["_time"]-y["_time"]), reverse=True)
+        toReturn = sorted(toReturn, key=cmp_to_key(lambda x,y: int(x["_time"]-y["_time"])), reverse=True)
     except:
         import traceback
         stack    = traceback.format_exc()

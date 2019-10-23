@@ -4,13 +4,14 @@ This is the main entry point to scripted inputs to run
 checks if this instance should run the app and then runs the app
 
 '''
+from __future__ import absolute_import
 
-from constants import INST_EXECUTION_ID, INST_SCHEMA_FILE, INST_DEBUG_LEVEL
+from splunk_instrumentation.constants import INST_EXECUTION_ID, INST_SCHEMA_FILE, INST_DEBUG_LEVEL
 import sys
 import logging
-from report import report
+from splunk_instrumentation.report import report
 from time import sleep
-from schedule_manager import ScheduleManager
+from splunk_instrumentation.schedule_manager import ScheduleManager
 from splunk_instrumentation.dataPoints.data_point import dataPointFactory
 from splunk_instrumentation.metrics.metrics_schema import load_schema
 from splunk_instrumentation.metrics.instance_profile import get_instance_profile, is_lead_node

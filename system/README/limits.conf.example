@@ -1,4 +1,4 @@
-#   Version 7.3.0 
+#   Version 8.0.0 
 # CAUTION: Do not alter the settings in limits.conf unless you know what you are doing. 
 # Improperly configured limits may result in splunkd crashes and/or memory overuse.
 
@@ -173,5 +173,21 @@ enabled = true
 [search_optimization::replace_stats_cmds_with_tstats]
 enabled = false
 
+[search_optimization::replace_datamodel_stats_cmds_with_tstats]
+enabled = true
 
+[search_optimization::dfs_job_extractor]
+enabled = true
+
+[dfs]
+dfc_control_port = 17000
+dfc_num_slots = 4
+dfs_max_num_keepalives = 10
+dfs_max_reduce_partition_size = 150000
+dfs_max_search_result_size = 1000000
+dfw_num_slots = 10
+dfw_num_slots_enabled = true
+dfw_receiving_data_port = 17500
+dfs_max_num_keepalives = 10
+dfw_receiving_data_port_count = 0
 

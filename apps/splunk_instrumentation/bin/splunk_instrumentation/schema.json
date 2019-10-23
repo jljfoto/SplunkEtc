@@ -408,6 +408,34 @@
     {
       "dataPoints": [
         {
+          "saved_search": "instrumentation.usage.search.searchtelemetry.searchType",
+          "type": "SPLDataPoint"
+        }
+      ],
+      "phase": 1,
+      "interval": "nightly",
+      "roles": [ "lead_node" ],
+      "component": "usage.search.searchtelemetry.searchType",
+      "priority": "high",
+      "visibility": "anonymous,support"
+    },
+    {
+      "dataPoints": [
+        {
+          "saved_search": "instrumentation.usage.search.searchtelemetry.sourcetypeUsage",
+          "type": "SPLDataPoint"
+        }
+      ],
+      "phase": 1,
+      "interval": "nightly",
+      "roles": [ "lead_node" ],
+      "component": "usage.search.searchtelemetry.sourcetypeUsage",
+      "priority": "high",
+      "visibility": "anonymous,support"
+    },
+    {
+      "dataPoints": [
+        {
           "saved_search": "instrumentation.usage.lookups.lookupDefinitions",
           "type": "SPLDataPoint"
         }
@@ -432,6 +460,90 @@
       "component": "performance.bundleReplication",
       "priority": "high",
       "visibility": "anonymous,support"
-    }	
+    },
+    {
+      "dataPoints": [
+        {
+          "saved_search": "instrumentation.performance.bundleReplicationCycle",
+          "type": "SPLDataPoint"
+        }
+      ],
+      "phase": 1,
+      "interval": "nightly",
+      "roles": [ "lead_node" ],
+      "component": "performance.bundleReplicationCycle",
+      "priority": "high",
+      "visibility": "anonymous,support"
+    },
+    {
+      "dataPoints": [
+        {
+          "saved_search": "instrumentation.usage.metrics",
+          "type": "SPLDataPoint"
+        }
+      ],
+      "phase": 1,
+      "interval": "nightly",
+      "roles": [ "lead_node" ],
+      "component": "usage.metrics",
+      "priority": "high",
+      "visibility": "anonymous,support"
+    },
+    {
+      "dataPoints": [
+        {
+          "saved_search": "instrumentation.usage.rollup",
+          "type": "SPLDataPoint"
+        }
+      ],
+      "phase": 1,
+      "interval": "nightly",
+      "roles": [ "indexer", "!search_peer", "!cluster_slave", "!shc_member", "!cluster_master", "!shc_captain", "!cluster_search_head" ],
+      "component": "usage.rollup",
+      "priority": "high",
+      "visibility": "anonymous,support"
+    },
+    {
+      "dataPoints": [
+        {
+          "saved_search": "instrumentation.usage.rollup",
+          "type": "SPLDataPoint"
+        }
+      ],
+      "phase": 1,
+      "interval": "nightly",
+      "roles": [ "shc_captain" ],
+      "component": "usage.rollup",
+      "priority": "high",
+      "visibility": "anonymous,support"
+    },
+    {
+      "dataPoints": [
+        {
+          "saved_search": "instrumentation.usage.rollup",
+          "type": "SPLDataPoint"
+        }
+      ],
+      "phase": 1,
+      "interval": "nightly",
+      "roles": [ "!cluster_master", "search_head", "!search_peer", "!in_cluster", "!cluster_slave", "!shc_member" ],
+      "component": "usage.rollup",
+      "priority": "high",
+      "visibility": "anonymous,support"
+    },
+    {
+      "dataPoints": [
+        {
+          "saved_search": "instrumentation.usage.kvstore",
+          "type": "SPLDataPoint"
+        }
+      ],
+      "phase": 1,
+      "interval": "nightly",
+      "roles": [ "lead_node" ],
+      "component": "usage.kvstore",
+      "priority": "high",
+      "visibility": "anonymous,support"
+    }
   ]
 }

@@ -2,11 +2,13 @@
 import os
 import re
 import sys
-import urllib
-import splunk.Intersplunk
-import splunk.mining.dcutils as dcu
 import subprocess
 from subprocess import PIPE, STDOUT
+from builtins import range
+from future.moves.urllib.parse import quote as urllib_quote
+
+import splunk.Intersplunk
+import splunk.mining.dcutils as dcu
 
 logger    = dcu.getLogger()
 mswindows = (sys.platform == "win32")
@@ -28,13 +30,13 @@ results,dummyresults,settings = splunk.Intersplunk.getOrganizedResults()
 # name of this script and the path where the user's script is located
 
 # The script will also receive args via stdin - currently only the session
-# key which it can use to communicate back to splunkd is sent via stdin. 
+# key which it can use to communicate back to splunkd is sent via stdin.
 # The format for stdin args is as follows:
 # <url-encoded-name>=<url-encoded-value>\n
 # e.g.
 # sessionKey=0729f8e0d4edf7ae18327da6a9976596
 # otherArg=123456
-# <eof> 
+# <eof>
 
 
 if len(sys.argv) < 10:
@@ -46,7 +48,7 @@ script   = sys.argv[1]
 if not script:
     splunk.Intersplunk.generateErrorResults("Empty string is not a valid script name")
     exit(2)
-    
+
 # Remove possible enclosing single quotes
 if script[0] == "'" and script[-1] == "'":
     script = script[1:-1]
@@ -60,7 +62,7 @@ else:
     etcSubdir = os.environ['SPLUNK_ETC']
 
 if len(sys.argv) > 10:
-   path = sys.argv[10]   # the tenth arg is going to be the file 
+   path = sys.argv[10]   # the tenth arg is going to be the file
 else:
    baseStorage   = os.path.join(sharedStorage, 'var', 'run', 'splunk')
    path          = os.path.join(baseStorage, 'dispatch', sys.argv[9], 'results.csv.gz')
@@ -72,7 +74,7 @@ else:
 if ".." in script or "/" in script or "\\" in script:
     results = splunk.Intersplunk.generateErrorResults('Script location cannot contain "..", "/", or "\\"')
 else:
-    
+
     # look for scripts first in the app's bin/scripts/ dir, if that fails try SPLUNK_HOME/bin/scripts
     namespace  = settings.get("namespace", None)
     sessionKey = settings.get("sessionKey", None)
@@ -86,7 +88,7 @@ else:
     # if we fail to find script in SPLUNK_HOME/etc/apps/<app>/bin/scripts - look in SPLUNK_HOME/bin/scripts
     if not namespace or not os.path.exists(script):
         script = os.path.join(splunk.Intersplunk.splunkHome(),"bin","scripts",scriptName)
-        
+
     if not os.path.exists(script):
         results = splunk.Intersplunk.generateErrorResults('Cannot find script at ' + script)
     else:
@@ -100,9 +102,9 @@ else:
         cmd_args[0] = script
         cmd_args[8] = path
 
-        stdin_data = "sessionKey=" + urllib.quote(sessionKey) + "\n"
+        stdin_data = "sessionKey=" + urllib_quote(sessionKey) + "\n"
 
-        # strip any single/double quoting         
+        # strip any single/double quoting
         for i in range(len(cmd_args)):
             if len(cmd_args[i]) > 2 and ((cmd_args[i][0] == '"' and cmd_args[i][-1] == '"') or (cmd_args[i][0] == "'" and cmd_args[i][-1] == "'")):
                  cmd_args[i] = cmd_args[i][1:-1]
@@ -131,8 +133,8 @@ else:
                 # 3. Replace double quotes with single quotes (Nested quotes don't seem to work on cmd.exe, no matter how much escaping you do)
                 temp = re.sub('(\")', '\'', temp)
 
-                # 4. cmd.exe escapes set &><|'`,;=()[]+~  using ^ and escapes ! with ^^. 
-                temp = re.sub('([\&\>\<\|\'\`\,\;\=\(\)\[\]\+\~ ])','^\\1', temp) # &><|'`,;=()[]+~ 
+                # 4. cmd.exe escapes set &><|'`,;=()[]+~  using ^ and escapes ! with ^^.
+                temp = re.sub('([\&\>\<\|\'\`\,\;\=\(\)\[\]\+\~ ])','^\\1', temp) # &><|'`,;=()[]+~
                 temp = re.sub('([\!])','^^\\1', temp) # !
 
                 cmd_args_ms.append(temp)
@@ -225,14 +227,16 @@ else:
 
                 p = subprocess.Popen(cmd_args_ms_str, stdin=PIPE, stdout=PIPE, stderr=STDOUT, shell=False)
 
-            else:     
+            else:
                 logger.info("runshellscript: " + str(shell_cmd + cmd_args))
                 if mswindows:  # windows doesn't support close_fds param
                     p = subprocess.Popen(shell_cmd + cmd_args, stdin=PIPE, stdout=PIPE, stderr=STDOUT, shell=False)
                 else:
                     p = subprocess.Popen(shell_cmd + cmd_args, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True, shell=False)
 
-            if p: 
+            if p:
+               if sys.version_info >= (3, 0):
+                    stdin_data = stdin_data.encode()
                p.communicate(input=stdin_data)
                code = p.returncode
                if code!=0:

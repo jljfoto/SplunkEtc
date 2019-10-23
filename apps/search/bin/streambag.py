@@ -8,6 +8,7 @@ import splunk.util as util
 import splunk.Intersplunk as isp
 import logging as logger
 import traceback
+from builtins import range
 
 DEFAULT_ARGS = {
     'chunks':       10,

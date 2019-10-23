@@ -10,22 +10,27 @@ import splunk.clilib.cli_common as cli_common
 import collections
 from subprocess import Popen, PIPE
 import traceback
-from StringIO import StringIO
 import json
 import vixutils_duplicate as vixutils
 from distutils import spawn
-from Queue import Queue, Empty
 from threading import Thread
 import splunkio_duplicate as splunkio
 import datetime
+from builtins import map
+if sys.version_info >= (3, 0):
+    from io import StringIO
+    import queue
+else:
+    import Queue as queue
+    from StringIO import StringIO
 
-messageQueue = Queue()
+messageQueue = queue.Queue()
 END_MSG = 'THE END'
 SUDO_BASH_COMMAND = os.path.join(os.environ['SPLUNK_HOME'], 'etc', 'apps', 'splunk_archiver', 'java-bin', 'jars', 'sudobash')
 INDEXER_ARCHIVER_LOCATION_PREFIX = os.path.join(os.environ['SPLUNK_HOME'], 'var', 'run', 'searchpeers')
 
 def _putNamesInVixMap(vix):
-    for name, kvs in vix.iteritems():
+    for name, kvs in vix.items():
         kvs['name'] = name
     return vix
 
@@ -36,9 +41,9 @@ def _processVixes(entity):
 
 def _stripVixPrefix(vix):
     ret = {}
-    for name, kvs in vix.iteritems():
+    for name, kvs in vix.items():
         ret[name] = {}
-        for k, v in kvs.iteritems():
+        for k, v in kvs.items():
             if k.startswith('vix.'):
                 ret[name][k.replace('vix.', '', 1)] = v
             else:
@@ -66,7 +71,7 @@ def _getRequiredArgs(serverId, sessionKey):
 
 def _getProviderEnv(providerMap):
     env = {}
-    for k,v in providerMap.iteritems():
+    for k,v in providerMap.items():
         if isinstance(k, basestring) and k.startswith('env.'):
             envName = k.strip('env.')
             env[envName] = v
@@ -74,7 +79,7 @@ def _getProviderEnv(providerMap):
 
 def _getVixCommand(providerMap):
     commands = {}
-    for k,v in providerMap.iteritems():
+    for k,v in providerMap.items():
         if k.startswith('command'):
             if k == 'command':
                 commands['command.arg.0'] = v
@@ -83,7 +88,7 @@ def _getVixCommand(providerMap):
 
     commandsByArgOrder = collections.OrderedDict(sorted(commands.items(),
                                                         key=lambda t: int(t[0].split('.')[2])))
-    return [v for k, v in commandsByArgOrder.iteritems()]
+    return [v for k, v in commandsByArgOrder.items()]
 
 def _killQuietly(proc):
     try:
@@ -99,7 +104,7 @@ def _parseRaw(raw):
 
 def _entityToDict(entity):
     m = {}
-    for k, v in entity.iteritems():
+    for k, v in entity.items():
         if isinstance(v, (en.Entity, dict)):
             m[k] = _entityToDict(v)
         else:
@@ -111,14 +116,14 @@ def _entityToDict(entity):
 # Executes one java process per index. Can be run in parallel.
 def _executeJavaProcesses(action, logFileName, indexFilterFunc, providers, vixes, indexes, serverId, serverName, sessionKey):
     # should be: for providerName in providers.iteritems():
-    for providerName, providerMap in providers.iteritems():
+    for providerName, providerMap in providers.items():
         # Create the command string that will be run in the shell
         command = _getVixCommand(providerMap)
 
         # SPL-157759 Ensure that the only command that
         # can be issued is the sudobash command. The arguments to
         # the sudobash command are validated in the script
-        if (command[0] != SUDO_BASH_COMMAND and (not(command[0].startswith(INDEXER_ARCHIVER_LOCATION_PREFIX) and (command[0].endswith('sudobash'))))):
+        if (command[0] != SUDO_BASH_COMMAND and (not(command[0].startswith(INDEXER_ARCHIVER_LOCATION_PREFIX) and (command[0].endswith('sudobash')))) and (not(command[0].startswith(vixutils.getAppBinJars()) and (command[0].endswith('sudobash'))))):
             sys.stderr.write("Invalid command specified: '" + command[0] + "''\n")
             os._exit(1)
 
@@ -130,7 +135,7 @@ def _executeJavaProcesses(action, logFileName, indexFilterFunc, providers, vixes
         javaArgs['args'] = {action: _getRequiredArgs(serverId, sessionKey)}
         providerMap['family'] = 'hadoop'
 
-        providersVixes = [v for k, v in vixes.iteritems() if v['provider'] == providerName]
+        providersVixes = [v for k, v in vixes.items() if v['provider'] == providerName]
         providersIndexes = indexes
         if indexFilterFunc:
             providersIndexes = indexFilterFunc(indexes, providersVixes)
@@ -148,7 +153,7 @@ def _executeJavaProcesses(action, logFileName, indexFilterFunc, providers, vixes
         myEnv = os.environ.copy()
         myEnv.update(vixEnv)
         # Filter None's. Popen will crash for values set to None.
-        myEnv = dict((k,v) for k,v in myEnv.iteritems() if v is not None)
+        myEnv = dict((k,v) for k,v in myEnv.items() if v is not None)
 
         # Do execute the java process
         proc = None
@@ -163,9 +168,14 @@ def _executeJavaProcesses(action, logFileName, indexFilterFunc, providers, vixes
             proc = _executeJavaProcessWithArgs(commandstr,  myEnv, logfile)
             proc.stdin.write(jsonArgs.getvalue())
             while proc.poll() is None:
-                outputLine(proc.stdout.readline(), serverName)
+                out = proc.stdout.readline()
+                if sys.version_info >= (3, 0): out = out.decode()
+                outputLine(out, serverName)
             exit = proc.wait()
             stdout, stderr = proc.communicate()
+            if sys.version_info >= (3, 0):
+                stdout = stdout.decode()
+                stderr = stderr.decode()
             for line in stdout:
                 outputLine(line, serverName)
 
@@ -183,7 +193,7 @@ def _executeJavaProcessWithArgs(command, env, logfile):
 
 def _mapValues(fn, m):
     ret = {}
-    for k, v in m.iteritems():
+    for k, v in m.items():
         if isinstance(v, dict):
             ret[k] = _mapValues(fn, v)
         elif isinstance(v, basestring):
@@ -212,7 +222,7 @@ def _withRaw(message):
         return message
     else:
         raw = ''
-        for k,v in message.iteritems():
+        for k,v in message.items():
             raw += _escape(k) + '=' + _escape(v) + ' '
         message['_raw'] = raw
         return message

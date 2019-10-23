@@ -45,11 +45,11 @@ define([
     };
 
     var template = _.template(
-        '<div class="alert <%= alertLevel %>">\
-            <i class="icon-alert"></i>\
-            <h5 class="dmc-kpi-item-title"><%= title %><% if (tooltip && tooltip.length > 0) { %><a class="tooltip-link"><%- _("?").t() %></a><% } %></h5>\
-            <% if (description && description.length > 0) { %><div class="dmc-kpi-item-description"><%= description %></div><% } %>\
-        </div>');
+        '<div class="alert <%= alertLevel %>">' +
+            '<i class="icon-alert"></i>' +
+            '<h5 class="dmc-kpi-item-title"><%= title %><% if (tooltip && tooltip.length > 0) { %><a class="tooltip-link"><%- _("?").t() %></a><% } %></h5>' +
+            '<% if (description && description.length > 0) { %><div class="dmc-kpi-item-description"><%= description %></div><% } %>' +
+        '</div>');
 
     var SampleViz = SplunkVisualizationBase.extend({
         initialize: function() {

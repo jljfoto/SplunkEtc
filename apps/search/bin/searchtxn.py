@@ -151,7 +151,7 @@ def findTransaction(tname, tconstraint, useORs, eventsOnly, maxTerms, messages, 
     #
     # TODO: if transactiondefinition contains maxspan, consider making
     # first stats_search return time ranges to limit values of fields
-    stats_search = '| table %s %s | fillnull value="%s" %s | dedup %s | head %s' % (field_list_str, needsTIME, NULL_VAL, field_list_str, field_list_str, max_combos)
+    stats_search = '| table %s %s | fillnull value="%s" %s | dedup %s | head %d' % (field_list_str, needsTIME, NULL_VAL, field_list_str, field_list_str, max_combos)
 
     seenFields = set()
 

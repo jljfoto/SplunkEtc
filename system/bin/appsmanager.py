@@ -2,25 +2,25 @@
 #                            Remote Application Management                            #
 ################################################################################
 
-from __future__ import with_statement
-from contextlib import closing, nested
+from contextlib import closing
 
 import splunk
 import splunk.bundle as bundle
 import splunk.clilib.bundle_paths as bundle_paths
-import splunk.clilib.cli_common as comm
 import splunk.rest
 import splunk.rest.format as format
 import json
 import logging as logger
-import lxml.etree as etree, json
+import lxml.etree as etree
 import defusedxml.lxml as safe_lxml
 import os
+import sys
 import platform
-import re
-import time
-import urllib
-import urllib2
+
+from future.moves.urllib.parse import urlencode, quote, unquote
+from future.moves.urllib.error import HTTPError, URLError
+from future.moves.urllib.request import urlopen, Request, URLopener
+
 
 # overridden by settings in server.conf -> [applicationsManagement]
 DEFAULT_URL = "https://apps.splunk.com/api/apps"
@@ -100,7 +100,7 @@ class RemoteAppsSetup(splunk.rest.BaseRestHandler):
             platform_info = platform.platform()
             os_name = platform.system()
             arch = platform.machine()
-            py_ver = urllib.URLopener().version
+            py_ver = URLopener().version
             with open(os.path.join(bundle_paths.etc(), "splunk.version")) as f:
                 for i in f:
                     if i.startswith("VERSION"):
@@ -133,8 +133,8 @@ class RemoteAppsSetup(splunk.rest.BaseRestHandler):
             s = conf["shclustering"]
             if not s.isDisabled():
                 self._supportInProductInstall = False
-        except:
-            pass
+        except Exception as e:
+            logger.exception(e)
         logger.debug("applicationsManagement.allowInternetAccess = %s" % str(self._allowRemote))
         logger.debug("applicationsManagement.loginUrl = %s" % self._login)
         logger.debug("applicationsManagement.url = %s" % self._base)
@@ -161,11 +161,12 @@ class RemoteAppsLogin(RemoteAppsSetup):
     def handle_POST(self):
         self.verifyAllowRemote()
         try:
-            post_args = urllib.urlencode(self.request["form"])
+            post_args = urlencode(self.request["form"])
+            if sys.version_info >= (3, 0): post_args = post_args.encode()
             logger.debug("Logging into %s" % self._login)
             bundle_paths.BundleInstaller().validate_server_cert(self._login, self._sslpol)
             # Forward post arguments, including username and password.
-            with closing(urllib2.urlopen(self._login, post_args, URLOPEN_TIMEOUT)) as f:
+            with closing(urlopen(self._login, post_args, URLOPEN_TIMEOUT)) as f:
                 root = safe_lxml.parse(f).getroot()
                 token = root.xpath("a:id", namespaces=NSMAP)[0].text
                 if self.request["output_mode"] == "json":
@@ -180,13 +181,14 @@ class RemoteAppsLogin(RemoteAppsSetup):
                     self.response.setHeader('content-type', 'text/xml')
                     self.response.write(etree.tostring(response, pretty_print=True))
                 logger.debug("Login successful")
-        except urllib2.HTTPError as e:
+        except HTTPError as e:
             if e.code in [401, 405]:
                 # Returning 401 logs off current session
                 # Splunkbase retuns 405 when only password is submitted
                 raise splunk.RESTException(400, e.msg)
             raise splunk.RESTException(e.code, e.msg)
         except Exception as e:
+            logger.exception(e)
             raise splunk.AuthenticationFailed
 
 
@@ -292,12 +294,12 @@ class RemoteAppsManager(RemoteAppsSetup):
 
         try:
             # Package up a Request with auth information.
-            req = urllib2.Request(href)
+            req = Request(href)
             # XXX: Converting the auth token from a POST arg to a header
             # requires us to unquote() it. If the client did not correctly
             # quote() the token, login will fail.
             req.add_header(HTTP_AUTH_HEADER,
-                        urllib.unquote(self.args[HTTP_AUTH_TOKEN]))
+                           unquote(self.args[HTTP_AUTH_TOKEN]))
             # Install using this Request object.
             installer = bundle_paths.BundleInstaller()
             if self.args[HTTP_ACTION] == HTTP_ACTION_INSTALL:
@@ -377,7 +379,7 @@ class RemoteAppsManager(RemoteAppsSetup):
                 args_dict.update(extra_get_args)
             if self._platformInfo:
                 args_dict.update(self._platformInfo)
-            args = urllib.urlencode(args_dict)
+            args = urlencode(args_dict)
             if args != "":
                 target_url += ("?" + args)
             logger.debug("Getting feed from: %s" % target_url)
@@ -386,20 +388,21 @@ class RemoteAppsManager(RemoteAppsSetup):
                 headers["User-Agent"] = self._agent            
                 
             bundle_paths.BundleInstaller().validate_server_cert(target_url, self._sslpol)
-            req = urllib2.Request(target_url, None, headers)
-            f = urllib2.urlopen(req, None, URLOPEN_TIMEOUT)
-        except urllib2.HTTPError as e:
+            req = Request(target_url, None, headers)
+            f = urlopen(req, None, URLOPEN_TIMEOUT)
+        except HTTPError as e:
             raise splunk.RESTException(e.code, e.msg)
-        except urllib2.URLError as e:
+        except URLError as e:
+            logger.exception(e)
             raise splunk.RESTException(503, "Splunk is unable to connect to the Internet to find more apps.")   
         except Exception as e:
+            logger.exception(e)
             raise splunk.RESTException(404, "Resource not found")
         try:
             root = safe_lxml.parse(f).getroot()
             f.close()
             return root
         except Exception as e:
-            logger.exception(e)
             raise splunk.InternalServerError(e)
 
     # XXX: This is very brittle. Assumptions:
@@ -412,7 +415,7 @@ class RemoteAppsManager(RemoteAppsSetup):
         for part in self.pathParts[:(self.BASE_DEPTH - 1)]:
             url += '/' + part
         url += '/' + 'local'
-        url += '/' + urllib.quote(b.prettyname())
+        url += '/' + quote(b.prettyname())
         return url
 
     def _transform_feed(self, xml):
@@ -471,8 +474,8 @@ class RemoteAppsManager(RemoteAppsSetup):
                 contents = self._convert_content(entry)
                 if contents["islatest"] == "True":
                     return entry
-            except:
-                pass
+            except Exception as e:
+                logger.exception(e)
         return None
 
     def _parse_link(self, xml):
@@ -486,8 +489,8 @@ class RemoteAppsManager(RemoteAppsSetup):
                     contents = self._convert_content(entry)
                     if contents["fileclass"] in ["bundle", "other"]:
                         return entry.xpath("a:link/@href", namespaces=NSMAP)[0]
-                except:
-                    pass
+                except Exception as e:
+                    logger.exception(e)
             raise splunk.ResourceNotFound(msg)
         except Exception as e:
             logger.exception(e)
@@ -499,7 +502,8 @@ class RemoteAppsManager(RemoteAppsSetup):
         """
         try:
             return format.nodeToPrimitive(xml.xpath("a:content", namespaces=NSMAP)[0][0])
-        except:
+        except Exception as e:
+            logger.exception(e)
             return None
 
     def _get_from_xml(self, xml, location_path, contents, key):
@@ -510,4 +514,3 @@ class RemoteAppsManager(RemoteAppsSetup):
             contents[key] = xml.xpath(location_path, namespaces=NSMAP)[0].text
         except Exception as e:
             logger.exception(e)
-            pass

@@ -1,11 +1,15 @@
 import hashlib
+import sys
 
 metrics_transforms = {}
 
 
 def transform_hash(data, scheme=None):
         scheme = scheme or {"hash": "default"}
-        hash_object = hashlib.sha224(str(data) + scheme.get('hash'))
+        subject = str(data) + scheme.get('hash')
+        if sys.version_info >= (3, 0):
+            subject = subject.encode()
+        hash_object = hashlib.sha224(subject)
         hex_dig = hash_object.hexdigest()
         return hex_dig
 
@@ -43,7 +47,7 @@ def metrics_transform(type, value, scheme=None):
             for idx, val in enumerate(value):
                 value[idx] = metrics_transform(type, val, scheme)
         elif isinstance(value, dict):
-            for idx, val in value.iteritems():
+            for idx, val in value.items():
                 value[idx] = metrics_transform(type, val, scheme)
         else:
             value = metrics_transforms[type](value)

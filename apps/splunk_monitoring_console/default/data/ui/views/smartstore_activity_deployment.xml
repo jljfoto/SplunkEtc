@@ -132,32 +132,25 @@
   </row>
   <row>
     <panel>
-      <chart>
         <title>Bucket Upload/Download Failure Count</title>
-        <search>
-          <query>`dmc_set_index_internal` search_group=$search_group$ source=*metrics.log group=cachemgr_* | eval group_str=case(group="cachemgr_download", "Download", group="cachemgr_upload", "Upload")  | timechart sum(failed) by group_str</query>
-          <earliest>$range.earliest$</earliest>
-          <latest>$range.latest$</latest>
-      </search>
-        <option name="charting.axisTitleY.text">Failed Operations</option>
-        <option name="charting.chart">column</option>
-        <option name="charting.drilldown">none</option>
-        <option name="height">323</option>
-        <option name="refresh.display">progressbar</option>
-      </chart>
-      <html>
-        Failures are only reported here after retries have been exhausted. Failures may require further investigation.
-      </html>
-    </panel>
-  </row>
-  <row>
-    <panel>
+      <input type="dropdown" searchWhenChanged="true" token="aggregation">
+        <label>Group by</label>
+        <showClearButton>false</showClearButton>
+        <choice value="action">Upload/Download</choice>
+        <choice value="reason_str">HTTP Status Code</choice>
+        <default>action</default>
+      </input>
       <chart>
-        <title>Remote Storage Http Error Status Codes</title>
         <search>
-            <query>
-                `dmc_set_index_internal` search_group=$search_group$ source=*splunkd.log S3Client | search statusCode=* | eval status = statusCode.": ".statusDescription | timechart count by status
-            </query>
+          <query>
+            <![CDATA[
+              `dmc_set_index_internal` search_group=$search_group$ source=*splunkd.log (action=download OR action=upload) status=failed component=CacheManager
+              | rex field=reason "HTTP Error (?<statuscode>\d*): (?<description>.*)"
+              | eval reason_str = statuscode.": ".description
+              | fillnull reason_str value="Non-HTTP"
+              | timechart count by $aggregation$
+            ]]>
+          </query>
           <earliest>$range.earliest$</earliest>
           <latest>$range.latest$</latest>
       </search>
@@ -168,7 +161,7 @@
         <option name="refresh.display">progressbar</option>
       </chart>
       <html>
-        These should roughly correspond with the upload/download failures.
+        Check the logs for details on non-http errors.
       </html>
     </panel>
   </row>

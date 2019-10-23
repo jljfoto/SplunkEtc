@@ -128,16 +128,20 @@
       <chart>
         <title>Remote Storage Search Overhead</title>
         <search>
-          <query>`dmc_set_index_internal` host=$splunk_server$  source=*/splunkd_access.log
-              | rex field=uri "/services/admin/cacheman/bid|(?&lt;bid&gt;[^|]*)|/close"
+          <query>
+            <![CDATA[
+              `dmc_set_index_internal` host=$splunk_server$  source=*/splunkd_access.log
+              | rex field=uri "/services/admin/cacheman/bid|(?<bid>[^|]*)|/close"
               | search uri=*/close*
               | eval mytime=strftime(_time, "%Y-%m-%d %H:%M:%S")
               | stats last(_time) as _time count as buckets, sum(miss_ms) as miss_ms sum(search_ms) as search_ms, min(mytime) as issuetime by sid
               | fillnull value=0 search_ms
               | eval overheadRatio=(miss_ms/search_ms)
               | fillnull value=0 overheadRatio
-              | eval searchSpeed=case(overheadRatio &gt; 2,"More than 50%", overheadRatio &lt; .2, "Less than 10%", true(), "10%-50%")
-              | timechart count by searchSpeed</query>
+              | eval searchSpeed=case(overheadRatio > 2,"More than 50%", overheadRatio < .2, "Less than 10%", true(), "10%-50%")
+              | timechart count by searchSpeed
+            ]]>
+          </query>
           <earliest>$range.earliest$</earliest>
           <latest>$range.latest$</latest>
         </search>
@@ -172,15 +176,19 @@
       <table>
         <title>Cache Thrash by Index</title>
         <search>
-          <query>`dmc_set_index_internal` host=$splunk_server$  source=*splunkd.log CacheManager AND TERM(action=download) AND TERM(status=succeeded) AND download_set="*journal*"
-            | rex field=cache_id ".*\|(?&lt;customer_index&gt;.*)~.*~.*\|"
-            | eval identifier=(cache_id + host)
-            | stats count by identifier, customer_index
-            | stats count(eval(count&gt;1)) as duplicate_downloads, sum(count) as all_downloads count(eval(count&gt;=10)) as excessive_duplicate_downloads by customer_index
-            | eval duplicate_percent=if(all_downloads=0, 0, round((duplicate_downloads/all_downloads)*100, 2))
-            | sort  - duplicate_percent
-            | fields customer_index, duplicate_percent  all_downloads duplicate_downloads excessive_duplicate_downloads 
-            | rename customer_index as Index, duplicate_percent as "Repeated Download Percent",  all_downloads as "All Downloads", duplicate_downloads as "Repeated Downloads", excessive_duplicate_downloads as "Excessively Repeated Downloads"</query>
+          <query>
+            <![CDATA[
+              `dmc_set_index_internal` host=$splunk_server$  source=*splunkd.log CacheManager AND TERM(action=download) AND TERM(status=succeeded) AND download_set="*journal*"
+              | rex field=cache_id ".*\|(?<customer_index>.*)~.*~.*\|"
+              | eval identifier=(cache_id + host)
+              | stats count by identifier, customer_index
+              | stats count(eval(count>1)) as duplicate_downloads, sum(count) as all_downloads count(eval(count>=10)) as excessive_duplicate_downloads by customer_index
+              | eval duplicate_percent=if(all_downloads=0, 0, round((duplicate_downloads/all_downloads)*100, 2))
+              | sort  - duplicate_percent
+              | fields customer_index, duplicate_percent  all_downloads duplicate_downloads excessive_duplicate_downloads 
+              | rename customer_index as Index, duplicate_percent as "Repeated Download Percent",  all_downloads as "All Downloads", duplicate_downloads as "Repeated Downloads", excessive_duplicate_downloads as "Excessively Repeated Downloads"
+            ]]>
+          </query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
         </search>

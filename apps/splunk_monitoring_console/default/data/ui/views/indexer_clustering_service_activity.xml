@@ -1,4 +1,4 @@
-<form hideEdit="True" script="common_control.js">
+<form hideEdit="True" script="common_control.js" stylesheet="shared.css">
   <label>Indexer Clustering: Service Activity</label>
     <fieldset autoRun="true" submitButton="false">
       <input type="dropdown" searchWhenChanged="true" token="group">
@@ -127,7 +127,6 @@
         <label>Index</label>
         <showClearButton>false</showClearButton>
         <choice value="*">All</choice>
-        <selectFirstChoice>true</selectFirstChoice>
         <fieldForLabel>index</fieldForLabel>
         <fieldForValue>index</fieldForValue>
         <search>
@@ -140,6 +139,9 @@
         <prefix>search index="</prefix>
         <suffix>"</suffix>
       </input>
+      <html>
+        <span><i class="icon-alert icon-large"></i>In a large deployment (with millions of buckets) the following searches might cause out-of-memory issues. Exercise caution running them.</span>
+      </html>
       <table>
         <title>Tasks to Meet Search Factor ($taskSFCount$)</title>
         <search>

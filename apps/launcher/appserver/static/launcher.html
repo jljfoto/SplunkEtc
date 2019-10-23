@@ -39,7 +39,6 @@ PLACEHOLDER_MODULE_ID = 'ServerSideInclude_0_0_0'
 PLACEHOLDER_TABPARAM = 'tab_index'
 PLACEHOLDER_APPORDER = 'app_order'
 PLACEHOLDER_HIDEAPPS = 'home_hide'
-HIDE_APPS = ['launcher','stubby']
 VALID_TABS = ['welcometab', 'hometab']
 
 def getname(entry, imgtype):
@@ -99,13 +98,9 @@ def retrieve_apps(order=[]):
             applist.append(entries[title])
             del entries[title]
 
-    # Sort entries by case insensitive title
-    def _cmp_app(a, b):
-        return cmp(a['label'].lower(), b['label'].lower())
-
     # sort remaining entries 
     entries = entries.values()
-    entries.sort(_cmp_app)
+    entries = sorted(entries, key=(lambda a: a['label'].lower()))
     applist += entries
     return applist, all
 

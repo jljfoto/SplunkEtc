@@ -4,7 +4,7 @@ import splunk.appbuilder as appbuilder
 import splunk.rest as rest
 import splunk.clilib.bundle_paths as bundle_paths
 
-import urllib
+from future.moves.urllib import parse as urllib_parse
 
 FORCE = 'update'
 
@@ -51,7 +51,7 @@ class AppInstallHandler(admin.MConfigHandler):
         if not upgraded:
             reloader = 'apps/local/_reload'
         else:
-            reloader = 'apps/local/%s/_reload' % urllib.quote(bundle.name())
+            reloader = 'apps/local/%s/_reload' % urllib_parse.quote(bundle.name())
         rest.simpleRequest(reloader, sessionKey=self.getSessionKey())
         
     def handleList(self, confInfo):

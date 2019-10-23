@@ -6,6 +6,14 @@ import sys
 import splunk.rest as rest
 from splunk.persistconn.application import PersistentServerConnectionApplication
 
+if sys.version_info >= (3, 0):
+    string_type = (str, bytes)
+    unicode = str
+else:
+    import __builtin__
+    string_type = __builtin__.basestring
+    unicode = unicode
+
 path = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)),
                                      '..', '..', 'bin'))
 sys.path.append(path)

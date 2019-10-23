@@ -1,7 +1,10 @@
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
 import re
 import splunk_instrumentation.splunklib as splunklib
 import splunk_instrumentation.constants as constants
-from urllib import urlencode
+from urllib.parse import urlencode
 
 
 class TelemetryConfService(object):

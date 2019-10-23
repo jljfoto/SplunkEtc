@@ -10,6 +10,7 @@ from splunk_instrumentation.metrics.metrics_schema import load_schema
 from splunk_instrumentation.constants import INST_SCHEMA_FILE
 import splunk.auth
 import json
+import sys
 import splunk.rest as rest
 
 
@@ -104,7 +105,11 @@ class SwaContext(object):
 
         self.swa_base_url = services.telemetry_conf_service.content.get('swaEndpoint')
 
-        self.user_id = hashlib.sha256(self.salt + splunk.auth.getCurrentUser()['name']).hexdigest()
+        hash_key = self.salt + splunk.auth.getCurrentUser()['name']
+        if sys.version_info >= (3, 0):
+            hash_key = hash_key.encode()
+
+        self.user_id = hashlib.sha256(hash_key).hexdigest()
 
         self.send_anonymized_web_analytics = conf_bool(
             services.telemetry_conf_service.content.get('sendAnonymizedWebAnalytics'))

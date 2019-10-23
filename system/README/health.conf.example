@@ -1,4 +1,4 @@
-#   Version 7.3.0
+#   Version 8.0.0
 #
 # This file contains an example health.conf.  Use this file to configure thresholds
 # for Splunk Enterprise's built in Health Report.
@@ -57,6 +57,28 @@ action.bcc =
 # Make sure that the PagerDuty app is enabled.
 disabled = 0
 action.integration_url_override = 123456789012345678901234567890ab
+
+[alert_action:mobile]
+# Enable Splunk Mobile alerts for the health report.
+# You need to configure the 'alert_recipients' under this stanza in order to
+# send health report alerts to the Splunk Mobile app on your phone.
+#
+# Steps to setup the health report mobile alert:
+# * Download the Splunk Mobile App on your phone and open the app.
+# * Download the Cloud Gateway App from Splunkbase to your splunk instance.
+# * In Splunk Web, click Settings > Alert actions and make sure the Cloud
+#   Gateway App is enabled.
+# * In Splunk Web, click Cloud Gateway App > Configure and enable Splunk
+#   Mobile.
+# * In Splunk Web, click Cloud Gateway App > Register and copy the activation
+#   code displayed in the Splunk Mobile App to register your device(phone).
+# * In health.conf configure 'alert_recipients' under the [alert_action:mobile]
+#   stanza, e.g. action.alert_recipients = admin
+#
+# Details of how to install and use the Cloud Gateway App please refer to
+# https://docs.splunk.com/Documentation/Gateway
+disabled = 0
+action.alert_recipients = admin
 
 [clustering]
 # Clustering health report will run in every 20 seconds.

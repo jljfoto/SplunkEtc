@@ -11,6 +11,7 @@ import operator
 import splunk.Intersplunk
 import splunk.stats_util.statespace as statespace
 from splunk.stats_util.dist import Erf
+from builtins import range
 
 
 erf = Erf()
@@ -167,7 +168,7 @@ class FC:
                 if spandays >= 28:
                     spanmonths = int(spandays/28)
         elif '_time' in results[0].keys() and '_time' in results[1].keys():
-            span = int(results[1]['_time']) - int(results[0]['_time'])
+            span = int(float(results[1]['_time']) - float(results[0]['_time']))
         else:
             splunk.Intersplunk.generateErrorResults("Unable to predict: data has no time")
             sys.exit()
@@ -227,8 +228,12 @@ class FC:
                 results[I][self.upperNames[field]] = str(upper)
                 results[I][self.UIlowerNames[field]] = self.lowerNames[field]
                 results[I][self.lowerNames[field]] = str(lower)
-            
-        lasttime = float(results[kk-1]['_time'])
+
+        if '_time' in results[kk - 1]:
+            lasttime = float(results[kk - 1]['_time'])
+        else:
+            splunk.Intersplunk.generateErrorResults("Unable to predict: data has no time")
+            sys.exit()
         lasttime_struct = list(localtime(lasttime)) # convert to list since localtime() returns readonly objects
         (span, spandays, spanmonths) = self.getSpans(results)
         for i in range(kk,ext): # if this range is non-empty, that means ext > len(results); hence we should append to results
@@ -262,7 +267,7 @@ class FC:
         else:
             lasttime_struct[5] += span
 
-        extendtime = mktime(lasttime_struct) # convert back to seconds
+        extendtime = mktime(tuple(lasttime_struct)) # convert back to seconds
         lasttime_struct = list(localtime(extendtime))
 
         # Dealing with daylight saving time. If the previous timestamp shows 12AM, we want 
@@ -516,7 +521,7 @@ class TestPredict(unittest.TestCase):
                         print("list2 = %s" % list2)
                     self.assertTrue(list1[i][j]==list2[i][j])
                 else:
-                    self.assertAlmostEqual(float(list1[i][j]), float(list2[i][j]))
+                    self.assertAlmostEqual(float(list1[i][j]), float(list2[i][j]), 2)
 
     @classmethod
     def getResults(cls, data, fields):
@@ -908,6 +913,16 @@ class TestPredict(unittest.TestCase):
         # expecting: ERROR
         # period can't be greater than 2000
         self.test_quick("ts_irregular_repeat_5k.csv", "inner algorithm=LLP5 period=10000000000", ["inner"], timepattern='%m/%d/%Y %H:%M:%S')
+
+    def test_time_val_float(self):
+        self.test_predict("internet_traffic_300.csv", "internet_traffic_300_LLP5.csv", "bits_transferred algorithm=LLP5 future_timespan=112 holdback=112", ["bits_transferred"], update=False)
+
+    def test_raise_no_timefield_error(self):
+        fcs = parseOps("petal_length".split())
+        input = os.path.join(self.input_dir, "iris_10.csv")
+        data = importData(input)
+        with self.assertRaises(SystemExit):
+            predictAll(fcs, data)
 
 
 if __name__ == "__main__":
