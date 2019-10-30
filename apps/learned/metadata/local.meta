@@ -332,3 +332,13 @@ modtime = 1566933441.857473000
 owner = admin
 version = 7.3.0
 modtime = 1566940410.645888000
+
+[props/dfm_stderr-too_small]
+owner = nobody
+version = 8.0.0
+modtime = 1571790377.804112000
+
+[props/dfm_stdout-too_small]
+owner = nobody
+version = 8.0.0
+modtime = 1571790380.240253000
