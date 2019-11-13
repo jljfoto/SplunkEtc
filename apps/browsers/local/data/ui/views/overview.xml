@@ -23,9 +23,12 @@
         <title>Usage share of web browsers</title>
         <search>
           <query>index=browsers sourcetype="history" os_user="$user$" | stats count by browser</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
         </search>
         <option name="charting.chart">pie</option>
         <option name="charting.chart.sliceCollapsingThreshold">0</option>
+        <option name="refresh.display">progressbar</option>
       </chart>
     </panel>
     <panel>
@@ -33,9 +36,11 @@
         <title>Most popular domains</title>
         <search>
           <query>index=browsers sourcetype="history" os_user="$user$" | rex field=url "//(?&lt;domain&gt;[^\/]+)" | stats count by domain | sort count desc</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
         </search>
         <option name="count">10</option>
-        <option name="displayRowNumbers">false</option>
+        <option name="refresh.display">progressbar</option>
       </table>
     </panel>
     <panel>
@@ -43,9 +48,11 @@
         <title>Recently opened pages</title>
         <search>
           <query>index=browsers sourcetype="history" os_user="$user$" | rex field=url "//(?&lt;domain&gt;[^\/]+)" | eval mins_ago=floor((now()-_time) /60)  | table title, domain, mins_ago</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
         </search>
         <option name="count">10</option>
-        <option name="displayRowNumbers">false</option>
+        <option name="refresh.display">progressbar</option>
       </table>
     </panel>
   </row>
@@ -55,12 +62,12 @@
         <title>Opened pages by hour</title>
         <search>
           <query>index=browsers sourcetype="history" os_user="$user$" | eval local_date_hour=strftime(_time,"%H") | chart count by local_date_hour</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
         </search>
         <option name="charting.axisTitleX.text">hour</option>
         <option name="charting.chart">column</option>
-        <option name="charting.primaryAxisTitle.text"></option>
-        <option name="count">10</option>
-        <option name="displayRowNumbers">true</option>
+        <option name="refresh.display">progressbar</option>
       </chart>
     </panel>
     <panel>
@@ -71,12 +78,12 @@
   | eval DayOfWeekC=strftime(_time, "%a")
   | eval DayOfWeekN=strftime(_time, "%u")
   | stats count by DayOfWeekN, DayOfWeekC | fields - DayOfWeekN</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
         </search>
         <option name="charting.axisTitleX.text">day of week</option>
         <option name="charting.chart">column</option>
-        <option name="charting.primaryAxisTitle.text"></option>
-        <option name="count">10</option>
-        <option name="displayRowNumbers">true</option>
+        <option name="refresh.display">progressbar</option>
       </chart>
     </panel>
   </row>
@@ -86,10 +93,11 @@
         <title>Web access over time</title>
         <search>
           <query>index=browsers sourcetype="history" os_user="$user$" | timechart count by browser</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
         </search>
         <option name="charting.chart">line</option>
-        <option name="count">10</option>
-        <option name="displayRowNumbers">true</option>
+        <option name="refresh.display">progressbar</option>
       </chart>
     </panel>
   </row>
