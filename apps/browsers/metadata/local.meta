@@ -18,9 +18,13 @@ version = 7.1.1
 modtime = 1534235098.507625000
 
 [views/downloads]
-version = 7.0.0
-modtime = 1517343284.021228000
+version = 8.0.0
+modtime = 1573671255.569716000
 
 [indexes/browsers]
 version = 7.0.2
 modtime = 1523763357.816329000
+
+[views/overview]
+version = 8.0.0
+modtime = 1573671418.517971000

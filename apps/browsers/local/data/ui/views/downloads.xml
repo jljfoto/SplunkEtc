@@ -47,10 +47,14 @@
       <chart>
         <title>File types</title>
         <search>
-          <query>index=browsers sourcetype="downloads" os_user="$user$" browser=$browser$ | rex field=target "(?i)[^\.]*\.(?P&lt;ext&gt;.{0,4})$" | timechart count by ext</query>
+          <query>index=browsers sourcetype="downloads" os_user="$user$" browser=$browser$ | rex field=target "(?i)[^\.]*\.(?P&lt;ext&gt;.{0,4})$" | timechart limit=200 count by ext</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
         </search>
         <option name="charting.axisY.scale">log</option>
         <option name="charting.chart">column</option>
+        <option name="charting.legend.placement">bottom</option>
+        <option name="refresh.display">progressbar</option>
       </chart>
     </panel>
   </row>
