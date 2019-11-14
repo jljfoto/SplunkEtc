@@ -15,8 +15,8 @@ version = 7.3.0
 modtime = 1569646835.407177000
 
 [ui-prefs/search]
-version = 7.3.0
-modtime = 1569808863.423679000
+version = 8.0.0
+modtime = 1573700501.337074000
 
 [ui-tour/adddata-tour%3Aenterprise]
 version = 7.0.0
