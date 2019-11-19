@@ -158,3 +158,8 @@ modtime = 1569647332.377763000
 owner = admin
 version = 7.3.0
 modtime = 1569806018.698728000
+
+[inputs/monitor%3A%2F%2F%2Ftmp%2Fandrew_list]
+owner = admin
+version = 8.0.0
+modtime = 1574199449.237578000
