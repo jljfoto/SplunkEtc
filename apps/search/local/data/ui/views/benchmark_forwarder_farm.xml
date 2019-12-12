@@ -1,0 +1,865 @@
+<form theme="dark">
+
+  <label>Benchmark Forwarder Farm Stats</label>
+
+  <fieldset submitButton="false" autoRun="true">
+
+    <input type="time" token="field1">
+
+      <label></label>
+
+      <default>
+
+        <earliest>-4h@m</earliest>
+
+        <latest>now</latest>
+
+      </default>
+
+    </input>
+
+  </fieldset>
+
+  <row>
+
+    <panel>
+
+      <title>Number of Forwwarders</title>
+
+      <single>
+
+        <search>
+
+          <query>index=_internal sourcetype=splunkd host=*fwd* |  stats distinct_count(host)</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+        </search>
+
+        <option name="colorBy">value</option>
+
+        <option name="colorMode">none</option>
+
+        <option name="drilldown">none</option>
+
+        <option name="numberPrecision">0</option>
+
+        <option name="rangeColors">["0x53a051", "0x0877a6", "0xf8be34", "0xf1813f", "0xdc4e41"]</option>
+
+        <option name="rangeValues">[0,30,70,100]</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="showSparkline">1</option>
+
+        <option name="showTrendIndicator">1</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+        <option name="trendColorInterpretation">standard</option>
+
+        <option name="trendDisplayMode">absolute</option>
+
+        <option name="unitPosition">after</option>
+
+        <option name="useColors">0</option>
+
+        <option name="useThousandSeparators">1</option>
+
+      </single>
+
+    </panel>
+
+    <panel>
+
+      <title>Total CPU Usage</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=_introspection host=lp-nj1-taspk035* component=Hostwide | eval total_cpu='data.cpu_system_pct' + 'data.cpu_user_pct' | timechart max(total_cpu)</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+          <sampleRatio>1</sampleRatio>
+
+        </search>
+
+        <option name="charting.chart">line</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+    <panel>
+
+      <title>Mem Used Pct</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=_introspection host=lp-nj1-taspk035* component=Hostwide | eval mem_used_pct=('data.mem_used' / 'data.mem' ) * 100 | timechart max(mem_used_pct)</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+          <sampleRatio>1</sampleRatio>
+
+        </search>
+
+        <option name="charting.chart">line</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+  </row>
+
+  <row>
+
+    <panel>
+
+      <title>Forwarder Count over Time</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=_internal sourcetype=splunkd host=*fwd* |  timechart span=5m distinct_count(host) as forwarder_count</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+          <sampleRatio>1</sampleRatio>
+
+        </search>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+
+        <option name="charting.axisTitleX.visibility">visible</option>
+
+        <option name="charting.axisTitleY.visibility">visible</option>
+
+        <option name="charting.axisTitleY2.visibility">visible</option>
+
+        <option name="charting.axisX.abbreviation">none</option>
+
+        <option name="charting.axisX.scale">linear</option>
+
+        <option name="charting.axisY.abbreviation">none</option>
+
+        <option name="charting.axisY.scale">linear</option>
+
+        <option name="charting.axisY2.abbreviation">none</option>
+
+        <option name="charting.axisY2.enabled">0</option>
+
+        <option name="charting.axisY2.scale">inherit</option>
+
+        <option name="charting.chart">area</option>
+
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+
+        <option name="charting.chart.bubbleSizeBy">area</option>
+
+        <option name="charting.chart.nullValueMode">gaps</option>
+
+        <option name="charting.chart.showDataLabels">all</option>
+
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+
+        <option name="charting.chart.stackMode">default</option>
+
+        <option name="charting.chart.style">shiny</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.layout.splitSeries">0</option>
+
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+
+        <option name="charting.legend.mode">standard</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="charting.lineWidth">2</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+    <panel>
+
+      <title>Reads/Writes KBps</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=_introspection host=lp-nj1-taspk035*  component=IOStats | timechart max("data.reads_kb_ps") as max_reads_kbps max("data.writes_kb_ps") as max_writes_kbps</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+          <sampleRatio>1</sampleRatio>
+
+        </search>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+
+        <option name="charting.axisTitleX.visibility">visible</option>
+
+        <option name="charting.axisTitleY.visibility">visible</option>
+
+        <option name="charting.axisTitleY2.visibility">visible</option>
+
+        <option name="charting.axisX.abbreviation">none</option>
+
+        <option name="charting.axisX.scale">linear</option>
+
+        <option name="charting.axisY.abbreviation">none</option>
+
+        <option name="charting.axisY.scale">linear</option>
+
+        <option name="charting.axisY2.abbreviation">none</option>
+
+        <option name="charting.axisY2.enabled">0</option>
+
+        <option name="charting.axisY2.scale">inherit</option>
+
+        <option name="charting.chart">line</option>
+
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+
+        <option name="charting.chart.bubbleSizeBy">area</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.chart.showDataLabels">none</option>
+
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+
+        <option name="charting.chart.stackMode">default</option>
+
+        <option name="charting.chart.style">shiny</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.layout.splitSeries">0</option>
+
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+
+        <option name="charting.legend.mode">standard</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="charting.lineWidth">2</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+    <panel>
+
+      <title>/splunk Service Times</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=_introspection host=lp-nj1-taspk035*  component=IOStats | timechart max("data.avg_service_ms") as max_avg_svc_ms max("data.avg_total_ms") as max_avg_tot_ms</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+          <sampleRatio>1</sampleRatio>
+
+        </search>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+
+       <option name="charting.axisTitleX.visibility">visible</option>
+
+        <option name="charting.axisTitleY.visibility">visible</option>
+
+        <option name="charting.axisTitleY2.visibility">visible</option>
+
+        <option name="charting.axisX.abbreviation">none</option>
+
+        <option name="charting.axisX.scale">linear</option>
+
+        <option name="charting.axisY.abbreviation">none</option>
+
+        <option name="charting.axisY.scale">linear</option>
+
+        <option name="charting.axisY2.abbreviation">none</option>
+
+        <option name="charting.axisY2.enabled">0</option>
+
+        <option name="charting.axisY2.scale">inherit</option>
+
+        <option name="charting.chart">line</option>
+
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+
+        <option name="charting.chart.bubbleSizeBy">area</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.chart.showDataLabels">none</option>
+
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+
+        <option name="charting.chart.stackMode">default</option>
+
+        <option name="charting.chart.style">shiny</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.layout.splitSeries">0</option>
+
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+
+        <option name="charting.legend.mode">standard</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="charting.lineWidth">2</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+  </row>
+
+  <row>
+
+    <panel>
+
+      <title>Max kbps Per Forwarder over time</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=_internal host=*fwd*  sourcetype=splunkd metrics group=per_host_thruput  | timechart limit=100 avg(kbps) by host</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+        </search>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+
+        <option name="charting.axisTitleX.visibility">visible</option>
+
+        <option name="charting.axisTitleY.visibility">visible</option>
+
+        <option name="charting.axisTitleY2.visibility">visible</option>
+
+        <option name="charting.axisX.abbreviation">none</option>
+
+        <option name="charting.axisX.scale">linear</option>
+
+        <option name="charting.axisY.abbreviation">none</option>
+
+        <option name="charting.axisY.scale">linear</option>
+
+        <option name="charting.axisY2.abbreviation">none</option>
+
+        <option name="charting.axisY2.enabled">0</option>
+
+        <option name="charting.axisY2.scale">inherit</option>
+
+        <option name="charting.chart">line</option>
+
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+
+        <option name="charting.chart.bubbleSizeBy">area</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.chart.showDataLabels">none</option>
+
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+
+        <option name="charting.chart.stackMode">default</option>
+
+        <option name="charting.chart.style">shiny</option>
+
+        <option name="height">500</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.layout.splitSeries">0</option>
+
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+
+        <option name="charting.legend.mode">standard</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="charting.lineWidth">2</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+    <panel>
+
+      <title>Max eps per forwarder over time</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=_internal host=*fwd*  sourcetype=splunkd metrics group=per_host_thruput  | timechart limit=100 max(eps) by host</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+        </search>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+
+        <option name="charting.axisTitleX.visibility">visible</option>
+
+        <option name="charting.axisTitleY.visibility">visible</option>
+
+        <option name="charting.axisTitleY2.visibility">visible</option>
+
+        <option name="charting.axisX.abbreviation">none</option>
+
+        <option name="charting.axisX.scale">linear</option>
+
+        <option name="charting.axisY.abbreviation">none</option>
+
+        <option name="charting.axisY.scale">linear</option>
+
+        <option name="charting.axisY2.abbreviation">none</option>
+
+        <option name="charting.axisY2.enabled">0</option>
+
+        <option name="charting.axisY2.scale">inherit</option>
+
+        <option name="charting.chart">line</option>
+
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+
+        <option name="charting.chart.bubbleSizeBy">area</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.chart.showDataLabels">none</option>
+
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+
+        <option name="charting.chart.stackMode">default</option>
+
+        <option name="charting.chart.style">shiny</option>
+
+        <option name="height">500</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.layout.splitSeries">0</option>
+
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+
+        <option name="charting.legend.mode">standard</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="charting.lineWidth">2</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+  </row>
+
+  <row>
+
+    <panel>
+
+      <title>Avg EPS by Forwarder</title>
+
+      <single>
+
+        <search>
+
+          <query>index=_internal host=*fwd*  sourcetype=splunkd metrics group=per_host_thruput | stats  avg(eps) as avg_eps by host</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+        </search>
+
+        <option name="colorBy">value</option>
+
+        <option name="colorMode">none</option>
+
+        <option name="drilldown">none</option>
+
+        <option name="numberPrecision">0.00</option>
+
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+
+        <option name="rangeValues">[0,30,70,100]</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="showSparkline">1</option>
+
+        <option name="showTrendIndicator">1</option>
+
+        <option name="trellis.enabled">1</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+        <option name="trendColorInterpretation">standard</option>
+
+        <option name="trendDisplayMode">absolute</option>
+
+        <option name="unitPosition">after</option>
+
+        <option name="useColors">0</option>
+
+        <option name="useThousandSeparators">1</option>
+
+      </single>
+
+    </panel>
+
+    <panel>
+
+      <title>Avg KBPS per forwarder</title>
+
+      <single>
+
+        <search>
+
+          <query>index=_internal host=*fwd*  sourcetype=splunkd metrics group=per_host_thruput  | stats  avg(kbps) as avg_kbps by host</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+        </search>
+
+        <option name="colorBy">value</option>
+
+        <option name="colorMode">none</option>
+
+        <option name="drilldown">none</option>
+
+        <option name="numberPrecision">0.00</option>
+
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+
+        <option name="rangeValues">[0,30,70,100]</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="showSparkline">1</option>
+
+        <option name="showTrendIndicator">1</option>
+
+        <option name="trellis.enabled">1</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+        <option name="trendColorInterpretation">standard</option>
+
+        <option name="trendDisplayMode">absolute</option>
+
+        <option name="unitPosition">after</option>
+
+        <option name="useColors">0</option>
+
+        <option name="useThousandSeparators">1</option>
+
+      </single>
+
+    </panel>
+
+  </row>
+
+  <row>
+
+    <panel>
+
+      <title>Forwarder List</title>
+
+      <table>
+
+        <search>
+
+          <query>index=_internal sourcetype=splunkd host=*fwd* | stats count by host | fields - count</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+        </search>
+
+        <option name="count">20</option>
+
+        <option name="dataOverlayMode">none</option>
+
+        <option name="drilldown">none</option>
+
+        <option name="percentagesRow">false</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="rowNumbers">false</option>
+
+        <option name="totalsRow">false</option>
+
+        <option name="wrap">true</option>
+
+      </table>
+
+    </panel>
+
+  </row>
+
+  <row>
+
+    <panel depends="$panel_show$">
+
+      <title>Forwarder Errors/Warnings Count</title>
+
+      <single>
+
+        <search>
+
+         <progress>
+
+            <condition match="'job.resultCount' &gt; 0">
+
+              <set token="panel_show">true</set>
+
+            </condition>
+
+            <condition>
+
+              <unset token="panel_show"></unset>
+
+            </condition>
+
+          </progress>
+
+          <query>index=_internal sourcetype=splunkd host=*fwd* | search  sourcetype=splunkd log_level!=info | stats  count by log_level</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+        </search>
+
+        <option name="colorBy">value</option>
+
+        <option name="colorMode">none</option>
+
+        <option name="drilldown">all</option>
+
+        <option name="numberPrecision">0</option>
+
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+
+        <option name="rangeValues">[0,30,70,100]</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="showSparkline">1</option>
+
+        <option name="showTrendIndicator">1</option>
+
+        <option name="trellis.enabled">1</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+        <option name="trendColorInterpretation">standard</option>
+
+        <option name="trendDisplayMode">absolute</option>
+
+        <option name="unitPosition">after</option>
+
+        <option name="useColors">0</option>
+
+        <option name="useThousandSeparators">1</option>
+
+        <drilldown>
+
+          <link target="_blank">search?q=index=_internal%20sourcetype=splunkd%20host=*fwd*%20log_level!=info&amp;earliest=$field1.earliest$&amp;latest=$field1.latest$</link>
+
+        </drilldown>
+
+      </single>
+
+    </panel>
+
+    <panel>
+
+      <title>Swap Used</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=_introspection host=lp-nj1-taspk035* component=Hostwide | timechart max("data.swap_used")</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+          <sampleRatio>1</sampleRatio>
+
+        </search>
+
+        <option name="charting.chart">line</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+  </row>
+
+</form>

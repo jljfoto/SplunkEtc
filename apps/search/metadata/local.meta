@@ -163,3 +163,18 @@ modtime = 1569806018.698728000
 owner = admin
 version = 8.0.0
 modtime = 1574199449.237578000
+
+[views/benchmark_cluster]
+owner = admin
+version = 8.0.0
+modtime = 1576157912.948510000
+
+[views/benchmark_forwarder_farm]
+owner = admin
+version = 8.0.0
+modtime = 1576157979.519844000
+
+[views/benchmark_indexing_latency]
+owner = admin
+version = 8.0.0
+modtime = 1576158134.396870000
