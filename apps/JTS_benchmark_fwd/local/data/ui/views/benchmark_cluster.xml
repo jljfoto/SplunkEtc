@@ -1,0 +1,809 @@
+<form theme="dark">
+
+  <label>Benchmark Stats: indexer Cluster</label>
+
+  <fieldset submitButton="false" autoRun="true">
+
+    <input type="time" token="field1">
+
+      <label></label>
+
+      <default>
+
+        <earliest>-60m@m</earliest>
+
+        <latest>now</latest>
+
+      </default>
+
+    </input>
+
+  </fieldset>
+
+  <row>
+
+    <panel>
+
+      <title>KBPS Over time</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=_internal sourcetype=splunkd component=Metrics host IN (lp-nj1-taspk032,lp-nj1-taspk033,lp-nj1-taspk034,lp-nj1-taspk036,lp-nj1-taspk037,lp-nj1-taspk039)  | timechart max(kbps) as max_kbps by host</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+          <sampleRatio>1</sampleRatio>
+
+        </search>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+
+        <option name="charting.axisTitleX.visibility">visible</option>
+
+        <option name="charting.axisTitleY.visibility">visible</option>
+
+        <option name="charting.axisTitleY2.visibility">visible</option>
+
+        <option name="charting.axisX.abbreviation">none</option>
+
+        <option name="charting.axisX.scale">linear</option>
+
+        <option name="charting.axisY.abbreviation">none</option>
+
+        <option name="charting.axisY.scale">linear</option>
+
+        <option name="charting.axisY2.abbreviation">none</option>
+
+        <option name="charting.axisY2.enabled">0</option>
+
+        <option name="charting.axisY2.scale">inherit</option>
+
+        <option name="charting.chart">line</option>
+
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+
+        <option name="charting.chart.bubbleSizeBy">area</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.chart.showDataLabels">none</option>
+
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+
+        <option name="charting.chart.stackMode">default</option>
+
+        <option name="charting.chart.style">shiny</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.layout.splitSeries">0</option>
+
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+
+        <option name="charting.legend.mode">standard</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="charting.lineWidth">2</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+    <panel>
+
+      <title>EPS Over Time</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=_internal sourcetype=splunkd component=Metrics host IN (lp-nj1-taspk032,lp-nj1-taspk033,lp-nj1-taspk034,lp-nj1-taspk036,lp-nj1-taspk037,lp-nj1-taspk039)  | timechart max(eps) as max_eps by host</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+          <sampleRatio>1</sampleRatio>
+
+        </search>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+
+        <option name="charting.axisTitleX.visibility">visible</option>
+
+        <option name="charting.axisTitleY.visibility">visible</option>
+
+        <option name="charting.axisTitleY2.visibility">visible</option>
+
+        <option name="charting.axisX.abbreviation">none</option>
+
+        <option name="charting.axisX.scale">linear</option>
+
+        <option name="charting.axisY.abbreviation">none</option>
+
+        <option name="charting.axisY.scale">linear</option>
+
+        <option name="charting.axisY2.abbreviation">none</option>
+
+        <option name="charting.axisY2.enabled">0</option>
+
+        <option name="charting.axisY2.scale">inherit</option>
+
+        <option name="charting.chart">line</option>
+
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+
+        <option name="charting.chart.bubbleSizeBy">area</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.chart.showDataLabels">none</option>
+
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+
+        <option name="charting.chart.stackMode">default</option>
+
+        <option name="charting.chart.style">shiny</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.layout.splitSeries">0</option>
+
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+
+        <option name="charting.legend.mode">standard</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="charting.lineWidth">2</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+    <panel>
+
+      <title>EPS by Source</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=_internal sourcetype=splunkd component=Metrics group=per_sourcetype_thruput host IN (lp-nj1-taspk032,lp-nj1-taspk033,lp-nj1-taspk034,lp-nj1-taspk036,lp-nj1-taspk037,lp-nj1-taspk039)  series=* | eval series=if(match(series,"simData"),"simData",if(match(series,"splunkit_hf"),"splunkit", "Splunk_TA_nix")) |  timechart limit=200  max(eps) as max_eps by series</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+          <sampleRatio>1</sampleRatio>
+
+        </search>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+
+        <option name="charting.axisTitleX.visibility">visible</option>
+
+        <option name="charting.axisTitleY.visibility">visible</option>
+
+        <option name="charting.axisTitleY2.visibility">visible</option>
+
+        <option name="charting.axisX.abbreviation">none</option>
+
+        <option name="charting.axisX.scale">linear</option>
+
+        <option name="charting.axisY.abbreviation">none</option>
+
+        <option name="charting.axisY.scale">linear</option>
+
+        <option name="charting.axisY2.abbreviation">none</option>
+
+        <option name="charting.axisY2.enabled">0</option>
+
+        <option name="charting.axisY2.scale">inherit</option>
+
+        <option name="charting.chart">area</option>
+
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+
+        <option name="charting.chart.bubbleSizeBy">area</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.chart.showDataLabels">none</option>
+
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+
+        <option name="charting.chart.stackMode">default</option>
+
+        <option name="charting.chart.style">shiny</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.layout.splitSeries">0</option>
+
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+
+        <option name="charting.legend.mode">standard</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="charting.lineWidth">2</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+  </row>
+
+  <row>
+
+    <panel>
+
+      <title>CPU Util Pct</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=_introspection  component=HostWide  host IN (lp-nj1-taspk032,lp-nj1-taspk033,lp-nj1-taspk034,lp-nj1-taspk036,lp-nj1-taspk037,lp-nj1-taspk039)  | eval total_cpu_pct=('data.cpu_system_pct' + 'data.cpu_user_pct') | timechart max(total_cpu_pct) as cpu_util by host</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+          <sampleRatio>1</sampleRatio>
+
+        </search>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+
+        <option name="charting.axisTitleX.visibility">visible</option>
+
+        <option name="charting.axisTitleY.visibility">visible</option>
+
+        <option name="charting.axisTitleY2.visibility">visible</option>
+
+        <option name="charting.axisX.abbreviation">none</option>
+
+        <option name="charting.axisX.scale">linear</option>
+
+        <option name="charting.axisY.abbreviation">none</option>
+
+        <option name="charting.axisY.scale">linear</option>
+
+        <option name="charting.axisY2.abbreviation">none</option>
+
+        <option name="charting.axisY2.enabled">0</option>
+
+        <option name="charting.axisY2.scale">inherit</option>
+
+        <option name="charting.chart">line</option>
+
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+
+        <option name="charting.chart.bubbleSizeBy">area</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.chart.showDataLabels">none</option>
+
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+
+        <option name="charting.chart.stackMode">default</option>
+
+        <option name="charting.chart.style">shiny</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.layout.splitSeries">0</option>
+
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+
+        <option name="charting.legend.mode">standard</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="charting.lineWidth">2</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+    <panel>
+
+      <title>Mem Util Pct</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=_introspection  component=HostWide  host IN (lp-nj1-taspk032,lp-nj1-taspk033,lp-nj1-taspk034,lp-nj1-taspk036,lp-nj1-taspk037,lp-nj1-taspk039) | eval mem_used_pct=round((('data.mem_used' / 'data.mem') * 100),0) | timechart max(mem_used_pct) by host</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+          <sampleRatio>1</sampleRatio>
+
+        </search>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+
+        <option name="charting.axisTitleX.visibility">visible</option>
+
+        <option name="charting.axisTitleY.visibility">visible</option>
+
+        <option name="charting.axisTitleY2.visibility">visible</option>
+
+        <option name="charting.axisX.abbreviation">none</option>
+
+        <option name="charting.axisX.scale">linear</option>
+
+        <option name="charting.axisY.abbreviation">none</option>
+
+        <option name="charting.axisY.scale">linear</option>
+
+        <option name="charting.axisY2.abbreviation">none</option>
+
+        <option name="charting.axisY2.enabled">0</option>
+
+        <option name="charting.axisY2.scale">inherit</option>
+
+        <option name="charting.chart">line</option>
+
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+
+        <option name="charting.chart.bubbleSizeBy">area</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.chart.showDataLabels">none</option>
+
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+
+        <option name="charting.chart.stackMode">default</option>
+
+        <option name="charting.chart.style">shiny</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.layout.splitSeries">0</option>
+
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+
+        <option name="charting.legend.mode">standard</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="charting.lineWidth">2</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+    <panel>
+
+      <title>Load Average</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=os sourcetype="loadavg" host IN (lp-nj1-taspk032,lp-nj1-taspk033,lp-nj1-taspk034,lp-nj1-taspk036,lp-nj1-taspk037,lp-nj1-taspk039)  | rex ",\d+\s+(?&lt;curr_load_avg&gt;\d+.\d+)" | timechart max(curr_load_avg) as load_avg by host</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+          <sampleRatio>1</sampleRatio>
+
+        </search>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+
+       <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+
+        <option name="charting.axisTitleX.visibility">visible</option>
+
+        <option name="charting.axisTitleY.visibility">visible</option>
+
+        <option name="charting.axisTitleY2.visibility">visible</option>
+
+        <option name="charting.axisX.abbreviation">none</option>
+
+        <option name="charting.axisX.scale">linear</option>
+
+        <option name="charting.axisY.abbreviation">none</option>
+
+        <option name="charting.axisY.scale">linear</option>
+
+        <option name="charting.axisY2.abbreviation">none</option>
+
+        <option name="charting.axisY2.enabled">0</option>
+
+        <option name="charting.axisY2.scale">inherit</option>
+
+        <option name="charting.chart">line</option>
+
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+
+        <option name="charting.chart.bubbleSizeBy">area</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.chart.showDataLabels">none</option>
+
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+
+        <option name="charting.chart.stackMode">default</option>
+
+        <option name="charting.chart.style">shiny</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.layout.splitSeries">0</option>
+
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+
+        <option name="charting.legend.mode">standard</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="charting.lineWidth">2</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+  </row>
+
+  <row>
+
+    <panel>
+
+      <title>/splunk I/O Service Times</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=_introspection  component=IOstats  host IN (lp-nj1-taspk032,lp-nj1-taspk033,lp-nj1-taspk034,lp-nj1-taspk036,lp-nj1-taspk037,lp-nj1-taspk039)   | timechart max(data.avg_service_ms) as max_avg_svc_time, max(data.avg_total_ms) as max_avg_total_ms  by host</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+          <sampleRatio>1</sampleRatio>
+
+        </search>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+
+        <option name="charting.axisTitleX.visibility">visible</option>
+
+        <option name="charting.axisTitleY.visibility">visible</option>
+
+        <option name="charting.axisTitleY2.visibility">visible</option>
+
+        <option name="charting.axisX.abbreviation">none</option>
+
+        <option name="charting.axisX.scale">linear</option>
+
+        <option name="charting.axisY.abbreviation">none</option>
+
+        <option name="charting.axisY.scale">linear</option>
+
+        <option name="charting.axisY2.abbreviation">none</option>
+
+        <option name="charting.axisY2.enabled">0</option>
+
+        <option name="charting.axisY2.scale">inherit</option>
+
+        <option name="charting.chart">line</option>
+
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+
+        <option name="charting.chart.bubbleSizeBy">area</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.chart.showDataLabels">none</option>
+
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+
+        <option name="charting.chart.stackMode">default</option>
+
+        <option name="charting.chart.style">shiny</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.layout.splitSeries">0</option>
+
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+
+        <option name="charting.legend.mode">standard</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="charting.lineWidth">2</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+    <panel>
+
+      <title>/splunk Reads/Writes KBPS</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=_introspection  component=IOstats  host IN (lp-nj1-taspk032,lp-nj1-taspk033,lp-nj1-taspk034,lp-nj1-taspk036,lp-nj1-taspk037,lp-nj1-taspk039)   | timechart max(data.reads_kb_ps) as max_reads_kbps, max(data.writes_kb_ps) as max_writes_kbps  by host</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+          <sampleRatio>1</sampleRatio>
+
+        </search>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+
+        <option name="charting.axisTitleX.visibility">visible</option>
+
+        <option name="charting.axisTitleY.visibility">visible</option>
+
+        <option name="charting.axisTitleY2.visibility">visible</option>
+
+        <option name="charting.axisX.abbreviation">none</option>
+
+        <option name="charting.axisX.scale">linear</option>
+
+        <option name="charting.axisY.abbreviation">none</option>
+
+        <option name="charting.axisY.scale">linear</option>
+
+        <option name="charting.axisY2.abbreviation">none</option>
+
+        <option name="charting.axisY2.enabled">0</option>
+
+        <option name="charting.axisY2.scale">inherit</option>
+
+        <option name="charting.chart">line</option>
+
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+
+        <option name="charting.chart.bubbleSizeBy">area</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.chart.showDataLabels">none</option>
+
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+
+        <option name="charting.chart.stackMode">default</option>
+
+        <option name="charting.chart.style">shiny</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.layout.splitSeries">0</option>
+
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+
+        <option name="charting.legend.mode">standard</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="charting.lineWidth">2</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+    <panel>
+
+      <title>Network bond0: KB_PS Transmit/Received</title>
+
+      <chart>
+
+        <search>
+
+          <query>index=os  sourcetype=bandwidth Name=bond0  host IN (lp-nj1-taspk032,lp-nj1-taspk033,lp-nj1-taspk034,lp-nj1-taspk036,lp-nj1-taspk037,lp-nj1-taspk039)  | timechart max(txKB_PS) max(rxKB_PS) by host</query>
+
+          <earliest>$field1.earliest$</earliest>
+
+          <latest>$field1.latest$</latest>
+
+          <sampleRatio>1</sampleRatio>
+
+        </search>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+
+        <option name="charting.axisTitleX.visibility">visible</option>
+
+        <option name="charting.axisTitleY.visibility">visible</option>
+
+        <option name="charting.axisTitleY2.visibility">visible</option>
+
+        <option name="charting.axisX.abbreviation">none</option>
+
+        <option name="charting.axisX.scale">linear</option>
+
+        <option name="charting.axisY.abbreviation">none</option>
+
+        <option name="charting.axisY.scale">linear</option>
+
+        <option name="charting.axisY2.abbreviation">none</option>
+
+        <option name="charting.axisY2.enabled">0</option>
+
+        <option name="charting.axisY2.scale">inherit</option>
+
+        <option name="charting.chart">line</option>
+
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+
+        <option name="charting.chart.bubbleSizeBy">area</option>
+
+        <option name="charting.chart.nullValueMode">connect</option>
+
+        <option name="charting.chart.showDataLabels">none</option>
+
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+
+        <option name="charting.chart.stackMode">default</option>
+
+        <option name="charting.chart.style">shiny</option>
+
+        <option name="charting.drilldown">none</option>
+
+        <option name="charting.layout.splitSeries">0</option>
+
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+
+        <option name="charting.legend.mode">standard</option>
+
+        <option name="charting.legend.placement">bottom</option>
+
+        <option name="charting.lineWidth">2</option>
+
+        <option name="refresh.display">progressbar</option>
+
+        <option name="trellis.enabled">0</option>
+
+        <option name="trellis.scales.shared">1</option>
+
+        <option name="trellis.size">medium</option>
+
+      </chart>
+
+    </panel>
+
+  </row>
+
+</form>

@@ -1,0 +1,18 @@
+[]
+access = read : [ * ], write : [ admin ]
+export = system
+
+[views/benchmark_cluster]
+owner = admin
+version = 8.0.0
+modtime = 1576158709.899520000
+
+[views/benchmark_forwarder_farm]
+owner = admin
+version = 8.0.0
+modtime = 1576158733.221289000
+
+[views/benchmark_indexing_latency]
+owner = admin
+version = 8.0.0
+modtime = 1576158755.247473000

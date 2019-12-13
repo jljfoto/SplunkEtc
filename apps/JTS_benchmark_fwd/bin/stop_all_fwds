@@ -1,0 +1,19 @@
+#!/bin/bash
+
+### Determine, if, and how many forwarders are already installed
+numFwd=`/bin/ls -ld /splunk/splunkforwarder* | /usr/bin/wc -l`
+echo "Found ${numFwd} forwarders on this host"
+
+i=1
+while [ ${i} -le ${numFwd} ]
+do
+        echo $i
+        export SPLUNK_HOME=/splunk/splunkforwarder${i}
+        if [ ${0} == "./stop_all_fwds" ]
+        then
+                ${SPLUNK_HOME}/bin/splunk stop
+        else
+                ${SPLUNK_HOME}/bin/splunk start
+        fi
+        i=`expr ${i} + 1`
+done

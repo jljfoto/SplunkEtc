@@ -1,0 +1,21 @@
+#!/bin/bash
+if [ x${1} == x ]
+then
+        echo "Usage is fwd {1|2|3}"
+        fwd=1
+else
+        fwd=$1
+fi
+
+export SPLUNK_HOME=/splunk/splunkforwarder${fwd}
+export PATH=${SPLUNK_HOME}/bin:/tp64/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/citadel/bin:/opt/dell/srvadmin/bin:/opt/splunk/bin
+alias hh='alias'
+alias cdl='cd ${SPLUNK_HOME}/var/log/splunk'
+alias cdb='cd ${SPLUNK_HOME}/bin'
+alias cda='cd ${SPLUNK_HOME}/etc/apps'
+alias cdsa='cd ${SPLUNK_HOME}/etc/apps/search/local'
+alias cdla='cd ${SPLUNK_HOME}/etc/apps/launcher/local'
+alias cds='cd ${SPLUNK_HOME}/etc/system/local'
+alias cdd='cd ${SPLUNK_HOME}/etc/deployment-apps'
+alias cdh='cd ${SPLUNK_HOME}'
+alias tl='tail -f ${SPLUNK_HOME}/var/log/splunk/splunkd.log'

@@ -1,0 +1,4 @@
+#!/bin/bash
+dte=`date +"%Y-%m-%d %H:%M:%S"`
+printf "${dte} "
+/usr/bin/uptime | /usr/bin/tr -d , | /usr/bin/awk '{printf $11"\n"}'

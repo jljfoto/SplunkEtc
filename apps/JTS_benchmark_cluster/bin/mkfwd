@@ -1,0 +1,159 @@
+### Install  a new forwarder instance
+common_files_path="/opt/splunk"
+bits_location="/tmp"
+
+### Universal Forwarder
+bits="splunkforwarder-7.2.8-d613a50d43ac-Linux-x86_64.tgz"
+
+### Heavy Forwarder
+#bits="splunk-7.2.8-d613a50d43ac-Linux-x86_64.tgz"
+
+### Check to make sure that the splunkforwarder image is available
+if [ ! -r ${bits_location}/${bits} ]
+then
+        echo "Cannot find forwarder .tgz in ${bits_location}"
+        exit 100
+fi
+
+### Determine, if, and how many forwarders are already installed
+numFwd=`/bin/ls -ld /splunk/splunkforwarder* | /usr/bin/wc -l`
+echo "Found ${numFwd} forwarders on this host"
+
+newFwd=`expr ${numFwd} + 1`
+echo "Next forwarder to be added will be ${newFwd}"
+
+/usr/bin/sudo mkdir /splunk/splunkforwarder${newFwd}
+sudo_rc=$?
+if [ ${sudo_rc} -gt 0 ]
+then
+        echo "Sudo to create new directory failedi. rc=${sudo_rc}"
+        exit 99
+fi
+
+sudo chown s_prod_splunk:development /splunk/splunkforwarder${newFwd}
+sudo_rc=$?
+if [ ${sudo_rc} -gt 0 ]
+then
+        echo "Sudo to chown new directory failedi. rc=${sudo_rc}"
+        exit 98
+fi
+
+cd /splunk
+/usr/bin/tar xzf ${bits_location}/${bits} -C /splunk/splunkforwarder${newFwd}
+tar_rc=$?
+if [ ${tar_rc} -gt 0 ]
+then
+        echo "error ${tar_rc} encountered when attempting to untar file${bits}"
+        exit 97
+fi
+
+### Universal Forwarder
+/bin/mv /splunk/splunkforwarder${newFwd}/splunkforwarder/* /splunk/splunkforwarder${newFwd}
+
+### Heavy Forwarder
+# /bin/mv /splunk/splunkforwarder${newFwd}/splunk/* /splunk/splunkforwarder${newFwd}
+#
+mv_rc=$?
+if [ ${mv_rc} -gt 0 ]
+then
+        echo "error moving forwarder directories up one level. rc=${mv_rc}"
+        exit 96
+fi
+
+### Universal Forwarder
+/bin/rm -rf /splunk/splunkforwarder${newFwd}/splunkforwarder
+
+### Heavy Forwarder
+# /bin/rm -rf /splunk/splunkforwarder${newFwd}/splunk
+rm_rc=$?
+if [ ${rm_rc} -gt 0 ]
+then
+         echo "error removing forwarder directory. rc=${rm_rc}"
+         exit 95
+fi
+
+cd /splunk/splunkforwarder${newFwd}/etc/system/local
+cd_rc=$?
+if [ ${cd_rc} -gt 0 ]
+then
+         echo "cannot change to directory /splunk/splunkforwarder${newFwd}/etc/system/local. rc=${cd_rc}"
+         exit 94
+fi
+
+/usr/bin/ln -s ${common_files_path}/outputs.conf ./outputs.conf
+ln_rc=$?
+if [ ${ln_rc} -gt 0 ]
+then
+         echo "error linking common outputs.conf. rc=${ln_rc}"
+         exit 93
+fi
+
+/usr/bin/ln -s ${common_files_path}/limits.conf ./limits.conf
+ln_rc=$?
+if [ ${ln_rc} -gt 0 ]
+then
+         echo "error linking common outputs.conf. rc=${ln_rc}"
+         exit 92
+fi
+
+### Set $SPLUNK_HOME
+export SPLUNK_HOME=/splunk/splunkforwarder${newFwd}
+
+### Create user-seed.conf
+printf "[user_info]\n USERNAME = admin\nPASSWORD = F0glight\n" > user-seed.conf
+
+### Create server.conf
+printf "[general]\nserverName = ${HOSTNAME}-fwd${newFwd}\n\n[httpServer]\ndisableDefaultPort = true\n[kvstore]\ndisabled = true\n" > server.conf
+
+### Create web.conf
+printf "[settings]\nstartwebserver = 0\n" > web.conf
+
+### Create deploymentclient.conf
+printf "[deployment-client]\nclientName = lp-nj1-taspk035-fwd${newFwd}\nphoneHomeIntervalInSecs = 60\n\n[target-broker:deploymentServer]\ntargetUri = lp-nj1-taspk031:8089\n" > deploymentclient.conf
+
+### Install SA-Eventgen
+if [ -e /tmp/eventgen_652.tgz ]
+then
+        #$SPLUNK_HOME/bin/splunk install app /tmp/eventgen_652.tgz -C $SPLUNK_HOME/etc/apps
+        cd /splunk/splunkforwarder${newFwd}/etc/apps
+        /usr/bin/tar xzf /tmp/eventgen_652.tgz
+        egen_rc=$?
+        if [ ${egen_rc} -gt 0 ]
+        then
+                echo "error installing SA-Eventgen. rc=${egen_rc}"
+                exit 91
+        fi
+        ### Update SA-Eventgen eventgen.conf
+        /usr/bin/sed -i 's/disabled = true/disabled = false/g' /splunk/splunkforwarder${newFwd}/etc/apps/SA-Eventgen/default/eventgen.conf
+fi
+
+### Install Splunk_TA_nix
+if [ -e /tmp/Splunk_TA_nix.tgz ]
+then
+        cd /splunk/splunkforwarder${newFwd}/etc/apps
+        /usr/bin/tar xzf /tmp/Splunk_TA_nix.tgz
+        egen_rc=$?
+        if [ ${egen_rc} -gt 0 ]
+        then
+                echo "error installing Splunk_TA_nix. rc=${egen_rc}"
+                exit 90
+        fi
+fi
+
+### start Splunk for the first time
+/splunk/splunkforwarder${newFwd}/bin/splunk start --accept-license --answer-yes --no-prompt
+cd /splunk/splunkforwarder${newFwd}/etc/system/local
+cd_rc=$?
+if [ ${cd_rc} -gt 0 ]
+then
+         echo "cannot change to directory /splunk/splunkforwarder${newFwd}/etc/system/local. rc=${cd_rc}"
+         exit 94
+fi
+
+### Update inputs.conf
+/usr/bin/sed -i 's/host = '${HOSTNAME}'/host = '${HOSTNAME}'-fwd'${newFwd}'/' inputs.conf
+
+### restart Splunk to pick up name change
+#/splunk/splunkforwarder${newFwd}/bin/splunk restart
+
+exit
