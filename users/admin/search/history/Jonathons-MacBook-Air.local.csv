@@ -1,8 +1,4 @@
 sid,search,"splunk_server","_time","is_realtime",provenance,"event_count","exec_time","result_count","scan_count",status,"total_run_time","api_et","api_lt","search_et","search_lt","savedsearch_name","__mv_sid","__mv_search","__mv_splunk_server","__mv__time","__mv_is_realtime","__mv_provenance","__mv_event_count","__mv_exec_time","__mv_result_count","__mv_scan_count","__mv_status","__mv_total_run_time","__mv_api_et","__mv_api_lt","__mv_search_et","__mv_search_lt","__mv_savedsearch_name"
-"admin__admin__search__search12_1539056223.501","search index=blood_sugar sourcetype=""blood_sugar"" glucose>140 OR glucose<70 
-| eval severity=if(glucose>155,""Very High"", if(glucose>140,""High"",if(glucose<55,""Very Low"",if(glucose<70,""Low"",""Normal""))))","Jonathons-MacBook-Air.local","1539056223.489950",0,"UI:Dashboard:blood_glucose",8,1539056224,8,78,completed,"0.9480000000000001","1538982000.000000000","1539056223.000000000","1538982000.000000000","1539056223.000000000",search12,,,,,,,,,,,,,,,,,
-"rt_md_1539056231.502","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1539056231.127047",1,"UI:Search",0,1539056231,0,0,canceled,"25.193",,,,,,,,,,,,,,,,,,,,,,
-"1539056256.514","search index=blood_sugar | stats count by source","Jonathons-MacBook-Air.local","1539056256.007904",0,"UI:Search",5819,1539056256,2,5819,completed,"1.1360000000000001",,,,,,,,,,,,,,,,,,,,,,
 "1539056295.515","search index=blood_sugar | stats count by source","Jonathons-MacBook-Air.local","1539056295.751573",0,"UI:Search",5819,1539056295,2,5819,completed,"1.149",,,,,,,,,,,,,,,,,,,,,,
 "rt_md_1539105294.983","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1539105294.129380",1,"UI:Search",0,1539105294,0,0,failed,"38.224000000000004",,,,,,,,,,,,,,,,,,,,,,
 "admin__admin__search__search9_1539105309.987","search index=blood_sugar sourcetype=""blood_sugar""  
@@ -1309,3 +1305,6 @@ data.search_props.app data.search_props.user | sort - memUsed | head 10","Jonath
 "admin__admin__search__search5_1576158489.6","| tstats prestats=t count from datamodel=internal_server where host=lp-nj1-taspk*-fwd*  AND blocked=true by host
 
 | timechart limit=200 count as blocked_queues by host","Jonathons-MacBook-Air.local","1576158489.615132",0,"UI:Dashboard:benchmark_indexing_latency",0,1576158489,0,89,completed,"0.8200000000000001","1575550800.000000000","1576158489.000000000","1575550800.000000000","1576158489.000000000",search5,,,,,,,,,,,,,,,,,
+"rt_md_1576554026.1268","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1576554026.171207",1,"UI:Search",0,1576554026,0,0,canceled,"7.621",,,,,,,,,,,,,,,,,,,,,,
+"1576554031.1271","| refresh","Jonathons-MacBook-Air.local","1576554031.721538",0,"UI:Search",0,1576554032,90,0,completed,"8.553","1576465200.000000000","1576554031.000000000","1576465200.000000000","1576554031.000000000",,,,,,,,,,,,,,,,,,
+"1576554057.1272","| refresh","Jonathons-MacBook-Air.local","1576554057.829321",0,"UI:Search",0,1576554058,90,0,completed,"8.561","1576465200.000000000","1576554057.000000000","1576465200.000000000","1576554057.000000000",,,,,,,,,,,,,,,,,,
