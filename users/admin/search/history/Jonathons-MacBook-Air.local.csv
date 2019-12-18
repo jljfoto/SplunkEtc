@@ -1,6 +1,4 @@
 sid,search,"splunk_server","_time","is_realtime",provenance,"event_count","exec_time","result_count","scan_count",status,"total_run_time","api_et","api_lt","search_et","search_lt","savedsearch_name","__mv_sid","__mv_search","__mv_splunk_server","__mv__time","__mv_is_realtime","__mv_provenance","__mv_event_count","__mv_exec_time","__mv_result_count","__mv_scan_count","__mv_status","__mv_total_run_time","__mv_api_et","__mv_api_lt","__mv_search_et","__mv_search_lt","__mv_savedsearch_name"
-"1539056295.515","search index=blood_sugar | stats count by source","Jonathons-MacBook-Air.local","1539056295.751573",0,"UI:Search",5819,1539056295,2,5819,completed,"1.149",,,,,,,,,,,,,,,,,,,,,,
-"rt_md_1539105294.983","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1539105294.129380",1,"UI:Search",0,1539105294,0,0,failed,"38.224000000000004",,,,,,,,,,,,,,,,,,,,,,
 "admin__admin__search__search9_1539105309.987","search index=blood_sugar sourcetype=""blood_sugar""  
 | streamstats avg(glucose) as average_blood_glucose
 | eval a1c = round((46.7 + average_blood_glucose) / 28.7,1)
@@ -1308,3 +1306,5 @@ data.search_props.app data.search_props.user | sort - memUsed | head 10","Jonath
 "rt_md_1576554026.1268","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1576554026.171207",1,"UI:Search",0,1576554026,0,0,canceled,"7.621",,,,,,,,,,,,,,,,,,,,,,
 "1576554031.1271","| refresh","Jonathons-MacBook-Air.local","1576554031.721538",0,"UI:Search",0,1576554032,90,0,completed,"8.553","1576465200.000000000","1576554031.000000000","1576465200.000000000","1576554031.000000000",,,,,,,,,,,,,,,,,,
 "1576554057.1272","| refresh","Jonathons-MacBook-Air.local","1576554057.829321",0,"UI:Search",0,1576554058,90,0,completed,"8.561","1576465200.000000000","1576554057.000000000","1576465200.000000000","1576554057.000000000",,,,,,,,,,,,,,,,,,
+"rt_md_1576682228.2770","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1576682229.039772",1,"UI:Search",,,,,,,,,,,,,,,,,,,,,,,,,,,,
+"1576682373.2819","| refresh","Jonathons-MacBook-Air.local","1576682373.454106",0,"UI:Search",,,,,,,,,,,,,,,,,,,,,,,,,,,,
