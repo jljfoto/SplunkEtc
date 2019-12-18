@@ -1,6 +1,4 @@
 sid,search,"splunk_server","_time","is_realtime",provenance,"event_count","exec_time","result_count","scan_count",status,"total_run_time","api_et","api_lt","search_et","search_lt","savedsearch_name","__mv_sid","__mv_search","__mv_splunk_server","__mv__time","__mv_is_realtime","__mv_provenance","__mv_event_count","__mv_exec_time","__mv_result_count","__mv_scan_count","__mv_status","__mv_total_run_time","__mv_api_et","__mv_api_lt","__mv_search_et","__mv_search_lt","__mv_savedsearch_name"
-"admin__admin__search__search12_1539105311.998","search index=blood_sugar sourcetype=""blood_sugar"" glucose>140 OR glucose<70 
-| eval severity=if(glucose>155,""Very High"", if(glucose>140,""High"",if(glucose<55,""Very Low"",if(glucose<70,""Low"",""Normal""))))","Jonathons-MacBook-Air.local","1539105311.415006",0,"UI:Dashboard:blood_glucose",8,1539105312,8,36,completed,"0.96","1539018000.000000000","1539105311.000000000","1539018000.000000000","1539105311.000000000",search12,,,,,,,,,,,,,,,,,
 "admin__admin__search__search9_1539105335.999","search index=blood_sugar sourcetype=""blood_sugar""  
 | streamstats avg(glucose) as average_blood_glucose
 | eval a1c = round((46.7 + average_blood_glucose) / 28.7,1)
@@ -1295,4 +1293,5 @@ data.search_props.app data.search_props.user | sort - memUsed | head 10","Jonath
 "rt_1576682957.11","| refresh","Jonathons-MacBook-Air.local","1576682957.967178",1,"UI:Search",0,1576682958,0,0,failed,"0.008",,,,,,,,,,,,,,,,,,,,,,
 "rt_1576683012.3","search index=_internal","Jonathons-MacBook-Air.local","1576683012.718757",1,"UI:Search",428,1576683012,428,1509,completed,"16.196",,,,,,,,,,,,,,,,,,,,,,
 "1576683059.14","search index=_internal","Jonathons-MacBook-Air.local","1576683059.873685",0,"UI:Search",9693,1576683059,1631,9693,completed,"1.118","1576682159.000000000","1576683059.000000000","1576682159.000000000","1576683059.000000000",,,,,,,,,,,,,,,,,,
-"rt_md_1576697446.244","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1576697446.546770",1,"UI:Search",,,,,,,,,,,,,,,,,,,,,,,,,,,,
+"rt_md_1576697446.244","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1576697446.546770",1,"UI:Search",0,1576697446,0,0,failed,"77.839",,,,,,,,,,,,,,,,,,,,,,
+"rt_md_1576697556.2","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1576697556.885111",1,"UI:Search",0,1576697557,0,0,failed,"5685.863",,,,,,,,,,,,,,,,,,,,,,
