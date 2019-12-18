@@ -1,11 +1,4 @@
 sid,search,"splunk_server","_time","is_realtime",provenance,"event_count","exec_time","result_count","scan_count",status,"total_run_time","api_et","api_lt","search_et","search_lt","savedsearch_name","__mv_sid","__mv_search","__mv_splunk_server","__mv__time","__mv_is_realtime","__mv_provenance","__mv_event_count","__mv_exec_time","__mv_result_count","__mv_scan_count","__mv_status","__mv_total_run_time","__mv_api_et","__mv_api_lt","__mv_search_et","__mv_search_lt","__mv_savedsearch_name"
-"admin__admin__search__search9_1539105309.987","search index=blood_sugar sourcetype=""blood_sugar""  
-| streamstats avg(glucose) as average_blood_glucose
-| eval a1c = round((46.7 + average_blood_glucose) / 28.7,1)
-| timechart  span=1d  max(a1c) as a1c","Jonathons-MacBook-Air.local","1539105309.615679",0,"UI:Dashboard:blood_glucose",5819,1539105309,55,5819,completed,"1.182",,,,,search9,,,,,,,,,,,,,,,,,
-"admin__admin__search__search3_1539105311.991","search index=blood_sugar sourcetype=""blood_sugar"" glucose>140 | stats max(glucose)","Jonathons-MacBook-Air.local","1539105311.127563",0,"UI:Dashboard:blood_glucose",2,1539105311,1,2,completed,"0.985","1539018000.000000000","1539105311.000000000","1539018000.000000000","1539105311.000000000",search3,,,,,,,,,,,,,,,,,
-"admin__admin__search__search4_1539105311.992","search index=blood_sugar sourcetype=""blood_sugar"" glucose < 70 | stats count","Jonathons-MacBook-Air.local","1539105311.157027",0,"UI:Dashboard:blood_glucose",6,1539105311,1,6,completed,"0.9540000000000001","1539018000.000000000","1539105311.000000000","1539018000.000000000","1539105311.000000000",search4,,,,,,,,,,,,,,,,,
-"admin__admin__search__search5_1539105311.993","search index=blood_sugar sourcetype=""blood_sugar"" glucose<70 | stats min(glucose)","Jonathons-MacBook-Air.local","1539105311.175297",0,"UI:Dashboard:blood_glucose",6,1539105311,1,6,completed,"0.9","1539018000.000000000","1539105311.000000000","1539018000.000000000","1539105311.000000000",search5,,,,,,,,,,,,,,,,,
 "admin__admin__search__search6_1539105311.994","search index=blood_sugar sourcetype=""blood_sugar"" glucose=*
 | streamstats median(glucose) as medianGC,avg(glucose) as avgGC
 | eval low_glucose=70, high_glucose=140
@@ -1306,5 +1299,9 @@ data.search_props.app data.search_props.user | sort - memUsed | head 10","Jonath
 "rt_md_1576554026.1268","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1576554026.171207",1,"UI:Search",0,1576554026,0,0,canceled,"7.621",,,,,,,,,,,,,,,,,,,,,,
 "1576554031.1271","| refresh","Jonathons-MacBook-Air.local","1576554031.721538",0,"UI:Search",0,1576554032,90,0,completed,"8.553","1576465200.000000000","1576554031.000000000","1576465200.000000000","1576554031.000000000",,,,,,,,,,,,,,,,,,
 "1576554057.1272","| refresh","Jonathons-MacBook-Air.local","1576554057.829321",0,"UI:Search",0,1576554058,90,0,completed,"8.561","1576465200.000000000","1576554057.000000000","1576465200.000000000","1576554057.000000000",,,,,,,,,,,,,,,,,,
-"rt_md_1576682228.2770","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1576682229.039772",1,"UI:Search",,,,,,,,,,,,,,,,,,,,,,,,,,,,
-"1576682373.2819","| refresh","Jonathons-MacBook-Air.local","1576682373.454106",0,"UI:Search",,,,,,,,,,,,,,,,,,,,,,,,,,,,
+"rt_md_1576682228.2770","| metadata type=sourcetypes | search totalCount > 0","Jonathons-MacBook-Air.local","1576682229.039772",1,"UI:Search",0,1576682229,0,0,canceled,"145.041",,,,,,,,,,,,,,,,,,,,,,
+"1576682373.2819","| refresh","Jonathons-MacBook-Air.local","1576682373.454106",0,"UI:Search",0,1576682373,90,0,completed,"8.942","1576594800.000000000","1576682373.000000000","1576594800.000000000","1576682373.000000000",,,,,,,,,,,,,,,,,,
+"rt_1576682430.2","| refresh","Jonathons-MacBook-Air.local","1576682430.830135",1,"UI:Search",0,1576682431,0,0,failed,"0.01",,,,,,,,,,,,,,,,,,,,,,
+"1576682449.8","search index=_internal","Jonathons-MacBook-Air.local","1576682449.536907",0,"UI:Search",88535,1576682449,1000,88535,completed,"4.635","1576594800.000000000","1576682449.000000000","1576594800.000000000","1576682449.000000000",,,,,,,,,,,,,,,,,,
+"1576682942.10","| refresh","Jonathons-MacBook-Air.local","1576682942.537888",0,"UI:Search",0,1576682942,90,0,completed,"8.247","1576594800.000000000","1576682942.000000000","1576594800.000000000","1576682942.000000000",,,,,,,,,,,,,,,,,,
+"rt_1576682957.11","| refresh","Jonathons-MacBook-Air.local","1576682957.967178",1,"UI:Search",0,1576682958,0,0,failed,"0.008",,,,,,,,,,,,,,,,,,,,,,
