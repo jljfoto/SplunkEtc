@@ -163,3 +163,8 @@ modtime = 1569806018.698728000
 owner = admin
 version = 8.0.0
 modtime = 1574199449.237578000
+
+[inputs/monitor%3A%2F%2F%2FUsers%2Fjonathon%2FDownloads%2Fsyslog_2020-3-17-21_40_26.csv]
+owner = admin
+version = 8.0.0
+modtime = 1584497794.684607000

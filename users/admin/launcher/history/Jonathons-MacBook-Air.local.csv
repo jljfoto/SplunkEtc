@@ -213,3 +213,4 @@ sid,search,"splunk_server","_time","is_realtime",provenance,"event_count","exec_
 "1574281233.4290","search index=""andrew"" | rex field=hhst ""(?<hhhst>.+)0"" | stats  values(iidx) values(log_file) by hhhst","Jonathons-MacBook-Air.local","1574281233.157308",0,"UI:Search",5184,1574281233,28,5184,completed,"0.499",,,,,,,,,,,,,,,,,,,,,,
 "1574459582.7143","search index=""andrew""| delete","Jonathons-MacBook-Air.local","1574459582.914411",0,"UI:Search",2,1574459583,2,5184,completed,"0.499",,,,,,,,,,,,,,,,,,,,,,
 "1574459640.7144","search index=""andrew""","Jonathons-MacBook-Air.local","1574459640.488296",0,"UI:Search",0,1574459640,0,0,completed,"0.581",,,,,,,,,,,,,,,,,,,,,,
+"1584497802.2586","search source=""/Users/jonathon/Downloads/syslog_2020-3-17-21_40_26.csv"" host=""JenkinsTechNas"" index=""syslog"" sourcetype=""syslog-nas""","Jonathons-MacBook-Air.local","1584497802.069997",0,"UI:Search",0,1584497802,0,0,completed,"0.362",,,,,,,,,,,,,,,,,,,,,,

@@ -22,3 +22,8 @@ modtime = 1569466268.796097000
 owner = admin
 version = 8.0.0
 modtime = 1574199443.742219000
+
+[indexes/syslog]
+owner = admin
+version = 8.0.0
+modtime = 1584497726.548117000
