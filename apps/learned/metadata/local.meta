@@ -347,3 +347,13 @@ modtime = 1571790380.240253000
 owner = nobody
 version = 8.0.0
 modtime = 1576554033.293135000
+
+[props/alert_manager_scheduler.log]
+owner = nobody
+version = 8.0.0
+modtime = 1594920456.031591000
+
+[sourcetypes/%2Fopt%2Fsplunk%2Fvar%2Flog%2Fsplunk%2Falert_manager_scheduler.log.1_Thu_Jul_16_13%3A27%3A36_2020_1376043138]
+owner = nobody
+version = 8.0.0
+modtime = 1594920456.307131000
