@@ -357,3 +357,8 @@ modtime = 1594920456.031591000
 owner = nobody
 version = 8.0.0
 modtime = 1594920456.307131000
+
+[props/alert_manager_scheduler.log-too_small]
+owner = nobody
+version = 8.0.0
+modtime = 1598789651.754883000
