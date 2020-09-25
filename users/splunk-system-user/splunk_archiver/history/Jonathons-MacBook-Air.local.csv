@@ -1,8 +1,4 @@
 sid,search,"splunk_server","_time","is_realtime","event_count","exec_time","result_count","scan_count",status,"total_run_time","__mv_sid","__mv_search","__mv_splunk_server","__mv__time","__mv_is_realtime","__mv_event_count","__mv_exec_time","__mv_result_count","__mv_scan_count","__mv_status","__mv_total_run_time"
-"1596975421.14630","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1596975421.527080",0,1,1596975421,1,0,canceled,"0.657",,,,,,,,,,,
-"1596979022.14684","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1596979022.195958",0,1,1596979022,1,0,canceled,"0.672",,,,,,,,,,,
-"1596982621.14739","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1596982621.909744",0,1,1596982622,1,0,canceled,"0.666",,,,,,,,,,,
-"1596986222.14793","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1596986222.669017",0,1,1596986223,1,0,canceled,"2.082",,,,,,,,,,,
 "1596989823.14848","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1596989823.653348",0,1,1596989824,1,0,canceled,"2.0060000000000002",,,,,,,,,,,
 "1596993421.14903","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1596993421.444825",0,1,1596993421,1,0,canceled,"0.682",,,,,,,,,,,
 "1596997021.14959","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1596997021.515697",0,1,1596997021,1,0,canceled,"0.616",,,,,,,,,,,
@@ -999,3 +995,7 @@ sid,search,"splunk_server","_time","is_realtime","event_count","exec_time","resu
 "1601050621.24283","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1601050621.155162",0,1,1601050621,1,0,canceled,"0.738",,,,,,,,,,,
 "1601054221.24337","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1601054221.176273",0,1,1601054221,1,0,canceled,"0.623",,,,,,,,,,,
 "1601057821.24393","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1601057821.865760",0,1,1601057822,1,0,canceled,"0.765",,,,,,,,,,,
+"1601061421.24448","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1601061421.944977",0,0,1601061422,0,0,canceled,"0.6990000000000001",,,,,,,,,,,
+"1601065021.24503","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1601065021.573810",0,1,1601065021,1,0,canceled,"0.609",,,,,,,,,,,
+"1601068621.24559","| copybuckets json=""{\""providers\"": {}, \""vixes\"": {}}""","Jonathons-MacBook-Air.local","1601068621.900466",0,1,1601068622,1,0,canceled,"0.616",,,,,,,,,,,
+"1601072222.24612","| copybuckets json=""{\""vixes\"": {}, \""providers\"": {}}""","Jonathons-MacBook-Air.local","1601072222.199846",0,1,1601072222,1,0,canceled,"0.759",,,,,,,,,,,
